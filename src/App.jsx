@@ -1,6 +1,8 @@
+import Login from './components/Login'
+
 function App() {
 	return (
-		<p>Graduation Project. I hope this will be a great journey.</p>
+		<Login />
 	)
 }
 export default App
