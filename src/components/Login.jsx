@@ -68,9 +68,8 @@ export default function Login() {
 					>
 						Sign In
 					</Button>
-					{/* Sign Up link if not signed up yet */}
-					{/* TODO modify the link to sign up page */}
-					<Link href="/?22" variant="body2">
+					{/* Register Page link */}
+					<Link href="/register" variant="body2">
 						Don&apos;t have an account? Sign Up
 					</Link>
 				</Box>
