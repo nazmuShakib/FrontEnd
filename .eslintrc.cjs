@@ -24,6 +24,7 @@ module.exports = {
     'semi': ['error', 'never'],
     'import/no-absolute-path': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
-		"react/jsx-indent": [1, 'tab', {checkAttributes: true, indentLogicalExpressions: true}]
+		"react/jsx-indent": [1, 'tab', {checkAttributes: true, indentLogicalExpressions: true}],
+		"import/no-extraneous-dependencies": ['error', {'devDependencies': true}]
   },
 }
