@@ -1,14 +1,16 @@
 import { Button } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 export default function LoginButton() {
+	console.log('Login Button')
 	return (
 		/* TODO Add profile link when user logged in */
 		<Button
 			variant="contained"
-			component="button"
+			component={Link}
 			type="button"
 			display="block"
-			href="/login"
+			to="/login"
 		>
 			Login
 		</Button>

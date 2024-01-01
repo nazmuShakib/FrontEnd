@@ -10,6 +10,7 @@ import MyPropertyButton from './Utility/MyPropertyButton'
 import AddPropertyButton from './Utility/AddPropertyButton'
 import LoginButton from './Utility/LoginButton'
 import SearchBar from './Utility/SearchBar'
+import MenuBar from './Utility/MenuBar'
 
 export default function NavBar() {
 	return (
@@ -29,6 +30,8 @@ export default function NavBar() {
 						justifyContent: 'space-around',
 					}}
 				>
+					{/* Menu Bar */}
+					<MenuBar />
 					{/* Navigation links for Home, My Favorites and My Property */}
 					<Toolbar
 						sx={{

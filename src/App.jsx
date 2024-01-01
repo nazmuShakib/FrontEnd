@@ -10,20 +10,28 @@ function App() {
 			<CssBaseline />
 			<NavBar />
 			<Routes>
-				<Route path="/" element={<h1>Home page</h1>} />
 				<Route
+					exact
+					path="/"
+					element={<h1>Home page</h1>}
+				/>
+				<Route
+					exact
 					path="/my-favorites"
 					element={<h1>Favorites button clicked</h1>}
 				/>
 				<Route
+					exact
 					path="/my-properties"
 					element={<h1>Properties button clicked</h1>}
 				/>
 				<Route
+					exact
 					path="/register"
 					element={<Register />}
 				/>
 				<Route
+					exact
 					path="/login"
 					element={<Login />}
 				/>

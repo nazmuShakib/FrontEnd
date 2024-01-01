@@ -1,13 +1,15 @@
 import { Button } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 export default function MyFavorites() {
+	console.log('My Favorites Button')
 	return (
 		<Button
 			variant="text"
-			component="button"
+			component={Link}
 			type="button"
 			name="My Favorites"
-			href="/my-favorites"
+			to="/my-favorites"
 			sx={{
 				width: '120px',
 				display: 'none',
