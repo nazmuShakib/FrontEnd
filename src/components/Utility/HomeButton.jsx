@@ -1,12 +1,7 @@
 import { Button } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 
-const style = {
-	backgroundColor: 'red',
-}
 export default function Home() {
-	console.log('Home Button')
-
 	return (
 		<Button
 			variant="text"

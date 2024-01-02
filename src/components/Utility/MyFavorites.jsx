@@ -2,7 +2,6 @@ import { Button } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 
 export default function MyFavorites() {
-	console.log('My Favorites Button')
 	return (
 		<Button
 			variant="text"

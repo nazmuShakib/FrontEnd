@@ -2,7 +2,6 @@ import { Button } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 
 export default function MyPropertyButton() {
-	console.log('My Properties Button')
 	return (
 		<Button
 			variant="text"

@@ -17,8 +17,7 @@ export default function MenuBar() {
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget)
 	}
-	const handleClose = (event) => {
-		console.log(event.currentTarget)
+	const handleClose = () => {
 		setAnchorEl(null)
 	}
 
