@@ -50,6 +50,12 @@ export default function MenuBar() {
 				MenuListProps={{
 					'aria-labelledby': 'basic-button',
 				}}
+				/* change background color on Hover */
+				sx={{
+					'& .MuiMenuItem-root:hover': {
+						backgroundColor: '#cfd5e5',
+					},
+				}}
 			>
 				<MenuItem component={Link} to="/" name="Home Item" onClick={handleClose}>Home</MenuItem>
 				<MenuItem component={Link} to="/my-favorites" name="My Favorites Item" onClick={handleClose}>My Favorties</MenuItem>
