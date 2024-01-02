@@ -1,21 +1,18 @@
 import * as React from 'react'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-// import MenuItem from '@material-ui/core/MenuItem'
 import { IconButton, Box } from '@mui/material'
 import { MenuOutlined } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
 
 export default function MenuBar() {
 	const [anchorEl, setAnchorEl] = React.useState(null)
-	let open = Boolean(anchorEl)
+	const open = Boolean(anchorEl)
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget)
-		open = Boolean(anchorEl)
 	}
 	const handleClose = () => {
 		setAnchorEl(null)
-		open = Boolean(anchorEl)
 	}
 
 	return (
@@ -47,10 +44,10 @@ export default function MenuBar() {
 					'aria-labelledby': 'basic-button',
 				}}
 			>
-				<MenuItem component={Link} to="/">Home</MenuItem>
-				<MenuItem component={Link} to="/my-favorites">My Favorties</MenuItem>
-				<MenuItem component={Link} to="/my-properties">My Properties</MenuItem>
-				<MenuItem component={Link} to="/login">Login</MenuItem>
+				<MenuItem component={Link} to="/" onClick={handleClose}>Home</MenuItem>
+				<MenuItem component={Link} to="/my-favorites" onClick={handleClose}>My Favorties</MenuItem>
+				<MenuItem component={Link} to="/my-properties" onClick={handleClose}>My Properties</MenuItem>
+				<MenuItem component={Link} to="/login" onClick={handleClose}>Login</MenuItem>
 			</Menu>
 		</Box>
 	)
