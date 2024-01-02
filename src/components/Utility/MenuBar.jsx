@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import {
 	Box,
 	IconButton,
@@ -50,17 +50,53 @@ export default function MenuBar() {
 				MenuListProps={{
 					'aria-labelledby': 'basic-button',
 				}}
-				/* change background color on Hover */
+				/* change background color on Hover if not active */
 				sx={{
-					'& .MuiMenuItem-root:hover': {
+					'& .MuiMenuItem-root:not(.nohover):hover': {
 						backgroundColor: '#cfd5e5',
+					},
+					'& .MuiMenuItem-root.active:not(.nohover)': {
+						backgroundColor: '#54689c',
+						color: 'white',
 					},
 				}}
 			>
-				<MenuItem component={Link} to="/" name="Home Item" onClick={handleClose}>Home</MenuItem>
-				<MenuItem component={Link} to="/my-favorites" name="My Favorites Item" onClick={handleClose}>My Favorties</MenuItem>
-				<MenuItem component={Link} to="/my-properties" name="My Properties Item" onClick={handleClose}>My Properties</MenuItem>
-				<MenuItem component={Link} to="/login" name="Login Item" onClick={handleClose}>Login</MenuItem>
+				<MenuItem
+					component={NavLink}
+					to="/"
+					name="Home Item"
+					onClick={handleClose}
+				>
+					Home
+
+				</MenuItem>
+				<MenuItem
+					component={NavLink}
+					to="/my-favorites"
+					name="My Favorites Item"
+					onClick={handleClose}
+				>
+					My Favorties
+
+				</MenuItem>
+				<MenuItem
+					component={NavLink}
+					to="/my-properties"
+					name="My Properties Item"
+					onClick={handleClose}
+				>
+					My Properties
+
+				</MenuItem>
+				<MenuItem
+					component={NavLink}
+					to="/login"
+					name="Login Item"
+					onClick={handleClose}
+				>
+					Login
+
+				</MenuItem>
 			</Menu>
 		</Box>
 	)
