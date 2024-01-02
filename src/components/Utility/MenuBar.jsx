@@ -1,17 +1,24 @@
-import * as React from 'react'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import { IconButton, Box } from '@mui/material'
-import { MenuOutlined } from '@mui/icons-material'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import {
+	Box,
+	IconButton,
+	Menu,
+	MenuItem,
+} from '@mui/material'
+import {
+	Menu as MenuIcon,
+	Close as CloseIcon,
+} from '@mui/icons-material'
 
 export default function MenuBar() {
-	const [anchorEl, setAnchorEl] = React.useState(null)
+	const [anchorEl, setAnchorEl] = useState(null)
 	const open = Boolean(anchorEl)
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget)
 	}
-	const handleClose = () => {
+	const handleClose = (event) => {
+		console.log(event.currentTarget)
 		setAnchorEl(null)
 	}
 
@@ -33,7 +40,7 @@ export default function MenuBar() {
 					},
 				}}
 			>
-				<MenuOutlined />
+				{open ? <CloseIcon /> : <MenuIcon />}
 			</IconButton>
 			<Menu
 				id="basic-menu"
@@ -44,10 +51,10 @@ export default function MenuBar() {
 					'aria-labelledby': 'basic-button',
 				}}
 			>
-				<MenuItem component={Link} to="/" onClick={handleClose}>Home</MenuItem>
-				<MenuItem component={Link} to="/my-favorites" onClick={handleClose}>My Favorties</MenuItem>
-				<MenuItem component={Link} to="/my-properties" onClick={handleClose}>My Properties</MenuItem>
-				<MenuItem component={Link} to="/login" onClick={handleClose}>Login</MenuItem>
+				<MenuItem component={Link} to="/" name="Home Item" onClick={handleClose}>Home</MenuItem>
+				<MenuItem component={Link} to="/my-favorites" name="My Favorites Item" onClick={handleClose}>My Favorties</MenuItem>
+				<MenuItem component={Link} to="/my-properties" name="My Properties Item" onClick={handleClose}>My Properties</MenuItem>
+				<MenuItem component={Link} to="/login" name="Login Item" onClick={handleClose}>Login</MenuItem>
 			</Menu>
 		</Box>
 	)
