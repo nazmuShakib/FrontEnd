@@ -3,6 +3,7 @@ import {
 	Divider,
 } from '@mui/material'
 import ImageSlider from './Utility/ImageSlider'
+import PropertyHeader from './Utility/PropertyHeader'
 
 // Basic image slider
 // TODO change the left and right slider arrows
@@ -10,25 +11,7 @@ import ImageSlider from './Utility/ImageSlider'
 export default function ImageGallery() {
 	return (
 		<Box component="div">
-			<Box
-				component="h3"
-				variant="h1"
-				textAlign="center"
-				sx={{
-					paddingTop: '1%',
-					'@media (min-width: 430px)': {
-						paddingTop: '8%',
-					},
-					'@media (min-width: 768px)': {
-						paddingTop: '5%',
-					},
-					'@media (min-width: 968px)': {
-						paddingTop: '3%',
-					},
-				}}
-			>
-				Property Header of a house with property information and other descriptions of the flat. 2 Bedroom, 2 Bathroom etc
-			</Box>
+			<PropertyHeader />
 			<Divider variant="middle" />
 			<Box
 				component="div"
