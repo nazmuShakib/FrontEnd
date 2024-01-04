@@ -14,6 +14,18 @@ export default function ImageGallery() {
 				component="h3"
 				variant="h1"
 				textAlign="center"
+				sx={{
+					paddingTop: '1%',
+					'@media (min-width: 430px)': {
+						paddingTop: '8%',
+					},
+					'@media (min-width: 768px)': {
+						paddingTop: '5%',
+					},
+					'@media (min-width: 968px)': {
+						paddingTop: '3%',
+					},
+				}}
 			>
 				Property Header of a house with property information and other descriptions of the flat. 2 Bedroom, 2 Bathroom etc
 			</Box>
@@ -28,8 +40,12 @@ export default function ImageGallery() {
 					display: 'block',
 					'@media only screen and (min-width: 430px)': {
 						width: '90%',
-						paddingTop: '20.33%',
+						paddingTop: '19.33%',
 						margin: 'auto',
+					},
+					'@media only screen and (min-width: 600px)': {
+						width: '90%',
+						paddingTop: '15.33%',
 					},
 					'@media only screen and (min-width: 768px)': {
 						width: '60%',
@@ -37,9 +53,17 @@ export default function ImageGallery() {
 						display: 'flex',
 						margin: '0',
 					},
-					'@media only screen and (min-width: 1200px)': {
+					'@media only screen and (min-width: 968px)': {
 						width: '55%',
-						paddingTop: '10.833%',
+						paddingTop: '9.833%',
+					},
+					'@media only screen and (min-width: 1168px)': {
+						width: '55%',
+						paddingTop: '7.833%',
+					},
+					'@media only screen and (min-width: 1368px)': {
+						width: '55%',
+						paddingTop: '5.833%',
 					},
 				}}
 			>
