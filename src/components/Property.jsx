@@ -1,6 +1,6 @@
 import {
 	Box,
-	Typography,
+	Divider,
 } from '@mui/material'
 import ImageSlider from './Utility/ImageSlider'
 
@@ -10,9 +10,14 @@ import ImageSlider from './Utility/ImageSlider'
 export default function ImageGallery() {
 	return (
 		<Box component="div">
-			<Typography variant="p" component="div">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</Typography>
+			<Box
+				component="h3"
+				variant="h1"
+				textAlign="center"
+			>
+				Property Header of a house with property information and other descriptions of the flat. 2 Bedroom, 2 Bathroom etc
+			</Box>
+			<Divider variant="middle" />
 			<Box
 				component="div"
 				width="100%"
