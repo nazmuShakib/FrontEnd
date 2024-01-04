@@ -1,30 +1,18 @@
 import {
 	Box,
+	Typography,
 } from '@mui/material'
-import { Carousel } from 'react-responsive-carousel'
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import ImageSlider from './Utility/ImageSlider'
 
-import A from '../assets/images/A.jpeg'
-import B from '../assets/images/B.jpeg'
-import C from '../assets/images/C.jpeg'
-import D from '../assets/images/D.jpeg'
-import E from '../assets/images/E.jpeg'
-import F from '../assets/images/F.jpeg'
-
-const images = [
-	A,
-	B,
-	C,
-	D,
-	// E,
-	// F,
-]
 // Basic image slider
 // TODO change the left and right slider arrows
 // Use utility function for each section
 export default function ImageGallery() {
 	return (
 		<Box component="div">
+			<Typography variant="p" component="div">
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+			</Typography>
 			<Box
 				component="div"
 				width="100%"
@@ -50,23 +38,7 @@ export default function ImageGallery() {
 					},
 				}}
 			>
-				<Box>
-					<Carousel
-						showArrows
-						emulateTouch
-						infiniteLoop
-						centerMode
-						ariaLabel="abc"
-					>
-						{images.map((img) => (
-							<Box
-								key={img}
-							>
-								<img src={img} alt="abc" />
-							</Box>
-						))}
-					</Carousel>
-				</Box>
+				<ImageSlider />
 				<p>line</p>
 			</Box>
 			<p>Line</p>
