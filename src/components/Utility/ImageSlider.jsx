@@ -8,6 +8,9 @@ import A from '../../assets/images/A.jpeg'
 import B from '../../assets/images/B.jpeg'
 import C from '../../assets/images/C.jpeg'
 import D from '../../assets/images/D.jpeg'
+import G from '../../assets/images/G.webp'
+import H from '../../assets/images/H.webp'
+import I from '../../assets/images/I.webp'
 
 const images = [
 	A,
@@ -18,6 +21,9 @@ const images = [
 	B,
 	C,
 	D,
+	G,
+	H,
+	I,
 ]
 
 export default function ImageSlider() {
