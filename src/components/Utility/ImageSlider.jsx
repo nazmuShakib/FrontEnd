@@ -26,7 +26,7 @@ const images = [
 	I,
 ]
 
-export default function ImageSlider() {
+function CarouselSlider() {
 	return (
 		<Box sx={{
 			width: '100%',
@@ -49,6 +49,49 @@ export default function ImageSlider() {
 					/>
 				))}
 			</Carousel>
+		</Box>
+	)
+}
+export default function ImageSlider() {
+	return (
+		<Box
+			component="div"
+			width="100%"
+			paddingTop="23.33%"
+			// 30 : 7 aspect ratio
+			position="relative"
+			sx={{
+				display: 'block',
+				'@media only screen and (min-width: 430px)': {
+					width: '90%',
+					paddingTop: '19.33%',
+					margin: 'auto',
+				},
+				'@media only screen and (min-width: 600px)': {
+					width: '90%',
+					paddingTop: '15.33%',
+				},
+				'@media only screen and (min-width: 768px)': {
+					width: '60%',
+					paddingTop: '12.0%',
+					display: 'flex',
+					margin: 0,
+				},
+				'@media only screen and (min-width: 968px)': {
+					width: '55%',
+					paddingTop: '9.833%',
+				},
+				'@media only screen and (min-width: 1168px)': {
+					width: '55%',
+					paddingTop: '7.833%',
+				},
+				'@media only screen and (min-width: 1368px)': {
+					width: '55%',
+					paddingTop: '5.833%',
+				},
+			}}
+		>
+			<CarouselSlider />
 		</Box>
 	)
 }
