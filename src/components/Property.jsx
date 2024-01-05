@@ -4,6 +4,7 @@ import {
 } from '@mui/material'
 import PropertyHeader from './Utility/PropertyHeader'
 import ImagesAndDescription from './Utility/ImagesAndDescription'
+import PlaceInfo from './Utility/PlaceInfo'
 
 // Basic image slider
 // TODO change the left and right slider arrows
@@ -13,8 +14,8 @@ export default function ImageGallery() {
 		<Box
 			component="div"
 			sx={{
-				// marginLeft: '1%',
-				// marginRight: '1%',
+				marginLeft: '1%',
+				marginRight: '1%',
 				'@media (min-width: 600px)': {
 					marginLeft: '7%',
 					marginRight: '7%',
@@ -28,6 +29,7 @@ export default function ImageGallery() {
 			<PropertyHeader />
 			<Divider variant="middle" />
 			<ImagesAndDescription />
+			<PlaceInfo />
 		</Box>
 	)
 }
