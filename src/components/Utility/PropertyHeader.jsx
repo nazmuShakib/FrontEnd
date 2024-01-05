@@ -8,6 +8,7 @@ export default function PropertyHeader() {
 			textAlign="center"
 			sx={{
 				paddingTop: '1%',
+				margin: '5%',
 				'@media (min-width: 430px)': {
 					paddingTop: '8%',
 				},

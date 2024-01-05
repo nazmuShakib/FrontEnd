@@ -7,7 +7,7 @@ export default function ImagesAndDescription() {
 		<Box
 			sx={{
 				display: 'block',
-				'@media (min-width: 768px)': {
+				'@media (min-width: 900px)': {
 					display: 'flex',
 				},
 			}}
@@ -16,22 +16,13 @@ export default function ImagesAndDescription() {
 			<Box
 				display="none"
 				sx={{
-					'@media (min-width: 768px)': {
+					'@media (min-width: 900px)': {
 						display: 'flex',
 						margin: 0.75,
 					},
 				}}
 			/>
 			<PlaceDescription />
-			<Box
-				display="none"
-				sx={{
-					'@media (min-width: 768px)': {
-						display: 'flex',
-						marginLeft: 1.5,
-					},
-				}}
-			/>
 		</Box>
 	)
 }

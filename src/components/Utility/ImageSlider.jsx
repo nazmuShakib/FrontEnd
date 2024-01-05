@@ -75,10 +75,10 @@ export default function ImageSlider() {
 					width: '60%',
 					paddingTop: '12.0%',
 					display: 'flex',
-					margin: 0,
 				},
 				'@media only screen and (min-width: 968px)': {
-					width: '55%',
+					// width: '55%',
+					margin: 0,
 					paddingTop: '9.833%',
 				},
 				'@media only screen and (min-width: 1168px)': {
