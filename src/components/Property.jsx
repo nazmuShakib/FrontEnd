@@ -5,6 +5,7 @@ import {
 import PropertyHeader from './Utility/PropertyHeader'
 import ImagesAndDescription from './Utility/ImagesAndDescription'
 import PlaceInfo from './Utility/PlaceInfo'
+import RulesAndPreferences from './Utility/RuleAndPreferences'
 
 // Basic image slider
 // TODO change the left and right slider arrows
@@ -30,6 +31,7 @@ export default function ImageGallery() {
 			<Divider variant="middle" />
 			<ImagesAndDescription />
 			<PlaceInfo />
+			<RulesAndPreferences />
 		</Box>
 	)
 }
