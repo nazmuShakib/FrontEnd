@@ -6,7 +6,7 @@ import PropertyHeader from './Utility/PropertyHeader'
 import ImagesAndDescription from './Utility/ImagesAndDescription'
 import PlaceInfo from './Utility/PlaceInfo'
 import RulesAndPreferences from './Utility/RuleAndPreferences'
-
+import Map from './Utility/Map'
 // Basic image slider
 // TODO change the left and right slider arrows
 // Use utility function for each section
@@ -32,6 +32,7 @@ export default function ImageGallery() {
 			<ImagesAndDescription />
 			<PlaceInfo />
 			<RulesAndPreferences />
+			<Map />
 		</Box>
 	)
 }
