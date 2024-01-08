@@ -11,13 +11,14 @@ export default function Price() {
 	const price = 99999999
 	return (
 		<Box
-			component="div"
 			width="100%"
 			marginTop="10px"
 			boxShadow="1"
 			sx={{
-				'@media (min-width: 600px)': {
+				'@media (min-width: 900px)': {
 					width: '50%',
+					marginTop: '0px',
+					boxShadow: 0,
 				},
 			}}
 		>
@@ -33,7 +34,7 @@ export default function Price() {
 				<Divider
 					variant="middle"
 				>
-					<Box><Taka /></Box>
+					<Taka />
 				</Divider>
 				<CardContent sx={{
 					display: 'flex',

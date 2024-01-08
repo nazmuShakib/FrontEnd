@@ -16,8 +16,10 @@ export default function Advertiser() {
 			marginTop="10px"
 			boxShadow="1"
 			sx={{
-				'@media (min-width: 600px)': {
+				'@media (min-width: 900px)': {
 					width: '50%',
+					marginTop: '0',
+					boxShadow: '0',
 				},
 			}}
 		>

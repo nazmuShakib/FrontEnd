@@ -1,6 +1,6 @@
 const style = {
-	width: '25%',
-	height: '25%',
+	width: '25px',
+	height: '25px',
 }
 export default function Taka() {
 	return (
