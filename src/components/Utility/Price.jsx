@@ -5,7 +5,7 @@ import {
 	Typography,
 	Divider,
 } from '@mui/material'
-import { PriceChangeOutlined } from '@mui/icons-material'
+import Taka from '../../assets/icons/Taka'
 
 export default function Price() {
 	const price = 99999999
@@ -33,8 +33,7 @@ export default function Price() {
 				<Divider
 					variant="middle"
 				>
-					<PriceChangeOutlined />
-
+					<Box><Taka /></Box>
 				</Divider>
 				<CardContent sx={{
 					display: 'flex',
