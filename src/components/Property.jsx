@@ -18,6 +18,7 @@ export default function Property() {
 	const getRating = (newRating) => {
 		setRating(newRating)
 	}
+	console.log('property')
 	return (
 		<Box
 			component="div"
