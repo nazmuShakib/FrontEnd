@@ -11,6 +11,7 @@ import PriceAndAdvertiser from './Utility/PriceAndAdvertiser'
 import ContactAndAddress from './Utility/ContactAndAddress'
 
 export default function Property() {
+	const auth = false
 	return (
 		<Box
 			component="div"
@@ -32,7 +33,7 @@ export default function Property() {
 			<ImagesAndDescription />
 			<RulesAndPreferences />
 			<PlaceInfo />
-			<ContactAndAddress />
+			{auth && <ContactAndAddress />}
 			<Map />
 			<PriceAndAdvertiser />
 			{/* TODO add similar property lists and rating section */}
