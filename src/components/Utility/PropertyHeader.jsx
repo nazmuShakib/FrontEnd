@@ -6,17 +6,19 @@ export default function PropertyHeader() {
 			component="h3"
 			variant="h1"
 			textAlign="center"
+			fontSize="25px"
 			sx={{
 				paddingTop: '1%',
 				margin: '5%',
 				'@media (min-width: 430px)': {
-					paddingTop: '8%',
+					paddingTop: '4%',
 				},
 				'@media (min-width: 768px)': {
-					paddingTop: '5%',
+					fontSize: '30px',
+					paddingTop: '3%',
 				},
 				'@media (min-width: 968px)': {
-					paddingTop: '3%',
+					paddingTop: '2%',
 				},
 			}}
 		>

@@ -12,7 +12,7 @@ export default function PlaceDescription() {
 		<Box sx={{
 			margin: 'auto',
 			width: '100%',
-			boxShadow: 5,
+			boxShadow: 1,
 		}}
 		>
 			<Card>

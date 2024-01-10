@@ -30,11 +30,12 @@ export default function Property() {
 			<PropertyHeader />
 			<Divider variant="middle" />
 			<ImagesAndDescription />
-			<PlaceInfo />
 			<RulesAndPreferences />
+			<PlaceInfo />
+			<ContactAndAddress />
 			<Map />
 			<PriceAndAdvertiser />
-			<ContactAndAddress />
+			{/* TODO add similar property lists and rating section */}
 		</Box>
 	)
 }
