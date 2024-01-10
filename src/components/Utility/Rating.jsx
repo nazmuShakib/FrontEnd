@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import {
 	Box,
 	Card,
@@ -22,11 +22,9 @@ const labels = {
 	5: 'A+',
 }
 
-function getLabelText(value) {
-	return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
-}
+const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 
-export default function HoverRating({ handleRating }) {
+const HoverRating = memo(({ getRating }) => {
 	const [value, setValue] = useState(0)
 	const [hover, setHover] = useState(-1)
 	return (
@@ -54,11 +52,11 @@ export default function HoverRating({ handleRating }) {
 					precision={0.5}
 					size="large"
 					getLabelText={getLabelText}
-					onChange={(event, newValue) => {
+					onChange={(_event, newValue) => {
 						setValue(newValue)
-						handleRating(newValue)
+						getRating(newValue)
 					}}
-					onChangeActive={(event, newHover) => {
+					onChangeActive={(_event, newHover) => {
 						setHover(newHover)
 					}}
 					emptyIcon={<StarBorderPurple500 style={{ opacity: 0.55 }} fontSize="inherit" />}
@@ -69,4 +67,5 @@ export default function HoverRating({ handleRating }) {
 			</CardContent>
 		</Card>
 	)
-}
+})
+export default HoverRating

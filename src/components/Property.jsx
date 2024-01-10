@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
 	Box,
 	Divider,
@@ -13,6 +14,10 @@ import Rating from './Utility/Rating'
 
 export default function Property() {
 	const auth = true
+	const [rating, setRating] = useState(0)
+	const getRating = (newRating) => {
+		setRating(newRating)
+	}
 	return (
 		<Box
 			component="div"
@@ -37,7 +42,8 @@ export default function Property() {
 			{auth && <ContactAndAddress />}
 			<Map />
 			<PriceAndAdvertiser />
-			<Rating />
+			<Rating getRating={getRating} />
+			<Box>{rating}</Box>
 			{/* TODO add similar property lists and rating section */}
 		</Box>
 	)
