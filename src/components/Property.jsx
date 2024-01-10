@@ -9,9 +9,10 @@ import RulesAndPreferences from './Utility/RuleAndPreferences'
 import Map from './Utility/Map'
 import PriceAndAdvertiser from './Utility/PriceAndAdvertiser'
 import ContactAndAddress from './Utility/ContactAndAddress'
+import Rating from './Utility/Rating'
 
 export default function Property() {
-	const auth = false
+	const auth = true
 	return (
 		<Box
 			component="div"
@@ -36,6 +37,7 @@ export default function Property() {
 			{auth && <ContactAndAddress />}
 			<Map />
 			<PriceAndAdvertiser />
+			<Rating />
 			{/* TODO add similar property lists and rating section */}
 		</Box>
 	)
