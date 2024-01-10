@@ -31,7 +31,7 @@ export default function ContactAndAddress() {
 					<Box
 						width="100%"
 						margin="auto"
-						marginBottom="10%"
+						marginBottom="5%"
 						sx={{
 							'@media (min-width: 900px)': {
 								width: '50%',

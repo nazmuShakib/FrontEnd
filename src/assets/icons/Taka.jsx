@@ -1,12 +1,12 @@
 const style = {
-	width: '25px',
-	height: '25px',
+	width: '24px',
+	height: '24px',
 }
 export default function Taka() {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 24 24"
+			viewBox="0 0 22 22"
 			id="taka"
 			style={style}
 		>
