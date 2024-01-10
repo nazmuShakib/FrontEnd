@@ -8,6 +8,7 @@ import PlaceInfo from './Utility/PlaceInfo'
 import RulesAndPreferences from './Utility/RuleAndPreferences'
 import Map from './Utility/Map'
 import PriceAndAdvertiser from './Utility/PriceAndAdvertiser'
+import ContactAndAddress from './Utility/ContactAndAddress'
 
 export default function Property() {
 	return (
@@ -33,7 +34,7 @@ export default function Property() {
 			<RulesAndPreferences />
 			<Map />
 			<PriceAndAdvertiser />
-			<RulesAndPreferences />
+			<ContactAndAddress />
 		</Box>
 	)
 }
