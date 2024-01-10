@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import {
 	Box,
 	Divider,
@@ -14,10 +14,14 @@ import Rating from './Utility/Rating'
 
 export default function Property() {
 	const auth = true
-	const [rating, setRating] = useState(0)
-	const getRating = (newRating) => {
-		setRating(newRating)
-	}
+	const initialRating = localStorage.getItem('rating') || 0
+	const [rating, setRating] = useState(parseInt(initialRating, 10))
+
+	const getRating = useCallback((newRating) => {
+		const v = newRating == null ? 0 : newRating
+		setRating(v)
+		localStorage.setItem('rating', v.toString())
+	}, [setRating])
 	console.log('property')
 	return (
 		<Box

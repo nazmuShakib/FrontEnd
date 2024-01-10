@@ -25,7 +25,7 @@ const labels = {
 const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 
 const HoverRating = memo(({ getRating }) => {
-	const [value, setValue] = useState(0)
+	const [value, setValue] = useState(parseInt(localStorage.getItem('rating') || '0', 10))
 	const [hover, setHover] = useState(-1)
 	return (
 		<Card
