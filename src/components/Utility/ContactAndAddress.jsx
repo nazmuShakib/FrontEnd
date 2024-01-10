@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import {
 	Box,
 	Card,
@@ -10,7 +11,7 @@ import {
 	ContactPhoneOutlined,
 } from '@mui/icons-material'
 
-export default function ContactAndAddress() {
+const ContactAndAddress = memo(() => {
 	const address = 'University of Rajshahi'
 	const email = 'nazfasdfasdfasdffa@gmail.com'
 	const phone = '123213124'
@@ -138,4 +139,6 @@ export default function ContactAndAddress() {
 			</Card>
 		</Box>
 	)
-}
+})
+
+export default ContactAndAddress
