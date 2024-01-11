@@ -1,21 +1,45 @@
 import {
+	useState,
+} from 'react'
+import {
 	Container,
 	Box,
 	Typography,
 	Avatar,
 	TextField,
 	Button,
+	List,
+	ListItem,
+	InputAdornment,
+	IconButton,
 } from '@mui/material'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import {
+	LockOutlined,
+	Visibility,
+	VisibilityOff,
+} from '@mui/icons-material'
 
 export default function Login() {
+	const [showPassword, setShowPassword] = useState(false)
+	const [passwordFocus, setPasswordFocus] = useState(false)
+	const handleTogglePasswordVisibility = () => {
+		setShowPassword((prevShowPassword) => !prevShowPassword)
+	}
+	const handlePasswordFocus = () => {
+		setPasswordFocus(true)
+	}
+	const handlePasswordBlur = () => {
+		setPasswordFocus(false)
+	}
+
 	const handleSubmit = (event) => {
 		// TODO Function to handle form submission.
 		// It is not completed yet
 		// will comeback to this when implementing backend logic
 		event.preventDefault()
 		const data = new FormData(event.target)
-		console.log(data)
+		// console.log(data)
+		console.log(data.get('username'))
 	}
 	return (
 		<Container maxWidth="xs">
@@ -29,7 +53,7 @@ export default function Login() {
 			>
 				{/* Sign Up Icon */}
 				<Avatar sx={{ m: 1, bgcolor: '#7517d4' }}>
-					<LockOutlinedIcon />
+					<LockOutlined />
 				</Avatar>
 				{/* Sign Up header */}
 				<Typography component="h1" variant="h5">
@@ -58,6 +82,17 @@ export default function Login() {
 						autoComplete="email"
 						autoFocus
 					/>
+					{/* Mobile Input */}
+					<TextField
+						margin="normal"
+						required
+						fullWidth
+						id="phone"
+						label="Phone Number"
+						name="phone"
+						autoComplete="phone"
+						autoFocus
+					/>
 					{/* Password Input */}
 					<TextField
 						margin="normal"
@@ -65,10 +100,28 @@ export default function Login() {
 						fullWidth
 						name="password"
 						label="Password"
-						type="password"
+						type={showPassword ? 'text' : 'password'}
 						id="password"
 						autoComplete="current-password"
+						onFocus={handlePasswordFocus}
+						onBlur={handlePasswordBlur}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onClick={handleTogglePasswordVisibility} edge="end">
+										{showPassword ? <Visibility /> : <VisibilityOff />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
 					/>
+					{passwordFocus && (
+						<List>
+							<ListItem>
+								<Typography component="section" variant="span" color="darkblue">Password must be at least 8 characters long, has at least 1 lowercase, uppercase and digit characters</Typography>
+							</ListItem>
+						</List>
+					)}
 					{/* Register Buttion */}
 					<Button
 						type="submit"
