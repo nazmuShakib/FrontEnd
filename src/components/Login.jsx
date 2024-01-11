@@ -8,6 +8,7 @@ import {
 	Link,
 } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { Link as RouteLink } from 'react-router-dom'
 
 export default function Login() {
 	const handleSubmit = (event) => {
@@ -68,9 +69,8 @@ export default function Login() {
 					>
 						Sign In
 					</Button>
-					{/* Sign Up link if not signed up yet */}
-					{/* TODO modify the link to sign up page */}
-					<Link href="/?22" variant="body2">
+					{/* Register Page link */}
+					<Link component={RouteLink} to="/register" variant="body2">
 						Don&apos;t have an account? Sign Up
 					</Link>
 				</Box>
