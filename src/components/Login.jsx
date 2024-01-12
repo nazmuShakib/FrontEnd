@@ -2,13 +2,8 @@ import { Link as RouteLink } from 'react-router-dom'
 import {
 	Container,
 	Box,
-	Typography,
-	Avatar,
-	TextField,
-	Button,
 	Link,
 } from '@mui/material'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import {
 	Header,
 	InputField,
@@ -25,7 +20,6 @@ export default function Login() {
 		const data = new FormData(event.target)
 		console.log(data)
 	}
-	const forRegistration = false
 	return (
 		<Container maxWidth="xs">
 			<Box
@@ -42,7 +36,7 @@ export default function Login() {
 					{/* Email Input */}
 					<InputField name="email" label="Email" />
 					{/* Password Input */}
-					<Password forRegistration />
+					<Password forRegistration={false} />
 					{/* Submit Buttion */}
 					<SubmitButton name="Sign In" />
 					{/* Register Page link */}
