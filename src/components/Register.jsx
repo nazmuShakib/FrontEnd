@@ -37,7 +37,7 @@ export default function Login() {
 					{/* Phone Number Input */}
 					<InputField name="phone" label="Phone" />
 					{/* Password Input. true because of doing extra work like showing pasword requirements */}
-					<Password true />
+					<Password forRegistration />
 					{/* Register Buttion */}
 					<SubmitButton name="Sign Up" />
 				</Box>
