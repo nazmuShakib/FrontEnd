@@ -52,7 +52,7 @@ const InputField = memo(({ name, label }) => (
 		autoFocus
 	/>
 ))
-const Password = memo((forRegistration) => {
+const Password = memo(({ forRegistration }) => {
 	const [showPassword, setShowPassword] = useState(false)
 	const [passwordFocus, setPasswordFocus] = useState(false)
 	const handleTogglePasswordVisibility = () => {
