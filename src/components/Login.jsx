@@ -1,3 +1,4 @@
+import { Link as RouteLink } from 'react-router-dom'
 import {
 	Container,
 	Box,
@@ -8,7 +9,12 @@ import {
 	Link,
 } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { Link as RouteLink } from 'react-router-dom'
+import {
+	Header,
+	InputField,
+	Password,
+	SubmitButton,
+} from './Utility/Authentication'
 
 export default function Login() {
 	const handleSubmit = (event) => {
@@ -19,6 +25,7 @@ export default function Login() {
 		const data = new FormData(event.target)
 		console.log(data)
 	}
+	const forRegistration = false
 	return (
 		<Container maxWidth="xs">
 			<Box
@@ -29,46 +36,15 @@ export default function Login() {
 					alignItems: 'center',
 				}}
 			>
-				{/* Sign In Icon */}
-				<Avatar sx={{ m: 1, bgcolor: '#7517d4' }}>
-					<LockOutlinedIcon />
-				</Avatar>
-				{/* Sign In header */}
-				<Typography component="h1" variant="h5">
-					Sign in
-				</Typography>
+				{/* Sign In Icon and Title */}
+				<Header title="Sign In" />
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					{/* Email Input */}
-					<TextField
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
-						name="email"
-						autoComplete="email"
-						autoFocus
-					/>
+					<InputField name="email" label="Email" />
 					{/* Password Input */}
-					<TextField
-						margin="normal"
-						required
-						fullWidth
-						name="password"
-						label="Password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
-					/>
+					<Password forRegistration />
 					{/* Submit Buttion */}
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-					>
-						Sign In
-					</Button>
+					<SubmitButton name="Sign In" />
 					{/* Register Page link */}
 					<Link component={RouteLink} to="/register" variant="body2">
 						Don&apos;t have an account? Sign Up
