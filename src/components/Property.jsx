@@ -4,6 +4,7 @@ import {
 	Divider,
 } from '@mui/material'
 import PropertyHeader from './Utility/PropertyHeader'
+import BasicInfo from './Utility/BasicInfo'
 import ImagesAndDescription from './Utility/ImagesAndDescription'
 import PlaceInfo from './Utility/PlaceInfo'
 import RulesAndPreferences from './Utility/RuleAndPreferences'
@@ -36,6 +37,7 @@ export default function Property() {
 		>
 			<PropertyHeader />
 			<Divider variant="middle" />
+			<BasicInfo />
 			<ImagesAndDescription />
 			<RulesAndPreferences />
 			<PlaceInfo />
