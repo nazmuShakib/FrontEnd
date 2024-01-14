@@ -4,6 +4,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import NavBar from './components/NavBar'
 import Property from './components/Property'
+import AddProperty from './components/AddProperty'
 
 function App() {
 	return (
@@ -37,6 +38,7 @@ function App() {
 					element={<Login />}
 				/>
 				<Route path="/property" element={<Property />} />
+				<Route path="/add" element={<AddProperty />} />
 			</Routes>
 		</Box>
 	)
