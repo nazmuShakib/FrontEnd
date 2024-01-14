@@ -1,0 +1,32 @@
+.filepond {
+	display: flex;
+}
+
+.filepond--item {
+	width: calc(100% - 0.5em);
+}
+
+.filepond--item img {
+	width: 100%;
+}
+
+@media screen and (min-width: 900px) {
+	.filepond--item {
+		width: calc(50% - 0.5em);
+	}
+
+	.filepond--item img {
+		width: 90%;
+	}
+}
+
+.filepond--file-action-button {
+	background-color: red;
+	color: black;
+	cursor: pointer;
+}
+
+.filepond--file-action-button:hover,
+.filepond--file-action-button:focus {
+	box-shadow: none;
+}

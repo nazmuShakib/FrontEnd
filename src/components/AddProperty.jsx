@@ -14,6 +14,7 @@ import {
 	Typography,
 	TextareaAutosize,
 } from '@mui/material'
+import ImageUploader from './Utility/ImageUploader'
 
 export default function AddProperty() {
 	const [email, setEmail] = useState(false)
@@ -29,15 +30,13 @@ export default function AddProperty() {
 
 	const [address, setAddress] = useState('')
 
+	const [files, setFiles] = useState([])
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		const data = new FormData(event.target)
+		const data = new FormData(event.currentTarget)
 		const p = data.get('description')
-		console.log(data)
-		// setSelectedValue(p)
-		// formik.handleSubmit(event)
+		console.log(data.getAll('images')) // Convert FormData to an object for clearer logging
 	}
-
 	return (
 		<Box
 			sx={{
@@ -151,6 +150,7 @@ export default function AddProperty() {
 							label="Email"
 						/>
 					)}
+					<ImageUploader />
 					<Button
 						type="submit"
 						fullWidth
