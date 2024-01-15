@@ -15,10 +15,12 @@ import {
 	TextareaAutosize,
 } from '@mui/material'
 import ImageUploader from './Utility/ImageUploader'
+import GetLocation from './Utility/GetLocation'
 
 export default function AddProperty() {
 	const [email, setEmail] = useState(false)
 	const [gender, setGender] = useState('')
+	const [location, setLocation] = useState(null)
 
 	const handleGender = (event) => {
 		console.log(event)
@@ -28,14 +30,10 @@ export default function AddProperty() {
 		setEmail(event.target.checked)
 	}
 
-	const [address, setAddress] = useState('')
-
-	const [files, setFiles] = useState([])
 	const handleSubmit = (event) => {
 		event.preventDefault()
 		const data = new FormData(event.currentTarget)
-		const p = data.get('description')
-		console.log(data.getAll('images')) // Convert FormData to an object for clearer logging
+		data.append('location', JSON.stringify(location))
 	}
 	return (
 		<Box
@@ -151,6 +149,7 @@ export default function AddProperty() {
 						/>
 					)}
 					<ImageUploader />
+					<GetLocation getLocation={setLocation} />
 					<Button
 						type="submit"
 						fullWidth
