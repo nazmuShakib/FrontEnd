@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import {
 	Box,
 	Card,
@@ -11,7 +12,7 @@ import {
 } from '@mui/icons-material'
 import Taka from '../../assets/icons/Taka'
 
-export default function ContactAndAddress() {
+const PriceAndAdvertiser = memo(() => {
 	const price = 1250
 	const userRating = '4.5'
 	const userName = 'Shakib'
@@ -109,4 +110,6 @@ export default function ContactAndAddress() {
 			</Card>
 		</Box>
 	)
-}
+})
+
+export default PriceAndAdvertiser

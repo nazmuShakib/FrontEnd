@@ -25,9 +25,11 @@ module.exports = {
     'import/no-absolute-path': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
 		"react/jsx-indent": [1, 'tab', {checkAttributes: true, indentLogicalExpressions: true}],
-		"import/no-extraneous-dependencies": ['error', {'devDependencies': true}],
 		"react/jsx-indent-props": [1, 'tab'],
 		"max-len": ['warn', { 'code': 150, 'tabWidth': 2 }],
+		"import/no-extraneous-dependencies": ['error', {'devDependencies': true}],
+		"react/jsx-indent-props": [1, 'tab'],
+		"max-len": ['warn', { 'code': 250, 'tabWidth': 2 }],
 		"react/prop-types": [1, { "ignore": ["children"], "skipUndeclared": true }]
   },
 }
