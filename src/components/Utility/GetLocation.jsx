@@ -1,6 +1,7 @@
 import {
 	useCallback,
 	useMemo,
+	memo,
 	useState,
 } from 'react'
 
@@ -20,7 +21,7 @@ const center = {
 	lng: 90.4152,
 }
 
-export default function GetLocation({ getLocation }) {
+const GetLocation = memo(({ getLocation }) => {
 	const { isLoaded } = useJsApiLoader({
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
 	})
@@ -66,4 +67,6 @@ export default function GetLocation({ getLocation }) {
 			}
 		</Box>
 	)
-}
+})
+
+export default GetLocation
