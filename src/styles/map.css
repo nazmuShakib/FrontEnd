@@ -1,0 +1,15 @@
+[data-reach-combobox-input] {
+	width: 100%;
+	padding: 8px;
+	border: 2px solid #ccc;
+	transition: border-color 1s ease;
+	text-align: center;
+}
+
+[data-reach-combobox-input]:focus {
+	outline: none;
+}
+
+[data-reach-combobox-input][data-state="suggesting"] {
+	border-color: rgba(11, 37, 15, 0.792);
+}

@@ -34,6 +34,7 @@ export default function AddProperty() {
 		event.preventDefault()
 		const data = new FormData(event.currentTarget)
 		data.append('location', JSON.stringify(location))
+		console.log(data)
 	}
 	return (
 		<Box
