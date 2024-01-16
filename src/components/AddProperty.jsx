@@ -24,6 +24,9 @@ import {
 	SubmitButton,
 } from './Utility/AddPropertyElements'
 
+const MAX_FILE_SIZE = 5000000
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+
 const PropertySchema = z.object({
 	title: z
 		.string()
@@ -62,6 +65,14 @@ const PropertySchema = z.object({
 		.refine((data) => data !== '', {
 			message: 'Contact is required',
 		}),
+	images: z
+		.any()
+		.refine((files) => files?.length > 0, 'Image is required')
+		.refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, 'Max image size is 5MB.')
+		.refine(
+			(files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+			'Only .jpg, .jpeg, .png and .webp formats are supported.',
+		),
 })
 export default function AddProperty() {
 	const [location, setLocation] = useState(null)
@@ -71,6 +82,7 @@ export default function AddProperty() {
 		formState: { errors, isSubmitting },
 		reset,
 		getValues,
+		control,
 	} = useForm({ resolver: zodResolver(PropertySchema), defaultValues: { gender: '' } })
 	const onSubmit = (event) => {
 		console.log('here')
@@ -94,7 +106,7 @@ export default function AddProperty() {
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
 					<Price register={register('price')} error={errors.price} />
 					<Contact register={register('contact')} error={errors.contact} />
-					<ImageUploader />
+					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation getLocation={setLocation} />
 					<SubmitButton isSubmitting={isSubmitting} />
 				</FormControl>

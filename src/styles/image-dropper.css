@@ -2,6 +2,10 @@
 	display: flex;
 }
 
+.filepond--root {
+	max-height: 24em;
+}
+
 .filepond--item {
 	width: calc(100% - 0.5em);
 }

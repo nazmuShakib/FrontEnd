@@ -1,8 +1,13 @@
-import { Box } from '@mui/material'
+import {
+	Box,
+	FormControl,
+	FormHelperText,
+} from '@mui/material'
 import {
 	FilePond,
 	registerPlugin,
 } from 'react-filepond'
+import { Controller } from 'react-hook-form'
 
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
@@ -18,24 +23,44 @@ registerPlugin(
 	FilePondPluginFileValidateType,
 )
 
-export default function ImageUploader() {
+export default function ImageUploader({
+	name,
+	control,
+	error,
+}) {
 	return (
-		<Box sx={{
-			maxHeight: '400px',
-			overflow: 'auto',
-		}}
-		>
-			<FilePond
-				name="images"
-				required
-				allowMultiple
-				checkValidity
-				storeAsFile
-				acceptedFileTypes={['image/*']}
-				maxFiles={10}
-				labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-				credits={false}
+		<FormControl error={Boolean(error)} margin="normal">
+			<Controller
+				name={name}
+				control={control}
+				rules={{ required: 'Image required' }}
+				render={({
+					field: {
+						onChange, onBlur, value,
+					},
+				}) => (
+
+					<FilePond
+						name={name}
+						files={value}
+						allowMultiple
+						checkValidity
+						storeAsFile
+						onupdatefiles={(fileItems) => {
+							onChange(fileItems.map((fileItem) => fileItem.file))
+							onBlur(fileItems.map((fileItem) => fileItem.file))
+						}}
+						onprocessfile={(_error, file) => {
+							onBlur(file)
+						}}
+						acceptedFileTypes={['image/*']}
+						maxFiles={10}
+						labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+						credits={false}
+					/>
+				)}
 			/>
-		</Box>
+			<FormHelperText>{error ? error.message : 'Only .jpg, .jpeg, .png and .webp formats are supported.'}</FormHelperText>
+		</FormControl>
 	)
 }

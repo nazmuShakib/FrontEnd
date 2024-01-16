@@ -129,7 +129,7 @@ const GenderSelection = memo(({ register, error }) => {
 	}
 	return (
 		<FormControl
-			error={error}
+			error={Boolean(error)}
 			margin="normal"
 		>
 			<Select
@@ -164,7 +164,7 @@ const PlaceDescription = memo(({ register, error }) => {
 	} = register
 	return (
 		<FormControl
-			error={error}
+			error={Boolean(error)}
 			margin="normal"
 			aria-hidden="true"
 		>
