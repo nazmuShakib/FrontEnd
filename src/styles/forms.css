@@ -1,0 +1,32 @@
+.place-text-area {
+	width: 100%;
+	padding: 10px 10px;
+	box-sizing: border-box;
+	font-size: 1em;
+	resize: none;
+	outline: none;
+	transition: border-color 0.3s ease;
+	border-radius: 2px;
+	border: 1px solid #959595;
+}
+
+.place-text-area-error {
+	border-color: rgb(225, 0, 0);
+}
+
+.place-text-area-error:focus {
+	border-color: rgb(200, 0, 0);
+	outline: 1px solid rgb(200, 0, 0);
+}
+
+.place-text-area-normal:focus {
+	/* border-color: #1976d2; */
+	border-color: #1976d2;
+	outline: 1px solid #1976d2;
+}
+
+.place-text-area:focus {
+	/* margin: none; */
+	outline-style: solid;
+	border-style: solid;
+}
