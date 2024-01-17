@@ -64,10 +64,6 @@ const GetLocation = memo(({
 									onChange(event.latLng)
 									onBlur(event.latLng)
 								}}
-								onCenterChanged={(event) => {
-									onChange(event)
-									onBlur(event)
-								}}
 								mapContainerStyle={{
 									width: '100%',
 									height: '400px',
