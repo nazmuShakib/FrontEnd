@@ -1,12 +1,15 @@
 import { Button } from '@mui/material'
 import { AddCircle } from '@mui/icons-material'
+import { NavLink } from 'react-router-dom'
 
 export default function AddPropertyButton() {
 	return (
 		<Button
 			variant="contained"
-			component="div"
+			component={NavLink}
 			type="button"
+			name="add-property"
+			to="/add"
 			sx={{
 				mr: 2,
 				backgroundColor: '#f0f2f7',
