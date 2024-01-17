@@ -1,6 +1,4 @@
 import {
-	useCallback,
-	useMemo,
 	memo,
 	useState,
 } from 'react'
@@ -56,47 +54,40 @@ const GetLocation = memo(({
 				name={name}
 				control={control}
 				render={({ field: { onChange, onBlur, value } }) => (
-					<Box
-						component="div"
-						marginTop="10px"
-					>
-						{
-							isLoaded ? (
-								<Box component="div">
-									<PlacesAutocomplete setSelected={setSelected} />
-									<GoogleMap
-										center={selected || center}
-										zoom={13}
-										onClick={(event) => {
-											onChange(event.latLng)
-											onBlur(event.latLng)
-										}}
-										onCenterChanged={(event) => {
-											onChange(event)
-											onBlur(event)
-										}}
-										mapContainerStyle={{
-											width: '100%',
-											height: '400px',
-										}}
-									>
-										<MarkerF
-											position={value}
-										/>
-									</GoogleMap>
-								</Box>
-							) : (
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									height="400px"
-								>
-									<CircularProgress />
-								</Box>
-							)
-						}
-					</Box>
+					isLoaded ? (
+						<Box component="div">
+							<PlacesAutocomplete setSelected={setSelected} />
+							<GoogleMap
+								center={selected || center}
+								zoom={13}
+								onClick={(event) => {
+									onChange(event.latLng)
+									onBlur(event.latLng)
+								}}
+								onCenterChanged={(event) => {
+									onChange(event)
+									onBlur(event)
+								}}
+								mapContainerStyle={{
+									width: '100%',
+									height: '400px',
+								}}
+							>
+								<MarkerF
+									position={value}
+								/>
+							</GoogleMap>
+						</Box>
+					) : (
+						<Box
+							display="flex"
+							justifyContent="center"
+							alignItems="center"
+							height="400px"
+						>
+							<CircularProgress />
+						</Box>
+					)
 				)}
 			/>
 			<FormHelperText>{error ? error.message : ''}</FormHelperText>
