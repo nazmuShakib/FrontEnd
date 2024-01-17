@@ -34,30 +34,28 @@ const PropertySchema = z.object({
 		.refine((data) => {
 			const actualData = data.trimEnd().trimStart()
 			return actualData !== ''
-		}, {
-			message: 'Title is required',
-		}),
+		}, 'Title is required'),
 	date: z
 		.string()
 		.refine((value) => {
 			const dif = Math.ceil((new Date(value) - Date.now()) / (1000 * 60 * 60 * 24))
-			return dif <= 366 && dif >= 0
+			return dif <= 365 && dif >= 0
 		}, 'Select a day between today and the next 365 days'),
 	gender: z.string().min(1, 'Select a gender'),
-	description: z.string()
-		.max(10, 'You can use at most 10 characters')
+	description: z
+		.string()
 		.refine((data) => {
 			const actualData = data.trimEnd().trimStart()
 			return actualData !== ''
-		}, {
-			message: 'Rules and Preferences are required',
-		}),
+		}, 'Description is required')
+		.max(10, 'You can use at most 10 characters'),
 	rules_and_preference: z
 		.string()
 		.max(10, 'You can use at most 10 characters')
 		.optional(),
 	price: z
 		.string()
+		.refine((data) => data !== '', 'Price is required')
 		.refine((data) => parseInt(data, 10) >= 0, {
 			message: 'Price should be postive',
 		}),
