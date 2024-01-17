@@ -8,7 +8,11 @@ import {
 import {
 	Box,
 	CircularProgress,
+	FormControl,
+	FormHelperText,
 } from '@mui/material'
+
+import { Controller } from 'react-hook-form'
 
 import {
 	GoogleMap,
@@ -38,58 +42,65 @@ const center = {
 }
 
 const lib = ['places']
-const GetLocation = memo(({ getLocation }) => {
+const GetLocation = memo(({
+	control, name, error,
+}) => {
 	const { isLoaded } = useJsApiLoader({
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
 		libraries: lib,
 	})
-	const [location, setLocation] = useState(null)
 	const [selected, setSelected] = useState(null)
-	const handleClick = useCallback((event) => {
-		const newLocation = {
-			lat: event.latLng.lat(),
-			lng: event.latLng.lng(),
-		}
-		setLocation(newLocation)
-		getLocation(newLocation)
-	}, [getLocation])
-
 	return (
-		<Box
-			component="div"
-			marginTop="10px"
-		>
-			{
-				isLoaded ? (
-					<Box component="div">
-						<PlacesAutocomplete setSelected={setSelected} />
-						<GoogleMap
-							center={selected || center}
-							zoom={13}
-							onClick={handleClick}
-							mapContainerStyle={{
-								width: '100%',
-								height: '400px',
-							}}
-						>
-							{selected && <MarkerF position={location} />}
-							<MarkerF
-								position={location}
-							/>
-						</GoogleMap>
-					</Box>
-				) : (
+		<FormControl error={Boolean(error)} margin="normal">
+			<Controller
+				name={name}
+				control={control}
+				render={({ field: { onChange, onBlur, value } }) => (
 					<Box
-						display="flex"
-						justifyContent="center"
-						alignItems="center"
-						height="400px"
+						component="div"
+						marginTop="10px"
 					>
-						<CircularProgress />
+						{
+							isLoaded ? (
+								<Box component="div">
+									<PlacesAutocomplete setSelected={setSelected} />
+									<GoogleMap
+										center={selected || center}
+										zoom={13}
+										onClick={(event) => {
+											onChange(event.latLng)
+											onBlur(event.latLng)
+										}}
+										onCenterChanged={(event) => {
+											onChange(event)
+											onBlur(event)
+										}}
+										mapContainerStyle={{
+											width: '100%',
+											height: '400px',
+										}}
+									>
+										<MarkerF
+											position={value}
+										/>
+									</GoogleMap>
+								</Box>
+							) : (
+								<Box
+									display="flex"
+									justifyContent="center"
+									alignItems="center"
+									height="400px"
+								>
+									<CircularProgress />
+								</Box>
+							)
+						}
 					</Box>
-				)
-			}
-		</Box>
+				)}
+			/>
+			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+		</FormControl>
 	)
 })
 

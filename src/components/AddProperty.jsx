@@ -44,11 +44,14 @@ const PropertySchema = z.object({
 	gender: z.string().min(1, 'Select a gender'),
 	description: z
 		.string()
-		.refine((data) => {
-			const actualData = data.trimEnd().trimStart()
-			return actualData !== ''
-		}, 'Description is required')
-		.max(10, 'You can use at most 10 characters'),
+		.max(10, 'You can use at most 10 characters')
+		.refine(
+			(data) => {
+				const actualData = data.trimEnd().trimStart()
+				return actualData !== ''
+			},
+			{ message: 'Description is required' },
+		),
 	rules_and_preference: z
 		.string()
 		.max(10, 'You can use at most 10 characters')
@@ -66,10 +69,19 @@ const PropertySchema = z.object({
 	images: z
 		.any()
 		.refine((files) => files?.length > 0, 'Image is required')
-		.refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, 'Max image size is 5MB.')
+		.refine(
+			(files) => files?.[0]?.size <= MAX_FILE_SIZE,
+			'Max image size is 5MB.',
+		)
 		.refine(
 			(files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
 			'Only .jpg, .jpeg, .png and .webp formats are supported.',
+		),
+	location: z
+		.any()
+		.refine(
+			(obj) => obj !== undefined,
+			'Select location of your property',
 		),
 })
 export default function AddProperty() {
@@ -83,7 +95,6 @@ export default function AddProperty() {
 		control,
 	} = useForm({ resolver: zodResolver(PropertySchema), defaultValues: { gender: '' } })
 	const onSubmit = (event) => {
-		console.log('here')
 		console.log(event)
 	}
 
@@ -105,7 +116,7 @@ export default function AddProperty() {
 					<Price register={register('price')} error={errors.price} />
 					<Contact register={register('contact')} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
-					<GetLocation getLocation={setLocation} />
+					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting} />
 				</FormControl>
 			</Box>
