@@ -36,7 +36,7 @@ const SignUpSchema = z.object({
 		.email('Invalid email address'),
 	password: z
 		.string()
-		.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&])(?=.*\d)[A-Za-z!@#$%&\d]+$/, 'Password doesn\'t contain a lowercase, uppercase and special character')
+		.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&])[A-Za-z!@#$%&\d]+$/, 'Password doesn\'t contain a lowercase, uppercase and special character')
 		.regex(/^[A-Za-z!@#$%&\d]+$/, 'Invalid characters')
 		.min(8, 'Password must be at least 8 characters'),
 })
@@ -53,6 +53,7 @@ export default function Login() {
 		// It is not completed yet
 		// will comeback to this when implementing backend logic
 		console.log(event)
+		localStorage.setItem('account', JSON.stringify(event))
 	}
 	return (
 		<Container maxWidth="xs">
