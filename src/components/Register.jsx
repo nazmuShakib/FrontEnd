@@ -142,7 +142,6 @@ const Password = memo(({ register, error }) => {
 		<TextField
 			name={name}
 			margin="normal"
-			required
 			fullWidth
 			label="Password"
 			type={showPassword ? 'text' : 'password'}
