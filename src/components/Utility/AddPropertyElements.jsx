@@ -11,6 +11,7 @@ import {
 	TextField,
 	TextareaAutosize,
 } from '@mui/material'
+
 import '../../styles/forms.css'
 
 const Header = memo(({ register, error }) => {
@@ -30,33 +31,6 @@ const Header = memo(({ register, error }) => {
 			label="Title"
 			type="text"
 			id="title"
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
-		/>
-	)
-})
-const AvailableDate = memo(({ register, error }) => {
-	console.log('date')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
-	return (
-		<TextField
-			margin="normal"
-			fullWidth
-			name={name}
-			type="date"
-			id="date"
-			label="Available Date"
-			InputLabelProps={{
-				shrink: true,
-			}}
 			onChange={onChange}
 			onBlur={onBlur}
 			ref={ref}
@@ -231,7 +205,6 @@ const SubmitButton = memo(({ isSubmitting }) => (
 ))
 
 export {
-	AvailableDate,
 	Contact,
 	GenderSelection,
 	Header,

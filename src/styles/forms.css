@@ -30,3 +30,11 @@
 	outline-style: solid;
 	border-style: solid;
 }
+
+.date-picker-error .MuiOutlinedInput-root fieldset {
+	border-color: rgb(200, 0, 0) !important;
+}
+
+.date-picker-error .MuiFormLabel-root {
+	color: rgb(211, 47, 47) !important;
+}

@@ -12,9 +12,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import ImageUploader from './Utility/ImageUploader'
 import GetLocation from './Utility/GetLocation'
+import DateSelector from './Utility/DateSelector'
 
 import {
-	AvailableDate,
 	Contact,
 	GenderSelection,
 	Header,
@@ -36,9 +36,9 @@ const PropertySchema = z.object({
 			return actualData !== ''
 		}, 'Title is required'),
 	date: z
-		.string()
+		.date()
 		.refine((value) => {
-			const dif = Math.ceil((new Date(value) - Date.now()) / (1000 * 60 * 60 * 24))
+			const dif = Math.ceil((value - Date.now()) / (1000 * 60 * 60 * 24))
 			return dif <= 365 && dif >= 0
 		}, 'Select a day between today and the next 365 days'),
 	gender: z.string().min(1, 'Select a gender'),
@@ -109,7 +109,7 @@ export default function AddProperty() {
 			<Box component="div">
 				<FormControl fullWidth component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
 					<Header register={register('title')} error={errors.title} />
-					<AvailableDate register={register('date')} error={errors.date} />
+					<DateSelector name="date" control={control} error={errors.date} />
 					<GenderSelection register={register('gender')} error={errors.gender} />
 					<PlaceDescription register={register('description')} error={errors.description} />
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
