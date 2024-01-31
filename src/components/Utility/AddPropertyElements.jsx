@@ -4,7 +4,7 @@ import {
 } from 'react'
 import {
 	Button,
-	Divider,
+	InputLabel,
 	FormControl,
 	FormHelperText,
 	MenuItem,
@@ -107,20 +107,19 @@ const GenderSelection = memo(({ register, error }) => {
 			error={Boolean(error)}
 			margin="normal"
 		>
+			<InputLabel id="gender-select">Gender</InputLabel>
 			<Select
+				labelId="gender-select"
 				id="gender"
 				displayEmpty
 				name={name}
 				ref={ref}
-				renderValue={(value) => (value !== '' ? value : 'Select Gender')}
+				label="Gender"
 				value={gender}
 				onChange={handleGender}
 				onBlur={onBlur}
 				placeholder="Select Gender"
 				fullWidth
-				sx={{
-					color: `${gender !== '' ? 'black' : 'gray'}`,
-				}}
 			>
 				<MenuItem value="male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
 				<MenuItem value="female" sx={{}}>Female</MenuItem>
