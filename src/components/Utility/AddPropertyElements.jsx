@@ -90,6 +90,32 @@ const Contact = memo(({ register, error }) => {
 		/>
 	)
 })
+const Address = memo(({ register, error }) => {
+	console.log('address')
+
+	const {
+		onChange,
+		onBlur,
+		name,
+		ref,
+	} = register
+	return (
+		<TextField
+			margin="normal"
+			name={name}
+			fullWidth
+			type="text"
+			id="address"
+			label="Address"
+			placeholder="Address of the property..."
+			onChange={onChange}
+			onBlur={onBlur}
+			ref={ref}
+			error={Boolean(error)}
+			helperText={error ? error.message : ''}
+		/>
+	)
+})
 const GenderSelection = memo(({ register, error }) => {
 	console.log('gender')
 	const [gender, setGender] = useState('')
@@ -241,6 +267,7 @@ const SubmitButton = memo(({ isSubmitting }) => (
 ))
 
 export {
+	Address,
 	Contact,
 	GenderSelection,
 	Header,

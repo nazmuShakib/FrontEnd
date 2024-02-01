@@ -15,6 +15,7 @@ import GetLocation from './Utility/GetLocation'
 import DateSelector from './Utility/DateSelector'
 
 import {
+	Address,
 	Contact,
 	GenderSelection,
 	Header,
@@ -42,7 +43,9 @@ const PropertySchema = z.object({
 			const dif = Math.ceil((value - Date.now()) / (1000 * 60 * 60 * 24))
 			return dif <= 365 && dif >= 0
 		}, 'Select a day between today and the next 365 days'),
-	gender: z.string().min(1, 'Select a gender'),
+	gender: z
+		.string()
+		.min(1, 'Select a gender'),
 	description: z
 		.string()
 		.max(10, 'You can use at most 10 characters')
@@ -71,6 +74,16 @@ const PropertySchema = z.object({
 		.refine((data) => data !== '', {
 			message: 'Contact is required',
 		}),
+	address: z
+		.string()
+		.max(100, 'You can use at most 100 characters')
+		.refine(
+			(data) => {
+				const actualData = data.trimEnd().trimStart()
+				return actualData !== ''
+			},
+			{ message: 'Address is required' },
+		),
 	images: z
 		.any()
 		.refine((files) => files?.length > 0, 'Image is required')
@@ -119,6 +132,7 @@ export default function AddProperty() {
 					<PlaceDescription register={register('description')} error={errors.description} />
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
 					<RequiredDocuments register={register('documents')} error={errors.documents} />
+					<Address register={register('address')} error={errors.address} />
 					<Price register={register('price')} error={errors.price} />
 					<Contact register={register('contact')} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
