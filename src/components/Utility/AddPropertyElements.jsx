@@ -192,6 +192,39 @@ const RulesAndPreference = memo(({ register, error }) => {
 		</FormControl>
 	)
 })
+
+const RequiredDocuments = memo(({ register, error }) => {
+	console.log('required_documents')
+	const {
+		onChange,
+		onBlur,
+		name,
+		ref,
+	} = register
+	return (
+		<FormControl
+			error={error}
+			margin="normal"
+		>
+			<FormLabel>Required Documents</FormLabel>
+			<TextareaAutosize
+				id="required_documents"
+				name={name}
+				aria-label="required_documents"
+				minRows={5}
+				maxRows={7}
+				aria-hidden="true"
+				className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
+				placeholder="Required Documents..."
+				onChange={onChange}
+				onBlur={onBlur}
+				ref={ref}
+			/>
+			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+		</FormControl>
+	)
+})
+
 const SubmitButton = memo(({ isSubmitting }) => (
 	<Button
 		type="submit"
@@ -214,5 +247,6 @@ export {
 	PlaceDescription,
 	Price,
 	RulesAndPreference,
+	RequiredDocuments,
 	SubmitButton,
 }

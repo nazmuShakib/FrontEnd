@@ -21,6 +21,7 @@ import {
 	PlaceDescription,
 	Price,
 	RulesAndPreference,
+	RequiredDocuments,
 	SubmitButton,
 } from './Utility/AddPropertyElements'
 
@@ -55,6 +56,10 @@ const PropertySchema = z.object({
 	rules_and_preference: z
 		.string()
 		.max(10, 'You can use at most 10 characters')
+		.optional(),
+	documents: z
+		.string()
+		.max(500, 'You can use at most 10 characters')
 		.optional(),
 	price: z
 		.string()
@@ -113,6 +118,7 @@ export default function AddProperty() {
 					<GenderSelection register={register('gender')} error={errors.gender} />
 					<PlaceDescription register={register('description')} error={errors.description} />
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
+					<RequiredDocuments register={register('documents')} error={errors.documents} />
 					<Price register={register('price')} error={errors.price} />
 					<Contact register={register('contact')} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
