@@ -11,6 +11,7 @@ import {
 	Select,
 	TextField,
 	TextareaAutosize,
+	FormLabel,
 } from '@mui/material'
 
 import '../../styles/forms.css'
@@ -142,6 +143,7 @@ const PlaceDescription = memo(({ register, error }) => {
 			margin="normal"
 			aria-hidden="true"
 		>
+			<FormLabel>Desciption</FormLabel>
 			<TextareaAutosize
 				id="description"
 				name={name}
@@ -172,6 +174,7 @@ const RulesAndPreference = memo(({ register, error }) => {
 			error={error}
 			margin="normal"
 		>
+			<FormLabel>Rules & Preferences</FormLabel>
 			<TextareaAutosize
 				id="rules_and_preference"
 				name={name}
