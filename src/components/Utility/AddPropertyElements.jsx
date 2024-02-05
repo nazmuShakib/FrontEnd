@@ -155,6 +155,46 @@ const GenderSelection = memo(({ register, error }) => {
 		</FormControl>
 	)
 })
+const CategorySelection = memo(({ register, error }) => {
+	console.log('category')
+	const [category, setCategory] = useState('')
+	const {
+		onChange,
+		onBlur,
+		name,
+		ref,
+	} = register
+	const handleCategory = (event) => {
+		onChange(event)
+		setCategory(event.target.value)
+	}
+	return (
+		<FormControl
+			error={Boolean(error)}
+			margin="normal"
+		>
+			<InputLabel id="category-select">Category</InputLabel>
+			<Select
+				labelId="category-select"
+				id="category"
+				displayEmpty
+				name={name}
+				ref={ref}
+				label="Category"
+				value={category}
+				onChange={handleCategory}
+				onBlur={onBlur}
+				placeholder="Select Category"
+				fullWidth
+			>
+				<MenuItem value="sublet" sx={{ borderBottom: '1px solid #a7a2a2' }}>Sublet</MenuItem>
+				<MenuItem value="hostel" sx={{ borderBottom: '1px solid #a7a2a2' }}>Hostel</MenuItem>
+				<MenuItem value="mess">Mess</MenuItem>
+			</Select>
+			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+		</FormControl>
+	)
+})
 const PlaceDescription = memo(({ register, error }) => {
 	console.log('description')
 	const {
@@ -270,6 +310,7 @@ export {
 	Address,
 	Contact,
 	GenderSelection,
+	CategorySelection,
 	Header,
 	PlaceDescription,
 	Price,

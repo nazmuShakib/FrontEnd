@@ -18,6 +18,7 @@ import {
 	Address,
 	Contact,
 	GenderSelection,
+	CategorySelection,
 	Header,
 	PlaceDescription,
 	Price,
@@ -46,6 +47,9 @@ const PropertySchema = z.object({
 	gender: z
 		.string()
 		.min(1, 'Select a gender'),
+	category: z
+		.string()
+		.min(1, 'Select a category'),
 	description: z
 		.string()
 		.max(10, 'You can use at most 10 characters')
@@ -129,6 +133,7 @@ export default function AddProperty() {
 					<Header register={register('title')} error={errors.title} />
 					<DateSelector name="date" control={control} error={errors.date} />
 					<GenderSelection register={register('gender')} error={errors.gender} />
+					<CategorySelection register={register('category')} error={errors.category} />
 					<PlaceDescription register={register('description')} error={errors.description} />
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
 					<RequiredDocuments register={register('documents')} error={errors.documents} />
