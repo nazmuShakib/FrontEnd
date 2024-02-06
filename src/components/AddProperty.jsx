@@ -21,6 +21,7 @@ import {
 	CategorySelection,
 	Header,
 	PlaceDescription,
+	PlaceSelection,
 	Price,
 	RulesAndPreference,
 	RequiredDocuments,
@@ -50,6 +51,15 @@ const PropertySchema = z.object({
 	category: z
 		.string()
 		.min(1, 'Select a category'),
+	division: z
+		.string()
+		.min(1, 'Select a Division'),
+	district: z
+		.string()
+		.min(1, 'Select a District'),
+	thana: z
+		.string()
+		.min(1, 'Select a Thana/Upazila'),
 	description: z
 		.string()
 		.max(10, 'You can use at most 10 characters')
@@ -137,6 +147,7 @@ export default function AddProperty() {
 					<PlaceDescription register={register('description')} error={errors.description} />
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
 					<RequiredDocuments register={register('documents')} error={errors.documents} />
+					<PlaceSelection registerDivision={register('division')} registerDistrict={register('district')} registerThana={register('thana')} errorDivision={errors.division} errorDistrict={errors.district} errorThana={errors.thana} />
 					<Address register={register('address')} error={errors.address} />
 					<Price register={register('price')} error={errors.price} />
 					<Contact register={register('contact')} error={errors.contact} />
