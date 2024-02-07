@@ -2,6 +2,7 @@ import {
 	memo,
 	useState,
 	useCallback,
+	useMemo,
 } from 'react'
 import {
 	Button,
@@ -200,45 +201,52 @@ const CategorySelection = memo(({ register, error }) => {
 const PlaceSelection = memo(({
 	registerDivision, errorDivision, registerDistrict, errorDistrict, registerThana, errorThana,
 }) => {
+	console.log('place_selection')
 	const [division, setDivision] = useState('')
 	const [district, setDistrict] = useState('')
 	const [thana, setThana] = useState('')
 	const [allDistricts, setAllDistricts] = useState([])
 	const [allThanas, setAllThanas] = useState([])
 
-	const handleDivision = (event) => {
+	const handleDivision = useCallback((event) => {
 		registerDivision.onChange(event)
 		setDistrict('')
 		setThana('')
 		setDivision(event.target.value)
 		setAllDistricts(getDistricts(event.target.value))
-	}
-	const handleDistrict = (event) => {
+	}, [registerDivision])
+
+	const handleDistrict = useCallback((event) => {
 		registerDistrict.onChange(event)
 		setThana('')
 		setDistrict(event.target.value)
 		setAllThanas(getThanas(event.target.value))
-	}
-	const handleThana = (event) => {
+	}, [registerDistrict])
+
+	const handleThana = useCallback((event) => {
 		registerThana.onChange(event)
 		setThana(event.target.value)
-	}
+	}, [registerThana])
+
 	useCallback(() => {
 		setDistrict(allDistricts[0])
 	}, [allDistricts])
+
 	useCallback(() => {
 		setThana(allThanas[0])
 	}, [allThanas])
 
-	const districtLabel = () => (division === '' ? 'Select a Division' : 'District')
-	const thanaLabel = () => {
+	const districtLabel = useMemo(() => (division === '' ? 'Select a Division' : 'District'), [division])
+
+	const thanaLabel = useMemo(() => {
 		if (division === '') {
 			return 'Select a Division'
 		} if (district === '') {
 			return 'Select a District'
 		}
 		return 'Thana/Upazila'
-	}
+	}, [division, district])
+
 	return (
 		<>
 			<FormControl
@@ -272,7 +280,7 @@ const PlaceSelection = memo(({
 				error={Boolean(errorDistrict)}
 				margin="normal"
 			>
-				<InputLabel id="district">{districtLabel()}</InputLabel>
+				<InputLabel id="district">{districtLabel}</InputLabel>
 				<Select
 					labelId="district"
 					label="District"
@@ -296,7 +304,7 @@ const PlaceSelection = memo(({
 				error={Boolean(errorThana)}
 				margin="normal"
 			>
-				<InputLabel id="thana/upazila">{thanaLabel()}</InputLabel>
+				<InputLabel id="thana/upazila">{thanaLabel}</InputLabel>
 				<Select
 					labelId="thana/upazila"
 					label="Thana/Upazila"
