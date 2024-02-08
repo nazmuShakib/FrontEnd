@@ -1,0 +1,145 @@
+.modal {
+	overflow-y: auto;
+}
+
+.modal-window {
+	position: absolute !important;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 90%;
+	height: 50%;
+	overflow-y: auto;
+	padding: 1.5em;
+	box-shadow: 100;
+	background-color: #fbfdff;
+	backdrop-filter: blur(100px) !important;
+	z-index: 1000;
+}
+
+.backdrop-blur {
+	backdrop-filter: blur(5px);
+	/* Adjust the blur radius as needed */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	/* Ensure the backdrop is behind the modal */
+}
+
+.modal-button {
+	display: flex;
+	justify-content: space-between;
+	/* position: relative; */
+	position: absolute;
+	bottom: 2em;
+	/* Adjust as needed */
+	left: 1.5em;
+	/* Adjust as needed */
+	right: 1.5em;
+	/* Smooth transition for transform */
+	/* Adjust as needed */
+}
+
+.toggle-button {
+	width: 20%;
+	display: flex;
+	border-width: 1px !important;
+	border-style: solid !important;
+	border-color: #d5d6d7 !important;
+	background-color: #f6f6f6 !important;
+	color: #454647 !important;
+	transition: transform 0.3s ease;
+}
+
+.toggle-button:hover {
+	background-color: #e7e7e7 !important;
+}
+
+.toggle-group {
+	display: flex !important;
+	justify-content: center;
+	/* justify-content: space-between !important; */
+	overflow-x: auto !important;
+}
+
+.active-button {
+	background-color: #ced6ea !important;
+	border-color: #a9b8db !important;
+}
+
+.active-button:hover {
+	background-color: #b7c3e1 !important;
+}
+
+.min-max-price {
+	width: 100% !important;
+}
+
+.min-max-field {
+	width: 100%;
+}
+
+@media (max-width: 600px) {
+	.toggle-button {
+		width: 100%;
+		margin-top: 1em !important;
+	}
+
+	.modal-button {
+		position: relative;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin-top: 2em;
+		background-color: white;
+		z-index: 999;
+	}
+}
+
+@media (min-width: 400px) {
+	.modal-button {
+		margin-top: 3.5em;
+	}
+}
+
+@media (min-width: 600px) {
+	.min-max-price {
+		width: 100% !important;
+		display: flex !important;
+		justify-content: space-between !important;
+	}
+
+	.min-max-field {
+		width: 48% !important;
+	}
+
+	.modal {
+		width: 40em;
+		margin: auto !important;
+	}
+}
+
+.toolbar {
+	display: flex;
+	justify-content: flex-end;
+}
+
+
+#close-button {
+	background-color: #f5d0d0;
+	margin-bottom: 0.3em;
+	color: #9e4848;
+}
+
+#close-button:hover {
+	background-color: #f5b3b3 !important;
+}
+
+#clear-button {
+	background-color: #f6f6f6;
+	color: #5a626a;
+	transition: transform 0.3s ease;
+}

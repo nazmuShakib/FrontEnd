@@ -1,4 +1,9 @@
-import { useState } from 'react'
+import {
+	useState,
+	useCallback,
+	memo,
+	useMemo,
+} from 'react'
 import {
 	Backdrop,
 	Box,
@@ -8,43 +13,48 @@ import {
 	IconButton,
 	InputAdornment,
 	TextField,
+	ToggleButton,
+	ToggleButtonGroup,
+	Typography,
 } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
-import { SearchOutlined } from '@mui/icons-material'
+import {
+	Search, SearchOutlined, CloseOutlined, ClearAll,
+} from '@mui/icons-material'
 
-/* Modal styles */
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: '90%',
-	'@media (min-width: 768px)': {
-		width: '40em',
-	},
-	height: '50%',
-	bgcolor: 'background.paper',
-	border: '2px solid #000',
-	boxShadow: 24,
-	p: 4,
-}
+import '../../styles/search.css'
 
-export default function TransitionsModal() {
+const TransitionsModal = memo(() => {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [open, setOpen] = useState(false)
 
 	const handleOpen = () => setOpen(true)
 	const handleClose = () => setOpen(false)
+	const [formats, setFormats] = useState(() => ['Any'])
 
-	const handleSearch = () => {
+	const handleSearch = useCallback(() => {
 		// Handle search logic with the searchQuery
 		console.log(`Searching for: ${searchQuery}`)
-	}
-
-	const handleInputChange = (event) => {
+	}, [searchQuery])
+	const handleClear = useCallback(() => {
+		setSearchQuery('')
+		setFormats(['Any'])
+	}, [setFormats, setSearchQuery])
+	const handleInputChange = useCallback((event) => {
 		setSearchQuery(event.target.value)
-	}
+	}, [setSearchQuery])
 
+	const handleFormat = useCallback((event, newFormats) => {
+		if (newFormats.includes('Any')) {
+			if (!formats.includes('Any')) {
+				setFormats(['Any'])
+			} else {
+				const choosenFormats = (newFormats.filter((format) => format !== 'Any'))
+				setFormats(choosenFormats)
+			}
+		} else {
+			setFormats(newFormats)
+		}
+	}, [formats])
 	return (
 		<Box component="div">
 			<Button
@@ -69,12 +79,14 @@ export default function TransitionsModal() {
 			>
 				Search
 			</Button>
+			{open && <Box component="div" className="backdrop-blur" />}
 			<Modal
 				aria-labelledby="transition-modal-title"
 				aria-describedby="transition-modal-description"
 				open={open}
 				onClose={handleClose}
 				closeAfterTransition
+				className="modal"
 				slots={{ backdrop: Backdrop }}
 				slotProps={{
 					backdrop: {
@@ -83,7 +95,27 @@ export default function TransitionsModal() {
 				}}
 			>
 				<Fade in={open}>
-					<Box sx={style}>
+					<Box className="modal-window">
+						<Box
+							component="div"
+							className="toolbar"
+						>
+							<Typography
+								variant="h6"
+								component="h1"
+								sx={{ flexGrow: 1, textAlign: 'center' }}
+							>
+								Filter
+							</Typography>
+							<IconButton
+								size="small"
+								id="close-button"
+								aria-label="close"
+								onClick={handleClose}
+							>
+								<CloseOutlined />
+							</IconButton>
+						</Box>
 						<TextField
 							label="Search"
 							variant="outlined"
@@ -94,16 +126,102 @@ export default function TransitionsModal() {
 								endAdornment: (
 									<InputAdornment position="end">
 										<IconButton onClick={handleSearch} edge="end">
-											<SearchIcon />
+											<Search />
 										</IconButton>
 									</InputAdornment>
 								),
 							}}
 						/>
-						{/* Need to add other functionalities like division, district, area name field */}
+						<CategorySelection formats={formats} handleFormat={handleFormat} />
+						<Box component="div" className="min-max-price">
+							<TextField
+								margin="normal"
+								name="minimum_price"
+								type="number"
+								id="minimum_price"
+								label="Minimum Price"
+								className="min-max-field"
+							/>
+							<TextField
+								margin="normal"
+								name="maximum_price"
+								type="number"
+								id="maximum_price"
+								label="Maximum Price"
+								className="min-max-field"
+							/>
+						</Box>
+						<BottomNavigation handleSearch={handleSearch} handleClear={handleClear} />
 					</Box>
 				</Fade>
 			</Modal>
 		</Box>
 	)
-}
+})
+const CategorySelection = memo(({ formats, handleFormat }) => (
+	<Box
+		component="div"
+		sx={{
+			marginTop: '2em',
+		}}
+		className="animation-container"
+	>
+		<ToggleButtonGroup
+			value={formats}
+			onChange={handleFormat}
+			className="toggle-group"
+		>
+			<ToggleButton
+				value="Any"
+				aria-label="Any"
+				className={`toggle-button ${formats.includes('Any') ? 'active-button' : ''}`}
+			>
+				Any
+			</ToggleButton>
+			<ToggleButton
+				value="Hostel"
+				aria-label="Hostel"
+				className={`toggle-button ${formats.includes('Hostel') ? 'active-button' : ''}`}
+			>
+				Hostel
+			</ToggleButton>
+			<ToggleButton
+				value="Mess"
+				aria-label="Mess"
+				className={`toggle-button ${formats.includes('Mess') ? 'active-button' : ''}`}
+			>
+				Mess
+			</ToggleButton>
+			<ToggleButton
+				value="Sublet"
+				aria-label="Sublet"
+				className={`toggle-button ${formats.includes('Sublet') ? 'active-button' : ''}`}
+			>
+				Sublet
+			</ToggleButton>
+		</ToggleButtonGroup>
+	</Box>
+))
+const BottomNavigation = memo(({ handleSearch, handleClear }) => (
+	<Box component="div" className="modal-button">
+		<Button
+			id="clear-button"
+			type="button"
+			variant="contained"
+			endIcon={<ClearAll />}
+			onClick={handleClear}
+		>
+			Clear
+		</Button>
+		<Button
+			type="button"
+			variant="contained"
+			endIcon={<SearchOutlined />}
+			onClick={handleSearch}
+		>
+			Search
+		</Button>
+	</Box>
+))
+
+export default TransitionsModal
