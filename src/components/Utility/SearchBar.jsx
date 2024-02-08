@@ -197,7 +197,7 @@ const CategorySelection = memo(({ formats, handleFormat }) => (
 const PriceSlider = memo(({ priceRange, handlPriceRange }) => {
 	console.log('PriceSlider render')
 
-	const maxPriceView = useCallback(() => `${priceRange[1]} ${priceRange[1] === defaultPriceRange[1] ? '+' : ''}`, [priceRange])
+	const maxPriceView = useCallback(() => `${priceRange[1]}${priceRange[1] === defaultPriceRange[1] ? '+' : ''}`, [priceRange])
 
 	return (
 		<Box component="div" className="price-slider">
