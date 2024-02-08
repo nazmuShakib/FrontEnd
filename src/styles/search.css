@@ -63,6 +63,7 @@
 	justify-content: center;
 	/* justify-content: space-between !important; */
 	overflow-x: auto !important;
+	margin-top: 1em !important;
 }
 
 .active-button {
@@ -85,7 +86,6 @@
 @media (max-width: 600px) {
 	.toggle-button {
 		width: 100%;
-		margin-top: 1em !important;
 	}
 
 	.modal-button {

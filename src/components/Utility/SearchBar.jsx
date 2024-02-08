@@ -161,9 +161,6 @@ const TransitionsModal = memo(() => {
 const CategorySelection = memo(({ formats, handleFormat }) => (
 	<Box
 		component="div"
-		sx={{
-			marginTop: '2em',
-		}}
 		className="animation-container"
 	>
 		<ToggleButtonGroup
