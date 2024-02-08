@@ -83,6 +83,36 @@
 	width: 100%;
 }
 
+.price-slider {
+	margin-top: 1em;
+}
+
+#price-slider-label {
+	color: #5a5b5c;
+	font-size: medium;
+	font-weight: 400;
+}
+
+.price-slider-bar.MuiSlider-colorPrimary {
+	color: #515b74;
+}
+
+#show-price {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.price-icon {
+	fill: #747677 !important;
+	scale: 0.8;
+}
+
+.show-price-value {
+	font-size: smaller;
+	font-weight: 100;
+}
+
 @media (max-width: 600px) {
 	.toggle-button {
 		width: 100%;

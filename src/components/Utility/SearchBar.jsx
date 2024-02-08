@@ -12,6 +12,7 @@ import {
 	Fade,
 	IconButton,
 	InputAdornment,
+	Slider,
 	TextField,
 	ToggleButton,
 	ToggleButtonGroup,
@@ -20,25 +21,35 @@ import {
 import {
 	Search, SearchOutlined, CloseOutlined, ClearAll,
 } from '@mui/icons-material'
+import Taka from '../../assets/icons/Taka'
 
 import '../../styles/search.css'
 
+const defaultPriceRange = [0, 20100]
 const TransitionsModal = memo(() => {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [open, setOpen] = useState(false)
+	const [formats, setFormats] = useState(() => ['Any'])
+	const [priceRange, setPriceRange] = useState(defaultPriceRange)
 
 	const handleOpen = () => setOpen(true)
 	const handleClose = () => setOpen(false)
-	const [formats, setFormats] = useState(() => ['Any'])
+
+	const handlePriceRange = useCallback((event, newPriceRange) => {
+		setPriceRange(newPriceRange)
+	}, [setPriceRange])
 
 	const handleSearch = useCallback(() => {
 		// Handle search logic with the searchQuery
 		console.log(`Searching for: ${searchQuery}`)
 	}, [searchQuery])
+
 	const handleClear = useCallback(() => {
 		setSearchQuery('')
 		setFormats(['Any'])
+		setPriceRange(defaultPriceRange)
 	}, [setFormats, setSearchQuery])
+
 	const handleInputChange = useCallback((event) => {
 		setSearchQuery(event.target.value)
 	}, [setSearchQuery])
@@ -54,7 +65,8 @@ const TransitionsModal = memo(() => {
 		} else {
 			setFormats(newFormats)
 		}
-	}, [formats])
+	}, [formats, setFormats])
+
 	return (
 		<Box component="div">
 			<Button
@@ -133,24 +145,7 @@ const TransitionsModal = memo(() => {
 							}}
 						/>
 						<CategorySelection formats={formats} handleFormat={handleFormat} />
-						<Box component="div" className="min-max-price">
-							<TextField
-								margin="normal"
-								name="minimum_price"
-								type="number"
-								id="minimum_price"
-								label="Minimum Price"
-								className="min-max-field"
-							/>
-							<TextField
-								margin="normal"
-								name="maximum_price"
-								type="number"
-								id="maximum_price"
-								label="Maximum Price"
-								className="min-max-field"
-							/>
-						</Box>
+						<PriceSlider priceRange={priceRange} handlPriceRange={handlePriceRange} />
 						<BottomNavigation handleSearch={handleSearch} handleClear={handleClear} />
 					</Box>
 				</Fade>
@@ -199,6 +194,43 @@ const CategorySelection = memo(({ formats, handleFormat }) => (
 		</ToggleButtonGroup>
 	</Box>
 ))
+const PriceSlider = memo(({ priceRange, handlPriceRange }) => {
+	console.log('PriceSlider render')
+
+	const maxPriceView = useCallback(() => `${priceRange[1]} ${priceRange[1] === defaultPriceRange[1] ? '+' : ''}`, [priceRange])
+
+	return (
+		<Box component="div" className="price-slider">
+			<Typography id="price-slider-label">
+				Price Range
+			</Typography>
+			<Slider
+				getAriaLabel={() => 'Price Range'}
+				value={priceRange}
+				valueLabelDisplay="off"
+				aria-labelledby="range-slider"
+				onChange={handlPriceRange}
+				min={defaultPriceRange[0]}
+				max={defaultPriceRange[1]}
+				className="price-slider-bar"
+			/>
+			<Box component="div" id="show-price">
+				<Box component="div" display="flex" alignItems="center">
+					<Box component="div" className="price-icon">
+						<Taka />
+					</Box>
+					<Typography className="show-price-value">{priceRange[0]}</Typography>
+				</Box>
+				<Box component="div" display="flex" alignItems="center">
+					<Box component="div" className="price-icon">
+						<Taka />
+					</Box>
+					<Typography className="show-price-value">{maxPriceView()}</Typography>
+				</Box>
+			</Box>
+		</Box>
+	)
+})
 const BottomNavigation = memo(({ handleSearch, handleClear }) => (
 	<Box component="div" className="modal-button">
 		<Button
