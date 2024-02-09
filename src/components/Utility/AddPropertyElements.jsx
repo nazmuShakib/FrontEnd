@@ -15,6 +15,7 @@ import {
 	TextareaAutosize,
 	FormLabel,
 } from '@mui/material'
+import { Controller } from 'react-hook-form'
 import { getDistricts, getThanas, Divisions } from '../../Config/GeoInfo'
 
 import '../../styles/forms.css'
@@ -119,41 +120,47 @@ const Address = memo(({ register, error }) => {
 		/>
 	)
 })
-const GenderSelection = memo(({ register, error }) => {
+const GenderSelection = memo(({
+	control,
+	error,
+}) => {
 	console.log('gender')
-	const [gender, setGender] = useState('')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
-	const handleGender = useCallback((event) => {
-		onChange(event)
-		setGender(event.target.value)
-	}, [onChange])
 	return (
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
 		>
 			<InputLabel id="gender-select">Gender</InputLabel>
-			<Select
-				labelId="gender-select"
-				id="gender"
-				displayEmpty
-				name={name}
-				ref={ref}
-				label="Gender"
-				value={gender}
-				onChange={handleGender}
-				onBlur={onBlur}
-				placeholder="Select Gender"
-				fullWidth
-			>
-				<MenuItem value="male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
-				<MenuItem value="female" sx={{ borderBottom: '1px solid #a7a2a2' }}>Female</MenuItem>
-			</Select>
+			<Controller
+				name="gender"
+				control={control}
+				defaultValue=""
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<Select
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						name={name}
+						ref={ref}
+						label="Gender"
+						labelId="gender-select"
+						placeholder="Select Gender"
+						id="gender"
+						fullWidth
+					>
+						<MenuItem value="male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
+						<MenuItem value="female" sx={{ borderBottom: '1px solid #a7a2a2' }}>Female</MenuItem>
+					</Select>
+				)}
+			/>
 			<FormHelperText>{error ? error.message : ''}</FormHelperText>
 		</FormControl>
 	)
