@@ -128,10 +128,10 @@ const GenderSelection = memo(({ register, error }) => {
 		name,
 		ref,
 	} = register
-	const handleGender = (event) => {
+	const handleGender = useCallback((event) => {
 		onChange(event)
 		setGender(event.target.value)
-	}
+	}, [onChange])
 	return (
 		<FormControl
 			error={Boolean(error)}
@@ -152,7 +152,7 @@ const GenderSelection = memo(({ register, error }) => {
 				fullWidth
 			>
 				<MenuItem value="male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
-				<MenuItem value="female" sx={{}}>Female</MenuItem>
+				<MenuItem value="female" sx={{ borderBottom: '1px solid #a7a2a2' }}>Female</MenuItem>
 			</Select>
 			<FormHelperText>{error ? error.message : ''}</FormHelperText>
 		</FormControl>
@@ -167,10 +167,10 @@ const CategorySelection = memo(({ register, error }) => {
 		name,
 		ref,
 	} = register
-	const handleCategory = (event) => {
+	const handleCategory = useCallback((event) => {
 		onChange(event)
 		setCategory(event.target.value)
-	}
+	}, [onChange])
 	return (
 		<FormControl
 			error={Boolean(error)}
@@ -236,8 +236,111 @@ const PlaceSelection = memo(({
 		setThana(allThanas[0])
 	}, [allThanas])
 
+	return (
+		<>
+			<Division
+				division={division}
+				handleDivision={handleDivision}
+				registerDivision={registerDivision}
+				errorDivision={errorDivision}
+			/>
+			<District
+				district={district}
+				division={division}
+				allDistricts={allDistricts}
+				handleDistrict={handleDistrict}
+				registerDistrict={registerDistrict}
+				errorDistrict={errorDistrict}
+			/>
+			<Thana
+				thana={thana}
+				division={division}
+				district={district}
+				allThanas={allThanas}
+				handleThana={handleThana}
+				registerThana={registerThana}
+				errorThana={errorThana}
+			/>
+		</>
+	)
+})
+const Division = memo(({
+	division,
+	handleDivision,
+	registerDivision,
+	errorDivision,
+}) => (
+	<FormControl
+		error={Boolean(errorDivision)}
+		margin="normal"
+	>
+		<InputLabel id="division">Division</InputLabel>
+		<Select
+			labelId="division"
+			label="Division"
+			value={division}
+			onChange={handleDivision}
+			onBlur={registerDivision.onBlur}
+			name={registerDivision.name}
+			ref={registerDivision.ref}
+		>
+			{Divisions.map((value) => (
+				<MenuItem
+					key={value}
+					value={value}
+					sx={{ borderBottom: '1px solid #e3e3e4' }}
+				>
+					{value}
+				</MenuItem>
+			))}
+		</Select>
+		<FormHelperText>{errorDivision ? errorDivision.message : '*required'}</FormHelperText>
+	</FormControl>
+))
+const District = memo(({
+	division,
+	district,
+	allDistricts,
+	handleDistrict,
+	registerDistrict,
+	errorDistrict,
+}) => {
 	const districtLabel = useMemo(() => (division === '' ? 'Select a Division' : 'District'), [division])
-
+	return (
+		<FormControl
+			error={Boolean(errorDistrict)}
+			margin="normal"
+		>
+			<InputLabel id="district">{districtLabel}</InputLabel>
+			<Select
+				labelId="district"
+				label="District"
+				value={district}
+				disabled={division === ''}
+				onChange={handleDistrict}
+				onBlur={registerDistrict.onBlur}
+				name={registerDistrict.name}
+				ref={registerDistrict.ref}
+			>
+				{
+					allDistricts.map((value) => (
+						<MenuItem key={value} value={value} sx={{ borderBottom: '1px solid #e3e3e4' }}>{value}</MenuItem>
+					))
+				}
+			</Select>
+			<FormHelperText>{errorDistrict ? errorDistrict.message : '*required'}</FormHelperText>
+		</FormControl>
+	)
+})
+const Thana = memo(({
+	thana,
+	division,
+	district,
+	allThanas,
+	handleThana,
+	registerThana,
+	errorThana,
+}) => {
 	const thanaLabel = useMemo(() => {
 		if (division === '') {
 			return 'Select a Division'
@@ -246,24 +349,24 @@ const PlaceSelection = memo(({
 		}
 		return 'Thana/Upazila'
 	}, [division, district])
-
 	return (
-		<>
-			<FormControl
-				error={Boolean(errorDivision)}
-				margin="normal"
+		<FormControl
+			error={Boolean(errorThana)}
+			margin="normal"
+		>
+			<InputLabel id="thana/upazila">{thanaLabel}</InputLabel>
+			<Select
+				labelId="thana/upazila"
+				label="Thana/Upazila"
+				value={thana}
+				disabled={district === ''}
+				onChange={handleThana}
+				onBlur={registerThana.onBlur}
+				name={registerThana.name}
+				ref={registerThana.ref}
 			>
-				<InputLabel id="division">Division</InputLabel>
-				<Select
-					labelId="division"
-					label="Division"
-					value={division}
-					onChange={handleDivision}
-					onBlur={registerDivision.onBlur}
-					name={registerDivision.name}
-					ref={registerDivision.ref}
-				>
-					{Divisions.map((value) => (
+				{
+					allThanas.map((value) => (
 						<MenuItem
 							key={value}
 							value={value}
@@ -271,65 +374,11 @@ const PlaceSelection = memo(({
 						>
 							{value}
 						</MenuItem>
-					))}
-				</Select>
-				<FormHelperText>{errorDivision ? errorDivision.message : '*required'}</FormHelperText>
-			</FormControl>
-
-			<FormControl
-				error={Boolean(errorDistrict)}
-				margin="normal"
-			>
-				<InputLabel id="district">{districtLabel}</InputLabel>
-				<Select
-					labelId="district"
-					label="District"
-					value={district}
-					disabled={division === ''}
-					onChange={handleDistrict}
-					onBlur={registerDistrict.onBlur}
-					name={registerDistrict.name}
-					ref={registerDistrict.ref}
-				>
-					{
-						allDistricts.map((value) => (
-							<MenuItem key={value} value={value} sx={{ borderBottom: '1px solid #e3e3e4' }}>{value}</MenuItem>
-						))
-					}
-				</Select>
-				<FormHelperText>{errorDistrict ? errorDistrict.message : '*required'}</FormHelperText>
-			</FormControl>
-
-			<FormControl
-				error={Boolean(errorThana)}
-				margin="normal"
-			>
-				<InputLabel id="thana/upazila">{thanaLabel}</InputLabel>
-				<Select
-					labelId="thana/upazila"
-					label="Thana/Upazila"
-					value={thana}
-					disabled={district === ''}
-					onChange={handleThana}
-					onBlur={registerThana.onBlur}
-					name={registerThana.name}
-					ref={registerThana.ref}
-				>
-					{
-						allThanas.map((value) => (
-							<MenuItem
-								key={value}
-								value={value}
-								sx={{ borderBottom: '1px solid #e3e3e4' }}
-							>
-								{value}
-							</MenuItem>
-						))
-					}
-				</Select>
-				<FormHelperText>{errorThana ? errorThana.message : '*required'}</FormHelperText>
-			</FormControl>
-		</>
+					))
+				}
+			</Select>
+			<FormHelperText>{errorThana ? errorThana.message : '*required'}</FormHelperText>
+		</FormControl>
 	)
 })
 const PlaceDescription = memo(({ register, error }) => {

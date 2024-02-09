@@ -7,6 +7,7 @@ import {
 } from '@mui/material'
 
 import { useForm } from 'react-hook-form'
+import { DevTool } from '@hookform/devtools'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -155,6 +156,7 @@ export default function AddProperty() {
 					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting} />
 				</FormControl>
+				<DevTool control={control} />
 			</Box>
 		</Box>
 	)
