@@ -165,42 +165,45 @@ const GenderSelection = memo(({
 		</FormControl>
 	)
 })
-const CategorySelection = memo(({ register, error }) => {
+const CategorySelection = memo(({ control, error }) => {
 	console.log('category')
-	const [category, setCategory] = useState('')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
-	const handleCategory = useCallback((event) => {
-		onChange(event)
-		setCategory(event.target.value)
-	}, [onChange])
 	return (
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
 		>
 			<InputLabel id="category-select">Category</InputLabel>
-			<Select
-				labelId="category-select"
-				id="category"
-				displayEmpty
-				name={name}
-				ref={ref}
-				label="Category"
-				value={category}
-				onChange={handleCategory}
-				onBlur={onBlur}
-				placeholder="Select Category"
-				fullWidth
-			>
-				<MenuItem value="sublet" sx={{ borderBottom: '1px solid #a7a2a2' }}>Sublet</MenuItem>
-				<MenuItem value="hostel" sx={{ borderBottom: '1px solid #a7a2a2' }}>Hostel</MenuItem>
-				<MenuItem value="mess">Mess</MenuItem>
-			</Select>
+			<Controller
+				name="category"
+				control={control}
+				defaultValue=""
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<Select
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						name={name}
+						ref={ref}
+						label="Category"
+						labelId="category-select"
+						placeholder="Select Category"
+						id="category"
+						fullWidth
+					>
+						<MenuItem value="sublet" sx={{ borderBottom: '1px solid #a7a2a2' }}>Sublet</MenuItem>
+						<MenuItem value="hostel" sx={{ borderBottom: '1px solid #a7a2a2' }}>Hostel</MenuItem>
+						<MenuItem value="mess" sx={{ borderBottom: '1px solid #a7a2a2' }}>Mess</MenuItem>
+					</Select>
+				)}
+			/>
 			<FormHelperText>{error ? error.message : ''}</FormHelperText>
 		</FormControl>
 	)
