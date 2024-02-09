@@ -208,10 +208,9 @@ const CategorySelection = memo(({ control, error }) => {
 		</FormControl>
 	)
 })
-const PlaceSelection = memo(({
-	registerDivision, errorDivision, registerDistrict, errorDistrict, registerThana, errorThana,
-}) => {
-	console.log('place_selection')
+
+const PlaceSelection = memo(({ control, error }) => {
+	console.log('DemoPlaceSelection')
 	const [division, setDivision] = useState('')
 	const [district, setDistrict] = useState('')
 	const [thana, setThana] = useState('')
@@ -219,138 +218,20 @@ const PlaceSelection = memo(({
 	const [allThanas, setAllThanas] = useState([])
 
 	const handleDivision = useCallback((event) => {
-		registerDivision.onChange(event)
 		setDistrict('')
 		setThana('')
 		setDivision(event.target.value)
 		setAllDistricts(getDistricts(event.target.value))
-	}, [registerDivision])
+	}, [])
 
 	const handleDistrict = useCallback((event) => {
-		registerDistrict.onChange(event)
 		setThana('')
 		setDistrict(event.target.value)
 		setAllThanas(getThanas(event.target.value))
-	}, [registerDistrict])
+	}, [])
 
-	const handleThana = useCallback((event) => {
-		registerThana.onChange(event)
-		setThana(event.target.value)
-	}, [registerThana])
-
-	useCallback(() => {
-		setDistrict(allDistricts[0])
-	}, [allDistricts])
-
-	useCallback(() => {
-		setThana(allThanas[0])
-	}, [allThanas])
-
-	return (
-		<>
-			<Division
-				division={division}
-				handleDivision={handleDivision}
-				registerDivision={registerDivision}
-				errorDivision={errorDivision}
-			/>
-			<District
-				district={district}
-				division={division}
-				allDistricts={allDistricts}
-				handleDistrict={handleDistrict}
-				registerDistrict={registerDistrict}
-				errorDistrict={errorDistrict}
-			/>
-			<Thana
-				thana={thana}
-				division={division}
-				district={district}
-				allThanas={allThanas}
-				handleThana={handleThana}
-				registerThana={registerThana}
-				errorThana={errorThana}
-			/>
-		</>
-	)
-})
-const Division = memo(({
-	division,
-	handleDivision,
-	registerDivision,
-	errorDivision,
-}) => (
-	<FormControl
-		error={Boolean(errorDivision)}
-		margin="normal"
-	>
-		<InputLabel id="division">Division</InputLabel>
-		<Select
-			labelId="division"
-			label="Division"
-			value={division}
-			onChange={handleDivision}
-			onBlur={registerDivision.onBlur}
-			name={registerDivision.name}
-			ref={registerDivision.ref}
-		>
-			{Divisions.map((value) => (
-				<MenuItem
-					key={value}
-					value={value}
-					sx={{ borderBottom: '1px solid #e3e3e4' }}
-				>
-					{value}
-				</MenuItem>
-			))}
-		</Select>
-		<FormHelperText>{errorDivision ? errorDivision.message : '*required'}</FormHelperText>
-	</FormControl>
-))
-const District = memo(({
-	division,
-	district,
-	allDistricts,
-	handleDistrict,
-	registerDistrict,
-	errorDistrict,
-}) => {
 	const districtLabel = useMemo(() => (division === '' ? 'Select a Division' : 'District'), [division])
-	return (
-		<FormControl
-			error={Boolean(errorDistrict)}
-			margin="normal"
-		>
-			<InputLabel id="district">{districtLabel}</InputLabel>
-			<Select
-				labelId="district"
-				label="District"
-				value={district}
-				disabled={division === ''}
-				onChange={handleDistrict}
-				onBlur={registerDistrict.onBlur}
-				name={registerDistrict.name}
-				ref={registerDistrict.ref}
-			>
-				{
-					allDistricts.map((value) => (
-						<MenuItem key={value} value={value} sx={{ borderBottom: '1px solid #e3e3e4' }}>{value}</MenuItem>
-					))
-				}
-			</Select>
-			<FormHelperText>{errorDistrict ? errorDistrict.message : '*required'}</FormHelperText>
-		</FormControl>
-	)
-})
-const Thana = memo(({
-	thana,
-	division,
-	district,
-	allThanas,
-	handleThana,
-	registerThana,
-	errorThana,
-}) => {
+
 	const thanaLabel = useMemo(() => {
 		if (division === '') {
 			return 'Select a Division'
@@ -359,38 +240,165 @@ const Thana = memo(({
 		}
 		return 'Thana/Upazila'
 	}, [division, district])
+
 	return (
-		<FormControl
-			error={Boolean(errorThana)}
-			margin="normal"
-		>
-			<InputLabel id="thana/upazila">{thanaLabel}</InputLabel>
-			<Select
-				labelId="thana/upazila"
-				label="Thana/Upazila"
-				value={thana}
-				disabled={district === ''}
-				onChange={handleThana}
-				onBlur={registerThana.onBlur}
-				name={registerThana.name}
-				ref={registerThana.ref}
+		<>
+			<FormControl
+				error={Boolean(error?.division)}
+				margin="normal"
 			>
-				{
-					allThanas.map((value) => (
-						<MenuItem
-							key={value}
-							value={value}
-							sx={{ borderBottom: '1px solid #e3e3e4' }}
-						>
-							{value}
-						</MenuItem>
-					))
-				}
-			</Select>
-			<FormHelperText>{errorThana ? errorThana.message : '*required'}</FormHelperText>
-		</FormControl>
+				<InputLabel id="place.division">Division</InputLabel>
+				<Controller
+					name="place.division"
+					control={control}
+					render={useCallback(({
+						field: {
+							onChange,
+							onBlur,
+							ref,
+							name,
+						},
+					}) => {
+						console.log('division')
+						return (
+							<Select
+								value={division}
+								onChange={(event) => {
+									onChange(event)
+									handleDivision(event)
+								}}
+								onBlur={onBlur}
+								name={name}
+								ref={ref}
+								label="Division"
+								labelId="place-division"
+								placeholder="Select Division"
+								id="division"
+								fullWidth
+							>
+								{Divisions.map((divisionName) => (
+									<MenuItem
+										key={divisionName}
+										value={divisionName}
+										sx={{ borderBottom: '1px solid #e3e3e4' }}
+									>
+										{divisionName}
+									</MenuItem>
+								))}
+							</Select>
+						)
+					}, [division, handleDivision])}
+				/>
+				<FormHelperText>{error?.division ? error.division.message : '*required'}</FormHelperText>
+			</FormControl>
+
+			<FormControl
+				error={Boolean(error?.district)}
+				margin="normal"
+			>
+				<InputLabel id="place.district">{districtLabel}</InputLabel>
+				<Controller
+					name="place.district"
+					control={control}
+					render={useCallback(({
+						field: {
+							onChange,
+							onBlur,
+							ref,
+							name,
+						},
+					}) => {
+						console.log('district')
+						return (
+							<Select
+								value={district}
+								onChange={(event) => {
+									onChange(event)
+									handleDistrict(event)
+								}}
+								onBlur={onBlur}
+								name={name}
+								ref={ref}
+								disabled={division === ''}
+								label="District"
+								labelId="place-district"
+								placeholder="Select District"
+								id="district"
+								fullWidth
+							>
+								{
+									allDistricts.map((districtName) => (
+										<MenuItem
+											key={districtName}
+											value={districtName}
+											sx={{ borderBottom: '1px solid #e3e3e4' }}
+										>
+											{districtName}
+										</MenuItem>
+									))
+								}
+							</Select>
+						)
+					}, [allDistricts, district, division, handleDistrict])}
+				/>
+				<FormHelperText>{error?.district ? error.district.message : '*required'}</FormHelperText>
+			</FormControl>
+
+			<FormControl
+				error={Boolean(error?.thana)}
+				margin="normal"
+			>
+				<InputLabel id="place.thana">{thanaLabel}</InputLabel>
+				<Controller
+					name="place.thana"
+					control={control}
+					render={useCallback(({
+						field: {
+							onChange,
+							onBlur,
+							ref,
+							name,
+						},
+					}) => {
+						console.log('thana')
+						return (
+							<Select
+								value={thana}
+								onChange={(event) => {
+									onChange(event)
+									setThana(event.target.value)
+								}}
+								onBlur={onBlur}
+								name={name}
+								ref={ref}
+								disabled={district === ''}
+								label="Thana/Upazila"
+								labelId="place-thana"
+								placeholder="Select Thana/Upazila"
+								id="thana"
+								fullWidth
+							>
+								{
+									allThanas.map((thanaName) => (
+										<MenuItem
+											key={thanaName}
+											value={thanaName}
+											sx={{ borderBottom: '1px solid #e3e3e4' }}
+										>
+											{thanaName}
+										</MenuItem>
+									))
+								}
+							</Select>
+						)
+					}, [district, allThanas, thana])}
+				/>
+				<FormHelperText>{error?.thana ? error.thana.message : '*required'}</FormHelperText>
+			</FormControl>
+		</>
 	)
 })
+
 const PlaceDescription = memo(({ register, error }) => {
 	console.log('description')
 	const {
@@ -508,8 +516,8 @@ export {
 	GenderSelection,
 	CategorySelection,
 	Header,
-	PlaceDescription,
 	PlaceSelection,
+	PlaceDescription,
 	Price,
 	RulesAndPreference,
 	RequiredDocuments,
