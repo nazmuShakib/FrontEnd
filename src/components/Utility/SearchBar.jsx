@@ -10,6 +10,7 @@ import {
 	Button,
 	Modal,
 	Fade,
+	Grid,
 	IconButton,
 	InputAdornment,
 	Slider,
@@ -154,14 +155,17 @@ const TransitionsModal = memo(() => {
 	)
 })
 const CategorySelection = memo(({ formats, handleFormat }) => (
-	<Box
-		component="div"
-		className="animation-container"
+	<Grid
+		container
+		direction="row"
+		className="toggle-grid"
+		sx={{
+			overflowX: 'auto !important',
+		}}
 	>
 		<ToggleButtonGroup
 			value={formats}
 			onChange={handleFormat}
-			className="toggle-group"
 		>
 			<ToggleButton
 				value="Any"
@@ -192,7 +196,7 @@ const CategorySelection = memo(({ formats, handleFormat }) => (
 				Sublet
 			</ToggleButton>
 		</ToggleButtonGroup>
-	</Box>
+	</Grid>
 ))
 const PriceSlider = memo(({ priceRange, handlPriceRange }) => {
 	console.log('PriceSlider render')
