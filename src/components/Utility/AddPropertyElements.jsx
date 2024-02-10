@@ -455,6 +455,7 @@ const PlaceDescription = memo(({ control, error }) => {
 		</FormControl>
 	)
 })
+
 const RulesAndPreference = memo(({ control, error }) => {
 	console.log('rules_and_preference')
 	return (
@@ -493,34 +494,40 @@ const RulesAndPreference = memo(({ control, error }) => {
 	)
 })
 
-const RequiredDocuments = memo(({ register, error }) => {
+const RequiredDocuments = memo(({ control, error }) => {
 	console.log('required_documents')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
 	return (
 		<FormControl
-			error={error}
+			error={Boolean(error)}
 			margin="normal"
+			aria-hidden="true"
 		>
 			<FormLabel>Required Documents</FormLabel>
-			<TextareaAutosize
-				id="required_documents"
-				name={name}
-				aria-label="required_documents"
-				minRows={5}
-				maxRows={7}
-				aria-hidden="true"
-				className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
-				placeholder="Required Documents..."
-				onChange={onChange}
-				onBlur={onBlur}
-				ref={ref}
+
+			<Controller
+				name="required_documents"
+				control={control}
+				render={({
+					field: {
+						onChange, onBlur, ref, name,
+					},
+				}) => (
+					<TextareaAutosize
+						id="required_documents"
+						name={name}
+						aria-label="required_documents"
+						minRows={5}
+						maxRows={7}
+						aria-hidden="true"
+						className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
+						placeholder="Required Documents..."
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+					/>
+				)}
 			/>
-			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+			<FormHelperText>{error ? error.message : 'Optional'}</FormHelperText>
 		</FormControl>
 	)
 })

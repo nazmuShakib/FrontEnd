@@ -151,7 +151,7 @@ export default function AddProperty() {
 					<CategorySelection control={control} error={errors.category} />
 					<PlaceDescription control={control} error={errors.description} />
 					<RulesAndPreference control={control} error={errors.rules_and_preference} />
-					<RequiredDocuments register={register('documents')} error={errors.documents} />
+					<RequiredDocuments control={control} error={errors.documents} />
 					<PlaceSelection control={control} error={errors.place} />
 					<Address control={control} error={errors.price} />
 					<Price control={control} error={errors.price} />
