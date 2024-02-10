@@ -49,15 +49,15 @@ const PropertySchema = z.object({
 	gender: z
 		.string()
 		.min(1, 'Select a gender'),
-	place: z
-		.object({
-			division: z
-				.string(),
-			district: z
-				.string(),
-			thana: z
-				.string(),
-		}),
+	division: z.string().refine((data) => data !== '', {
+		message: 'Select a Division',
+	}),
+	district: z.string().refine((data) => data !== '', {
+		message: 'Select a District',
+	}),
+	thana: z.string().refine((data) => data !== '', {
+		message: 'Select a Thana',
+	}),
 	category: z
 		.string()
 		.min(1, 'Select a category'),
@@ -127,11 +127,20 @@ export default function AddProperty() {
 	const {
 		register,
 		handleSubmit,
+		resetField,
 		formState: { errors, isSubmitting },
 		reset,
 		getValues,
 		control,
-	} = useForm({ resolver: zodResolver(PropertySchema), defaultValues: { gender: '' } })
+	} = useForm({
+		resolver: zodResolver(PropertySchema),
+		defaultValues: {
+			gender: '',
+			district: '',
+			division: '',
+			thana: '',
+		},
+	})
 	const onSubmit = (event) => {
 		console.log(event)
 	}
@@ -152,8 +161,8 @@ export default function AddProperty() {
 					<PlaceDescription control={control} error={errors.description} />
 					<RulesAndPreference control={control} error={errors.rules_and_preference} />
 					<RequiredDocuments control={control} error={errors.documents} />
-					<PlaceSelection control={control} error={errors.place} />
-					<Address control={control} error={errors.price} />
+					<PlaceSelection control={control} resetField={resetField} errorDivision={errors.division} errorDistrict={errors.district} errorThana={errors.thana} />
+					<Address control={control} error={errors.address} />
 					<Price control={control} error={errors.price} />
 					<Contact control={control} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
