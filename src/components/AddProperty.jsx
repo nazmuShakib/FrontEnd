@@ -35,11 +35,11 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 const PropertySchema = z.object({
 	title: z
 		.string()
-		.max(5, 'Title length should be less than or equal to 5 characters')
+		.max(100, 'max 100 characters')
 		.refine((data) => {
 			const actualData = data.trimEnd().trimStart()
 			return actualData !== ''
-		}, 'Title is required'),
+		}, 'Required'),
 	date: z
 		.date()
 		.refine((value) => {

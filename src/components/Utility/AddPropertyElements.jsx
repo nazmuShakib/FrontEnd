@@ -41,7 +41,7 @@ const Header = memo(({ control, error }) => {
 					ref={ref}
 					label="Title"
 					error={!!error}
-					helperText={error ? error.message : ''}
+					helperText={error ? error.message : 'Required'}
 				/>
 			)}
 		/>
