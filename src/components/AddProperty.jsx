@@ -81,9 +81,14 @@ const PropertySchema = z.object({
 		.optional(),
 	price: z
 		.string()
-		.refine((data) => data !== '', 'Price is required')
+		.refine((data) => data !== '', {
+			message: 'Required',
+		})
 		.refine((data) => parseInt(data, 10) >= 0, {
-			message: 'Price should be postive',
+			message: 'Price must be a positive number',
+		})
+		.refine((data) => parseInt(data, 10) <= 1000000007, {
+			message: 'Price must be less than 1000000007',
 		}),
 	contact: z.string()
 		.refine((data) => data !== '', {
@@ -149,7 +154,7 @@ export default function AddProperty() {
 					<RequiredDocuments register={register('documents')} error={errors.documents} />
 					<PlaceSelection control={control} error={errors.place} />
 					<Address register={register('address')} error={errors.address} />
-					<Price register={register('price')} error={errors.price} />
+					<Price control={control} error={errors.price} />
 					<Contact register={register('contact')} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />

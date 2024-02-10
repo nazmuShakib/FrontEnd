@@ -47,27 +47,33 @@ const Header = memo(({ control, error }) => {
 		/>
 	)
 })
-const Price = memo(({ register, error }) => {
+const Price = memo(({ control, error }) => {
 	console.log('price')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			type="number"
-			id="price"
-			label="Price"
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="price"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="price"
+					name={name}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="number"
+					label="Price"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
 		/>
 	)
 })
