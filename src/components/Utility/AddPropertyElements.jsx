@@ -77,28 +77,33 @@ const Price = memo(({ control, error }) => {
 		/>
 	)
 })
-const Contact = memo(({ register, error }) => {
+const Contact = memo(({ control, error }) => {
 	console.log('contact')
-
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			type="tel"
-			id="contact"
-			label="Contact"
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="contact"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="contact"
+					name={name}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="tel"
+					label="Contact"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
 		/>
 	)
 })

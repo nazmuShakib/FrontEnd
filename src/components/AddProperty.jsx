@@ -92,7 +92,7 @@ const PropertySchema = z.object({
 		}),
 	contact: z.string()
 		.refine((data) => data !== '', {
-			message: 'Contact is required',
+			message: 'Required',
 		}),
 	address: z
 		.string()
@@ -155,7 +155,7 @@ export default function AddProperty() {
 					<PlaceSelection control={control} error={errors.place} />
 					<Address register={register('address')} error={errors.address} />
 					<Price control={control} error={errors.price} />
-					<Contact register={register('contact')} error={errors.contact} />
+					<Contact control={control} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting} />
