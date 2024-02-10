@@ -96,13 +96,13 @@ const PropertySchema = z.object({
 		}),
 	address: z
 		.string()
-		.max(100, 'You can use at most 100 characters')
+		.max(100, 'max 100 characters')
 		.refine(
 			(data) => {
 				const actualData = data.trimEnd().trimStart()
 				return actualData !== ''
 			},
-			{ message: 'Address is required' },
+			{ message: 'Required' },
 		),
 	images: z
 		.any()
@@ -153,7 +153,7 @@ export default function AddProperty() {
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
 					<RequiredDocuments register={register('documents')} error={errors.documents} />
 					<PlaceSelection control={control} error={errors.place} />
-					<Address register={register('address')} error={errors.address} />
+					<Address control={control} error={errors.price} />
 					<Price control={control} error={errors.price} />
 					<Contact control={control} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />

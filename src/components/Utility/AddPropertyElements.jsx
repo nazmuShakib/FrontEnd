@@ -107,29 +107,34 @@ const Contact = memo(({ control, error }) => {
 		/>
 	)
 })
-const Address = memo(({ register, error }) => {
+const Address = memo(({ control, error }) => {
 	console.log('address')
-
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			type="text"
-			id="address"
-			label="Address"
-			placeholder="Address of the property..."
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="address"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="address"
+					name={name}
+					placeholder="Address of the property..."
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="text"
+					label="Address"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
 		/>
 	)
 })
