@@ -63,13 +63,13 @@ const PropertySchema = z.object({
 		.min(1, 'Select a category'),
 	description: z
 		.string()
-		.max(10, 'You can use at most 10 characters')
+		.max(500, 'max 500 characters')
 		.refine(
 			(data) => {
 				const actualData = data.trimEnd().trimStart()
 				return actualData !== ''
 			},
-			{ message: 'Description is required' },
+			{ message: 'Required' },
 		),
 	rules_and_preference: z
 		.string()
@@ -149,7 +149,7 @@ export default function AddProperty() {
 					<DateSelector name="date" control={control} error={errors.date} />
 					<GenderSelection control={control} error={errors.gender} />
 					<CategorySelection control={control} error={errors.category} />
-					<PlaceDescription register={register('description')} error={errors.description} />
+					<PlaceDescription control={control} error={errors.description} />
 					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
 					<RequiredDocuments register={register('documents')} error={errors.documents} />
 					<PlaceSelection control={control} error={errors.place} />
