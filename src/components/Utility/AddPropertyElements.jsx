@@ -417,69 +417,78 @@ const PlaceSelection = memo(({ control, error }) => {
 	)
 })
 
-const PlaceDescription = memo(({ control, error }) => (
-	<FormControl
-		error={Boolean(error)}
-		margin="normal"
-		aria-hidden="true"
-	>
-		<FormLabel>Desciption</FormLabel>
-
-		<Controller
-			name="description"
-			control={control}
-			render={({
-				field: {
-					onChange, onBlur, ref, name,
-				},
-			}) => (
-				<TextareaAutosize
-					id="description"
-					name={name}
-					label="Description"
-					aria-label="description"
-					minRows={5}
-					maxRows={7}
-					placeholder="What this place offers..."
-					className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
-					onChange={onChange}
-					onBlur={onBlur}
-					ref={ref}
-				/>
-			)}
-		/>
-
-		<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
-	</FormControl>
-))
-const RulesAndPreference = memo(({ register, error }) => {
-	console.log('rules_and_preference')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
+const PlaceDescription = memo(({ control, error }) => {
+	console.log('place_description')
 	return (
 		<FormControl
-			error={error}
+			error={Boolean(error)}
 			margin="normal"
+			aria-hidden="true"
+		>
+			<FormLabel>Desciption</FormLabel>
+
+			<Controller
+				name="description"
+				control={control}
+				render={({
+					field: {
+						onChange, onBlur, ref, name,
+					},
+				}) => (
+					<TextareaAutosize
+						id="description"
+						name={name}
+						label="Description"
+						aria-label="description"
+						minRows={5}
+						maxRows={7}
+						placeholder="What this place offers..."
+						className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+					/>
+				)}
+			/>
+
+			<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
+		</FormControl>
+	)
+})
+const RulesAndPreference = memo(({ control, error }) => {
+	console.log('rules_and_preference')
+	return (
+		<FormControl
+			error={Boolean(error)}
+			margin="normal"
+			aria-hidden="true"
 		>
 			<FormLabel>Rules & Preferences</FormLabel>
-			<TextareaAutosize
-				id="rules_and_preference"
-				name={name}
-				aria-label="rules_and_preference"
-				minRows={5}
-				maxRows={7}
-				aria-hidden="true"
-				className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
-				placeholder="Rules and Preference..."
-				onChange={onChange}
-				onBlur={onBlur}
-				ref={ref}
+
+			<Controller
+				name="rules_and_preference"
+				control={control}
+				render={({
+					field: {
+						onChange, onBlur, ref, name,
+					},
+				}) => (
+					<TextareaAutosize
+						id="rules_and_preference"
+						name={name}
+						aria-label="rules_and_preference"
+						minRows={5}
+						maxRows={7}
+						aria-hidden="true"
+						className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
+						placeholder="Rules and Preference..."
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+					/>
+				)}
 			/>
-			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+			<FormHelperText>{error ? error.message : 'Optional'}</FormHelperText>
 		</FormControl>
 	)
 })

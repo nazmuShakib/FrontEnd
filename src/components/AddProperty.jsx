@@ -73,8 +73,8 @@ const PropertySchema = z.object({
 		),
 	rules_and_preference: z
 		.string()
-		.max(10, 'You can use at most 10 characters')
-		.optional(),
+		.max(500, 'max 500 characters')
+		.optional('Optional'),
 	documents: z
 		.string()
 		.max(500, 'You can use at most 10 characters')
@@ -150,7 +150,7 @@ export default function AddProperty() {
 					<GenderSelection control={control} error={errors.gender} />
 					<CategorySelection control={control} error={errors.category} />
 					<PlaceDescription control={control} error={errors.description} />
-					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
+					<RulesAndPreference control={control} error={errors.rules_and_preference} />
 					<RequiredDocuments register={register('documents')} error={errors.documents} />
 					<PlaceSelection control={control} error={errors.place} />
 					<Address control={control} error={errors.price} />
