@@ -140,7 +140,7 @@ export default function AddProperty() {
 		>
 			<Box component="div">
 				<FormControl fullWidth component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
-					<Header register={register('title')} error={errors.title} />
+					<Header control={control} error={errors.title} />
 					<DateSelector name="date" control={control} error={errors.date} />
 					<GenderSelection control={control} error={errors.gender} />
 					<CategorySelection control={control} error={errors.category} />

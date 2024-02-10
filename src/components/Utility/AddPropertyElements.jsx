@@ -20,28 +20,30 @@ import { getDistricts, getThanas, Divisions } from '../../Config/GeoInfo'
 
 import '../../styles/forms.css'
 
-const Header = memo(({ register, error }) => {
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
+const Header = memo(({ control, error }) => {
 	console.log('header')
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			placeholder="Give a title"
-			label="Title"
-			type="text"
-			id="title"
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="title"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					name={name}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					label="Title"
+					error={!!error}
+					helperText={error ? error.message : ''}
+				/>
+			)}
 		/>
 	)
 })
