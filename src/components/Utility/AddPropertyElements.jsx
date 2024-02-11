@@ -230,6 +230,8 @@ const CategorySelection = memo(({ control, error }) => {
 
 const PlaceSelection = memo(({
 	control,
+	clearErrors,
+	setError,
 	resetField,
 	errorDivision,
 	errorDistrict,
@@ -241,26 +243,30 @@ const PlaceSelection = memo(({
 	const [allDistricts, setAllDistricts] = useState([])
 	const [allThanas, setAllThanas] = useState([])
 
-	useEffect(() => {
-		resetField('district', { keepError: true })
-	}, [resetField, division])
-	useEffect(() => {
-		resetField('thana', { keepError: true })
-	}, [resetField, district])
-
-	const handleDivision = useCallback((value) => {
+	const handleDivision = (value) => {
+		setDivision(value)
 		setThana('')
 		setDistrict('')
-		setDivision(value)
 		setAllDistricts(getDistricts(value))
-	}, [setDistrict, setThana, setDivision, setAllDistricts])
+		resetField('district')
+		resetField('thana')
+		setError('district', { message: 'Select a District' })
+		setError('thana', { message: 'Select a Thana/Upazila' })
+	}
 
 	const handleDistrict = (event) => {
 		setThana('')
 		setDistrict(event.target.value)
 		setAllThanas(getThanas(event.target.value))
+		clearErrors('district')
+		resetField('thana')
+		setError('thana', { message: 'Select a Thana/Upazila' })
 	}
 
+	const handleThana = (event) => {
+		setThana(event.target.value)
+		clearErrors('thana')
+	}
 	const districtLabel = useMemo(() => (division === '' ? 'Select a Division' : 'District'), [division])
 
 	const thanaLabel = useMemo(() => {
@@ -295,7 +301,7 @@ const PlaceSelection = memo(({
 				allThanas={allThanas}
 				thana={thana}
 				thanaLabel={thanaLabel}
-				setThana={setThana}
+				handleThana={handleThana}
 				district={district}
 			/>
 		</>
@@ -424,7 +430,7 @@ const Thana = memo(({
 	allThanas,
 	thana,
 	thanaLabel,
-	setThana,
+	handleThana,
 	district,
 }) => {
 	console.log('thana')
@@ -449,7 +455,7 @@ const Thana = memo(({
 						value={thana}
 						onChange={(event) => {
 							onChange(event)
-							setThana(event.target.value)
+							handleThana(event)
 						}}
 						onBlur={onBlur}
 						name={name}

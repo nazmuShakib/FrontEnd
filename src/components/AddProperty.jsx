@@ -128,7 +128,11 @@ export default function AddProperty() {
 		register,
 		handleSubmit,
 		resetField,
-		formState: { errors, isSubmitting },
+		formState: {
+			errors, isSubmitting,
+		},
+		setError,
+		clearErrors,
 		reset,
 		getValues,
 		control,
@@ -161,7 +165,15 @@ export default function AddProperty() {
 					<PlaceDescription control={control} error={errors.description} />
 					<RulesAndPreference control={control} error={errors.rules_and_preference} />
 					<RequiredDocuments control={control} error={errors.documents} />
-					<PlaceSelection control={control} resetField={resetField} errorDivision={errors.division} errorDistrict={errors.district} errorThana={errors.thana} />
+					<PlaceSelection
+						control={control}
+						clearErrors={clearErrors}
+						setError={setError}
+						resetField={resetField}
+						errorDivision={errors.division}
+						errorDistrict={errors.district}
+						errorThana={errors.thana}
+					/>
 					<Address control={control} error={errors.address} />
 					<Price control={control} error={errors.price} />
 					<Contact control={control} error={errors.contact} />
