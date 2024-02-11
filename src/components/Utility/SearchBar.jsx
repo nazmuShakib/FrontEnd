@@ -3,8 +3,13 @@ import {
 	useCallback,
 	memo,
 	useMemo,
+	useEffect,
+	useRef,
+	forwardRef,
+	useImperativeHandle,
 } from 'react'
 import {
+	Autocomplete,
 	Backdrop,
 	Box,
 	Button,
@@ -22,38 +27,41 @@ import {
 import {
 	Search, SearchOutlined, CloseOutlined, ClearAll,
 } from '@mui/icons-material'
+import usePlacesAutocomplete, {
+	getLatLng,
+	getGeocode,
+} from 'use-places-autocomplete'
+
 import Taka from '../../assets/icons/Taka'
 
 import '../../styles/search.css'
+import '../../styles/map.css'
 
 const defaultPriceRange = [0, 20100]
 const TransitionsModal = memo(() => {
-	const [searchQuery, setSearchQuery] = useState('')
+	const [searchLocation, setSearchLocation] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [formats, setFormats] = useState(() => ['Any'])
 	const [priceRange, setPriceRange] = useState(defaultPriceRange)
-
 	const handleOpen = () => setOpen(true)
 	const handleClose = () => setOpen(false)
-
+	const locationRef = useRef(null)
 	const handlePriceRange = useCallback((event, newPriceRange) => {
 		setPriceRange(newPriceRange)
 	}, [setPriceRange])
 
-	const handleSearch = useCallback(() => {
+	const handleSearch = () => {
 		// Handle search logic with the searchQuery
-		console.log(`Searching for: ${searchQuery}`)
-	}, [searchQuery])
+		console.log(searchLocation)
+		console.log(priceRange)
+		console.log(formats)
+	}
 
 	const handleClear = useCallback(() => {
-		setSearchQuery('')
+		locationRef.current.setValue('')
 		setFormats(['Any'])
 		setPriceRange(defaultPriceRange)
-	}, [setFormats, setSearchQuery])
-
-	const handleInputChange = useCallback((event) => {
-		setSearchQuery(event.target.value)
-	}, [setSearchQuery])
+	}, [setFormats])
 
 	const handleFormat = useCallback((event, newFormats) => {
 		if (newFormats.includes('Any')) {
@@ -128,22 +136,7 @@ const TransitionsModal = memo(() => {
 								<CloseOutlined />
 							</IconButton>
 						</Box>
-						<TextField
-							label="Search"
-							variant="outlined"
-							fullWidth
-							value={searchQuery}
-							onChange={handleInputChange}
-							InputProps={{
-								endAdornment: (
-									<InputAdornment position="end">
-										<IconButton onClick={handleSearch} edge="end">
-											<Search />
-										</IconButton>
-									</InputAdornment>
-								),
-							}}
-						/>
+						<PlaceSuggestion getLocation={setSearchLocation} ref={locationRef} />
 						<CategorySelection formats={formats} handleFormat={handleFormat} />
 						<PriceSlider priceRange={priceRange} handlPriceRange={handlePriceRange} />
 						<BottomNavigation handleSearch={handleSearch} handleClear={handleClear} />
@@ -153,6 +146,48 @@ const TransitionsModal = memo(() => {
 		</Box>
 	)
 })
+const PlaceSuggestion = memo(forwardRef(({ getLocation }, ref) => {
+	const {
+		ready,
+		value,
+		setValue,
+		suggestions: { data },
+	} = usePlacesAutocomplete()
+	useImperativeHandle(ref, () => ({ setValue }))
+	const handleSelect = async () => {
+		try {
+			const address = value || 'Dhaka, Bangladesh'
+			const results = await getGeocode({ address })
+			const { lat, lng } = getLatLng(results[0])
+			getLocation({ lat, lng })
+		} catch (error) {
+			console.error('Error: ', error)
+		}
+	}
+	return (
+		<Autocomplete
+			disabled={!ready}
+			id="place-suggestion"
+			options={data}
+			value={value}
+			onSelect={handleSelect}
+			filterOptions={(option) => option}
+			getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
+			isOptionEqualToValue={(option) => option.description}
+			renderInput={(params) => (
+				<TextField
+					// eslint-disable-next-line react/jsx-props-no-spreading
+					{...params}
+					value="abc"
+					placeholder="Dhaka, Bangladesh"
+					label="Search"
+					variant="outlined"
+				/>
+			)}
+			onInputChange={(event, newInputValue) => setValue(newInputValue)}
+		/>
+	)
+}))
 const CategorySelection = memo(({ formats, handleFormat }) => (
 	<Grid
 		container
