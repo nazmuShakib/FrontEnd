@@ -7,6 +7,7 @@ import {
 } from '@mui/material'
 
 import { useForm } from 'react-hook-form'
+// import { DevTool } from '@hookform/devtools'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -19,9 +20,9 @@ import {
 	Contact,
 	GenderSelection,
 	CategorySelection,
+	PlaceSelection,
 	Header,
 	PlaceDescription,
-	PlaceSelection,
 	Price,
 	RulesAndPreference,
 	RequiredDocuments,
@@ -34,11 +35,11 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 const PropertySchema = z.object({
 	title: z
 		.string()
-		.max(5, 'Title length should be less than or equal to 5 characters')
+		.max(100, 'max 100 characters')
 		.refine((data) => {
 			const actualData = data.trimEnd().trimStart()
 			return actualData !== ''
-		}, 'Title is required'),
+		}, 'Required'),
 	date: z
 		.date()
 		.refine((value) => {
@@ -48,55 +49,60 @@ const PropertySchema = z.object({
 	gender: z
 		.string()
 		.min(1, 'Select a gender'),
+	division: z.string().refine((data) => data !== '', {
+		message: 'Select a Division',
+	}),
+	district: z.string().refine((data) => data !== '', {
+		message: 'Select a District',
+	}),
+	thana: z.string().refine((data) => data !== '', {
+		message: 'Select a Thana',
+	}),
 	category: z
 		.string()
 		.min(1, 'Select a category'),
-	division: z
-		.string()
-		.min(1, 'Select a Division'),
-	district: z
-		.string()
-		.min(1, 'Select a District'),
-	thana: z
-		.string()
-		.min(1, 'Select a Thana/Upazila'),
 	description: z
 		.string()
-		.max(10, 'You can use at most 10 characters')
+		.max(500, 'max 500 characters')
 		.refine(
 			(data) => {
 				const actualData = data.trimEnd().trimStart()
 				return actualData !== ''
 			},
-			{ message: 'Description is required' },
+			{ message: 'Required' },
 		),
 	rules_and_preference: z
 		.string()
-		.max(10, 'You can use at most 10 characters')
-		.optional(),
+		.max(500, 'max 500 characters')
+		.optional('Optional'),
 	documents: z
 		.string()
 		.max(500, 'You can use at most 10 characters')
 		.optional(),
 	price: z
 		.string()
-		.refine((data) => data !== '', 'Price is required')
+		.refine((data) => data !== '', {
+			message: 'Required',
+		})
 		.refine((data) => parseInt(data, 10) >= 0, {
-			message: 'Price should be postive',
+			message: 'Price must be a positive number',
+		})
+		.refine((data) => parseInt(data, 10) <= 1000000007, {
+			message: 'Price must be less than 1000000007',
 		}),
 	contact: z.string()
 		.refine((data) => data !== '', {
-			message: 'Contact is required',
+			message: 'Required',
 		}),
 	address: z
 		.string()
-		.max(100, 'You can use at most 100 characters')
+		.max(100, 'max 100 characters')
 		.refine(
 			(data) => {
 				const actualData = data.trimEnd().trimStart()
 				return actualData !== ''
 			},
-			{ message: 'Address is required' },
+			{ message: 'Required' },
 		),
 	images: z
 		.any()
@@ -121,15 +127,27 @@ export default function AddProperty() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitting },
+		resetField,
+		formState: {
+			errors, isSubmitting,
+		},
+		setError,
+		clearErrors,
 		reset,
 		getValues,
 		control,
-	} = useForm({ resolver: zodResolver(PropertySchema), defaultValues: { gender: '' } })
+	} = useForm({
+		resolver: zodResolver(PropertySchema),
+		defaultValues: {
+			gender: '',
+			district: '',
+			division: '',
+			thana: '',
+		},
+	})
 	const onSubmit = (event) => {
 		console.log(event)
 	}
-
 	return (
 		<Box
 			component="div"
@@ -140,17 +158,25 @@ export default function AddProperty() {
 		>
 			<Box component="div">
 				<FormControl fullWidth component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
-					<Header register={register('title')} error={errors.title} />
+					<Header control={control} error={errors.title} />
 					<DateSelector name="date" control={control} error={errors.date} />
-					<GenderSelection register={register('gender')} error={errors.gender} />
-					<CategorySelection register={register('category')} error={errors.category} />
-					<PlaceDescription register={register('description')} error={errors.description} />
-					<RulesAndPreference register={register('rules_and_preference')} error={errors.rules_and_preference} />
-					<RequiredDocuments register={register('documents')} error={errors.documents} />
-					<PlaceSelection registerDivision={register('division')} registerDistrict={register('district')} registerThana={register('thana')} errorDivision={errors.division} errorDistrict={errors.district} errorThana={errors.thana} />
-					<Address register={register('address')} error={errors.address} />
-					<Price register={register('price')} error={errors.price} />
-					<Contact register={register('contact')} error={errors.contact} />
+					<GenderSelection control={control} error={errors.gender} />
+					<CategorySelection control={control} error={errors.category} />
+					<PlaceDescription control={control} error={errors.description} />
+					<RulesAndPreference control={control} error={errors.rules_and_preference} />
+					<RequiredDocuments control={control} error={errors.documents} />
+					<PlaceSelection
+						control={control}
+						clearErrors={clearErrors}
+						setError={setError}
+						resetField={resetField}
+						errorDivision={errors.division}
+						errorDistrict={errors.district}
+						errorThana={errors.thana}
+					/>
+					<Address control={control} error={errors.address} />
+					<Price control={control} error={errors.price} />
+					<Contact control={control} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting} />

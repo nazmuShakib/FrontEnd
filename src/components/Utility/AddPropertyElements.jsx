@@ -3,6 +3,7 @@ import {
 	useState,
 	useCallback,
 	useMemo,
+	useEffect,
 } from 'react'
 import {
 	Button,
@@ -15,227 +16,257 @@ import {
 	TextareaAutosize,
 	FormLabel,
 } from '@mui/material'
+import { Controller } from 'react-hook-form'
 import { getDistricts, getThanas, Divisions } from '../../Config/GeoInfo'
 
 import '../../styles/forms.css'
 
-const Header = memo(({ register, error }) => {
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
+const Header = memo(({ control, error }) => {
 	console.log('header')
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			placeholder="Give a title"
-			label="Title"
-			type="text"
-			id="title"
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="title"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					name={name}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					label="Title"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
 		/>
 	)
 })
-const Price = memo(({ register, error }) => {
+const Price = memo(({ control, error }) => {
 	console.log('price')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			type="number"
-			id="price"
-			label="Price"
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="price"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="price"
+					name={name}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="number"
+					label="Price"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
 		/>
 	)
 })
-const Contact = memo(({ register, error }) => {
+const Contact = memo(({ control, error }) => {
 	console.log('contact')
-
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			type="tel"
-			id="contact"
-			label="Contact"
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="contact"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="contact"
+					name={name}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="tel"
+					label="Contact"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
 		/>
 	)
 })
-const Address = memo(({ register, error }) => {
+const Address = memo(({ control, error }) => {
 	console.log('address')
-
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
 	return (
-		<TextField
-			margin="normal"
-			name={name}
-			fullWidth
-			type="text"
-			id="address"
-			label="Address"
-			placeholder="Address of the property..."
-			onChange={onChange}
-			onBlur={onBlur}
-			ref={ref}
-			error={Boolean(error)}
-			helperText={error ? error.message : ''}
+		<Controller
+			name="address"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="address"
+					name={name}
+					placeholder="Address of the property..."
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="text"
+					label="Address"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
 		/>
 	)
 })
-const GenderSelection = memo(({ register, error }) => {
+const GenderSelection = memo(({
+	control,
+	error,
+}) => {
 	console.log('gender')
-	const [gender, setGender] = useState('')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
-	const handleGender = (event) => {
-		onChange(event)
-		setGender(event.target.value)
-	}
 	return (
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
 		>
 			<InputLabel id="gender-select">Gender</InputLabel>
-			<Select
-				labelId="gender-select"
-				id="gender"
-				displayEmpty
-				name={name}
-				ref={ref}
-				label="Gender"
-				value={gender}
-				onChange={handleGender}
-				onBlur={onBlur}
-				placeholder="Select Gender"
-				fullWidth
-			>
-				<MenuItem value="male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
-				<MenuItem value="female" sx={{}}>Female</MenuItem>
-			</Select>
+			<Controller
+				name="gender"
+				control={control}
+				defaultValue=""
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<Select
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						name={name}
+						ref={ref}
+						label="Gender"
+						labelId="gender-select"
+						placeholder="Select Gender"
+						id="gender"
+						fullWidth
+					>
+						<MenuItem value="male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
+						<MenuItem value="female" sx={{ borderBottom: '1px solid #a7a2a2' }}>Female</MenuItem>
+					</Select>
+				)}
+			/>
 			<FormHelperText>{error ? error.message : ''}</FormHelperText>
 		</FormControl>
 	)
 })
-const CategorySelection = memo(({ register, error }) => {
+const CategorySelection = memo(({ control, error }) => {
 	console.log('category')
-	const [category, setCategory] = useState('')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
-	const handleCategory = (event) => {
-		onChange(event)
-		setCategory(event.target.value)
-	}
 	return (
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
 		>
 			<InputLabel id="category-select">Category</InputLabel>
-			<Select
-				labelId="category-select"
-				id="category"
-				displayEmpty
-				name={name}
-				ref={ref}
-				label="Category"
-				value={category}
-				onChange={handleCategory}
-				onBlur={onBlur}
-				placeholder="Select Category"
-				fullWidth
-			>
-				<MenuItem value="sublet" sx={{ borderBottom: '1px solid #a7a2a2' }}>Sublet</MenuItem>
-				<MenuItem value="hostel" sx={{ borderBottom: '1px solid #a7a2a2' }}>Hostel</MenuItem>
-				<MenuItem value="mess">Mess</MenuItem>
-			</Select>
+			<Controller
+				name="category"
+				control={control}
+				defaultValue=""
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<Select
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						name={name}
+						ref={ref}
+						label="Category"
+						labelId="category-select"
+						placeholder="Select Category"
+						id="category"
+						fullWidth
+					>
+						<MenuItem value="sublet" sx={{ borderBottom: '1px solid #a7a2a2' }}>Sublet</MenuItem>
+						<MenuItem value="hostel" sx={{ borderBottom: '1px solid #a7a2a2' }}>Hostel</MenuItem>
+						<MenuItem value="mess" sx={{ borderBottom: '1px solid #a7a2a2' }}>Mess</MenuItem>
+					</Select>
+				)}
+			/>
 			<FormHelperText>{error ? error.message : ''}</FormHelperText>
 		</FormControl>
 	)
 })
+
 const PlaceSelection = memo(({
-	registerDivision, errorDivision, registerDistrict, errorDistrict, registerThana, errorThana,
+	control,
+	clearErrors,
+	setError,
+	resetField,
+	errorDivision,
+	errorDistrict,
+	errorThana,
 }) => {
-	console.log('place_selection')
 	const [division, setDivision] = useState('')
 	const [district, setDistrict] = useState('')
 	const [thana, setThana] = useState('')
 	const [allDistricts, setAllDistricts] = useState([])
 	const [allThanas, setAllThanas] = useState([])
 
-	const handleDivision = useCallback((event) => {
-		registerDivision.onChange(event)
-		setDistrict('')
+	const handleDivision = (value) => {
+		setDivision(value)
 		setThana('')
-		setDivision(event.target.value)
-		setAllDistricts(getDistricts(event.target.value))
-	}, [registerDivision])
+		setDistrict('')
+		setAllDistricts(getDistricts(value))
+		resetField('district')
+		resetField('thana')
+		setError('district', { message: 'Select a District' })
+		setError('thana', { message: 'Select a Thana/Upazila' })
+	}
 
-	const handleDistrict = useCallback((event) => {
-		registerDistrict.onChange(event)
+	const handleDistrict = (event) => {
 		setThana('')
 		setDistrict(event.target.value)
 		setAllThanas(getThanas(event.target.value))
-	}, [registerDistrict])
+		clearErrors('district')
+		resetField('thana')
+		setError('thana', { message: 'Select a Thana/Upazila' })
+	}
 
-	const handleThana = useCallback((event) => {
-		registerThana.onChange(event)
+	const handleThana = (event) => {
 		setThana(event.target.value)
-	}, [registerThana])
-
-	useCallback(() => {
-		setDistrict(allDistricts[0])
-	}, [allDistricts])
-
-	useCallback(() => {
-		setThana(allThanas[0])
-	}, [allThanas])
-
+		clearErrors('thana')
+	}
 	const districtLabel = useMemo(() => (division === '' ? 'Select a Division' : 'District'), [division])
 
 	const thanaLabel = useMemo(() => {
@@ -249,97 +280,214 @@ const PlaceSelection = memo(({
 
 	return (
 		<>
-			<FormControl
-				error={Boolean(errorDivision)}
-				margin="normal"
-			>
-				<InputLabel id="division">Division</InputLabel>
-				<Select
-					labelId="division"
-					label="Division"
-					value={division}
-					onChange={handleDivision}
-					onBlur={registerDivision.onBlur}
-					name={registerDivision.name}
-					ref={registerDivision.ref}
-				>
-					{Divisions.map((value) => (
-						<MenuItem
-							key={value}
-							value={value}
-							sx={{ borderBottom: '1px solid #e3e3e4' }}
-						>
-							{value}
-						</MenuItem>
-					))}
-				</Select>
-				<FormHelperText>{errorDivision ? errorDivision.message : '*required'}</FormHelperText>
-			</FormControl>
-
-			<FormControl
-				error={Boolean(errorDistrict)}
-				margin="normal"
-			>
-				<InputLabel id="district">{districtLabel}</InputLabel>
-				<Select
-					labelId="district"
-					label="District"
-					value={district}
-					disabled={division === ''}
-					onChange={handleDistrict}
-					onBlur={registerDistrict.onBlur}
-					name={registerDistrict.name}
-					ref={registerDistrict.ref}
-				>
-					{
-						allDistricts.map((value) => (
-							<MenuItem key={value} value={value} sx={{ borderBottom: '1px solid #e3e3e4' }}>{value}</MenuItem>
-						))
-					}
-				</Select>
-				<FormHelperText>{errorDistrict ? errorDistrict.message : '*required'}</FormHelperText>
-			</FormControl>
-
-			<FormControl
-				error={Boolean(errorThana)}
-				margin="normal"
-			>
-				<InputLabel id="thana/upazila">{thanaLabel}</InputLabel>
-				<Select
-					labelId="thana/upazila"
-					label="Thana/Upazila"
-					value={thana}
-					disabled={district === ''}
-					onChange={handleThana}
-					onBlur={registerThana.onBlur}
-					name={registerThana.name}
-					ref={registerThana.ref}
-				>
-					{
-						allThanas.map((value) => (
-							<MenuItem
-								key={value}
-								value={value}
-								sx={{ borderBottom: '1px solid #e3e3e4' }}
-							>
-								{value}
-							</MenuItem>
-						))
-					}
-				</Select>
-				<FormHelperText>{errorThana ? errorThana.message : '*required'}</FormHelperText>
-			</FormControl>
+			<Division
+				control={control}
+				error={errorDivision}
+				handleDivision={handleDivision}
+				division={division}
+			/>
+			<District
+				control={control}
+				error={errorDistrict}
+				handleDistrict={handleDistrict}
+				district={district}
+				division={division}
+				districtLabel={districtLabel}
+				allDistricts={allDistricts}
+			/>
+			<Thana
+				control={control}
+				error={errorThana}
+				allThanas={allThanas}
+				thana={thana}
+				thanaLabel={thanaLabel}
+				handleThana={handleThana}
+				district={district}
+			/>
 		</>
 	)
 })
-const PlaceDescription = memo(({ register, error }) => {
-	console.log('description')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
+
+const Division = memo(({
+	control, error, handleDivision, division,
+}) => {
+	console.log('division')
+	return (
+		<FormControl
+			error={Boolean(error)}
+			margin="normal"
+		>
+			<InputLabel id="division">Division</InputLabel>
+			<Controller
+				defaultValue=""
+				name="division"
+				control={control}
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+					},
+				}) => (
+					<Select
+						value={division}
+						onChange={(event) => {
+							onChange(event)
+							handleDivision(event.target.value)
+						}}
+						onBlur={onBlur}
+						name={name}
+						ref={ref}
+						label="Division"
+						labelId="place-division"
+						placeholder="Select Division"
+						id="division"
+						fullWidth
+					>
+						{Divisions.map((divisionName) => (
+							<MenuItem
+								key={divisionName}
+								value={divisionName}
+								sx={{ borderBottom: '1px solid #e3e3e4' }}
+							>
+								{divisionName}
+							</MenuItem>
+						))}
+					</Select>
+				)}
+			/>
+			<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
+		</FormControl>
+	)
+})
+
+const District = memo(({
+	control,
+	error,
+	handleDistrict,
+	district,
+	division,
+	districtLabel,
+	allDistricts,
+}) => {
+	console.log('division')
+	return (
+		<FormControl
+			error={Boolean(error)}
+			margin="normal"
+		>
+			<InputLabel id="district">{districtLabel}</InputLabel>
+			<Controller
+				name="district"
+				control={control}
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+					},
+				}) => (
+					<Select
+						value={district}
+						onChange={(event) => {
+							onChange(event.target.value)
+							handleDistrict(event)
+						}}
+						onBlur={onBlur}
+						name={name}
+						ref={ref}
+						disabled={division === ''}
+						label="District"
+						labelId="place-district"
+						placeholder="Select District"
+						id="district"
+						fullWidth
+					>
+						{
+							allDistricts.map((districtName) => (
+								<MenuItem
+									key={districtName}
+									value={districtName}
+									sx={{ borderBottom: '1px solid #e3e3e4' }}
+								>
+									{districtName}
+								</MenuItem>
+							))
+						}
+					</Select>
+				)}
+			/>
+			<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
+		</FormControl>
+	)
+})
+
+const Thana = memo(({
+	control,
+	error,
+	allThanas,
+	thana,
+	thanaLabel,
+	handleThana,
+	district,
+}) => {
+	console.log('thana')
+	return (
+		<FormControl
+			error={Boolean(error)}
+			margin="normal"
+		>
+			<InputLabel id="thana">{thanaLabel}</InputLabel>
+			<Controller
+				name="thana"
+				control={control}
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+					},
+				}) => (
+					<Select
+						value={thana}
+						onChange={(event) => {
+							onChange(event)
+							handleThana(event)
+						}}
+						onBlur={onBlur}
+						name={name}
+						ref={ref}
+						disabled={district === ''}
+						label="Thana/Upazila"
+						labelId="place-thana"
+						placeholder="Select Thana/Upazila"
+						id="thana"
+						fullWidth
+					>
+						{
+							allThanas.map((thanaName) => (
+								<MenuItem
+									key={thanaName}
+									value={thanaName}
+									sx={{ borderBottom: '1px solid #e3e3e4' }}
+								>
+									{thanaName}
+								</MenuItem>
+							))
+						}
+					</Select>
+				)}
+			/>
+			<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
+		</FormControl>
+	)
+})
+
+const PlaceDescription = memo(({ control, error }) => {
+	console.log('place_description')
 	return (
 		<FormControl
 			error={Boolean(error)}
@@ -347,83 +495,108 @@ const PlaceDescription = memo(({ register, error }) => {
 			aria-hidden="true"
 		>
 			<FormLabel>Desciption</FormLabel>
-			<TextareaAutosize
-				id="description"
-				name={name}
-				label="Description"
-				aria-label="description"
-				minRows={5}
-				maxRows={7}
-				placeholder="What this place offers..."
-				className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
-				onChange={onChange}
-				onBlur={onBlur}
-				ref={ref}
+
+			<Controller
+				name="description"
+				control={control}
+				render={({
+					field: {
+						onChange, onBlur, ref, name,
+					},
+				}) => (
+					<TextareaAutosize
+						id="description"
+						name={name}
+						label="Description"
+						aria-label="description"
+						minRows={5}
+						maxRows={7}
+						placeholder="What this place offers..."
+						className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+					/>
+				)}
 			/>
-			<FormHelperText>{error ? error.message : ''}</FormHelperText>
-		</FormControl>
-	)
-})
-const RulesAndPreference = memo(({ register, error }) => {
-	console.log('rules_and_preference')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
-	return (
-		<FormControl
-			error={error}
-			margin="normal"
-		>
-			<FormLabel>Rules & Preferences</FormLabel>
-			<TextareaAutosize
-				id="rules_and_preference"
-				name={name}
-				aria-label="rules_and_preference"
-				minRows={5}
-				maxRows={7}
-				aria-hidden="true"
-				className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
-				placeholder="Rules and Preference..."
-				onChange={onChange}
-				onBlur={onBlur}
-				ref={ref}
-			/>
-			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+
+			<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
 		</FormControl>
 	)
 })
 
-const RequiredDocuments = memo(({ register, error }) => {
-	console.log('required_documents')
-	const {
-		onChange,
-		onBlur,
-		name,
-		ref,
-	} = register
+const RulesAndPreference = memo(({ control, error }) => {
+	console.log('rules_and_preference')
 	return (
 		<FormControl
-			error={error}
+			error={Boolean(error)}
 			margin="normal"
+			aria-hidden="true"
+		>
+			<FormLabel>Rules & Preferences</FormLabel>
+
+			<Controller
+				name="rules_and_preference"
+				control={control}
+				render={({
+					field: {
+						onChange, onBlur, ref, name,
+					},
+				}) => (
+					<TextareaAutosize
+						id="rules_and_preference"
+						name={name}
+						aria-label="rules_and_preference"
+						minRows={5}
+						maxRows={7}
+						aria-hidden="true"
+						className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
+						placeholder="Rules and Preference..."
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+					/>
+				)}
+			/>
+			<FormHelperText>{error ? error.message : 'Optional'}</FormHelperText>
+		</FormControl>
+	)
+})
+
+const RequiredDocuments = memo(({ control, error }) => {
+	console.log('required_documents')
+	return (
+		<FormControl
+			error={Boolean(error)}
+			margin="normal"
+			aria-hidden="true"
 		>
 			<FormLabel>Required Documents</FormLabel>
-			<TextareaAutosize
-				id="required_documents"
-				name={name}
-				aria-label="required_documents"
-				minRows={5}
-				maxRows={7}
-				aria-hidden="true"
-				className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
-				placeholder="Required Documents..."
-				onChange={onChange}
-				onBlur={onBlur}
-				ref={ref}
+
+			<Controller
+				name="required_documents"
+				control={control}
+				render={({
+					field: {
+						onChange, onBlur, ref, name,
+					},
+				}) => (
+					<TextareaAutosize
+						id="required_documents"
+						name={name}
+						aria-label="required_documents"
+						minRows={5}
+						maxRows={7}
+						aria-hidden="true"
+						className={`place-text-area ${error ? 'place-text-area-error' : 'place-text-area-normal'}`}
+						placeholder="Required Documents..."
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+					/>
+				)}
 			/>
-			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+			<FormHelperText>{error ? error.message : 'Optional'}</FormHelperText>
 		</FormControl>
 	)
 })
@@ -449,8 +622,8 @@ export {
 	GenderSelection,
 	CategorySelection,
 	Header,
-	PlaceDescription,
 	PlaceSelection,
+	PlaceDescription,
 	Price,
 	RulesAndPreference,
 	RequiredDocuments,
