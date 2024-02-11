@@ -10,22 +10,9 @@
 	width: 90% !important;
 	overflow-y: auto;
 	padding: 1.5em;
-	box-shadow: 100;
+	box-shadow: 24;
 	background-color: #fbfdff;
-	backdrop-filter: blur(100px) !important;
 	z-index: 1000;
-}
-
-.backdrop-blur {
-	backdrop-filter: blur(5px);
-	/* Adjust the blur radius as needed */
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 10;
-	/* Ensure the backdrop is behind the modal */
 }
 
 .modal-button {
