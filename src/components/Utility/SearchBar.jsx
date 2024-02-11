@@ -92,7 +92,6 @@ const TransitionsModal = memo(() => {
 			>
 				Search
 			</Button>
-			{open && <Box component="div" className="backdrop-blur" />}
 			<Modal
 				aria-labelledby="transition-modal-title"
 				aria-describedby="transition-modal-description"
