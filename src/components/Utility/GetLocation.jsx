@@ -1,6 +1,7 @@
 import {
 	memo,
 	useState,
+	useContext,
 } from 'react'
 
 import {
@@ -14,7 +15,6 @@ import { Controller } from 'react-hook-form'
 
 import {
 	GoogleMap,
-	useJsApiLoader,
 	MarkerF,
 } from '@react-google-maps/api'
 
@@ -31,6 +31,8 @@ import {
 	ComboboxOption,
 } from '@reach/combobox'
 
+import GooglePlacesContext from '../../Contexts/GooglePlacesLoader'
+
 import '@reach/combobox/styles.css'
 import '../../styles/map.css'
 
@@ -39,14 +41,10 @@ const center = {
 	lng: 90.4152,
 }
 
-const lib = ['places']
 const GetLocation = memo(({
 	control, name, error,
 }) => {
-	const { isLoaded } = useJsApiLoader({
-		googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-		libraries: lib,
-	})
+	const isLoaded = useContext(GooglePlacesContext)
 	const [selected, setSelected] = useState(null)
 	return (
 		<FormControl error={Boolean(error)} margin="normal">
