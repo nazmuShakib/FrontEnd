@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { Box, CssBaseline } from '@mui/material'
+import Home from './Pages/Home'
 import Login from './components/Login'
 import Register from './components/Register'
 import NavBar from './components/NavBar'
@@ -19,7 +20,7 @@ function App() {
 					<Route
 						exact
 						path="/"
-						element={<h1>Home page</h1>}
+						element={<Home />}
 					/>
 					<Route
 						exact

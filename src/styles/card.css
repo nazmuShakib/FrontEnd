@@ -1,0 +1,38 @@
+@media (min-width: 500px) {
+	.advertise-card {
+		width: 50%;
+	}
+
+}
+
+.advertisement {
+	margin: 5%;
+}
+
+#advertise-taka {
+	width: 10px;
+	scale: 2;
+}
+
+@media (min-width: 700px) {
+	.advertise-card {
+		width: 33.3%;
+	}
+}
+
+@media (min-width: 900px) {
+	.advertise-card {
+		width: 25%;
+	}
+}
+
+@media (min-width: 1100px) {
+	.advertise-card {
+		width: 20%;
+	}
+}
+
+
+/* .advertisement {
+	margin: 1em;
+} */
