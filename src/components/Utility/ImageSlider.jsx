@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import {
 	Box,
 } from '@mui/material'
@@ -30,8 +31,6 @@ function CarouselSlider() {
 	return (
 		<Box sx={{
 			width: '100%',
-			paddingRight: '2px',
-			paddingLeft: '2px',
 		}}
 		>
 			<Carousel
@@ -52,14 +51,14 @@ function CarouselSlider() {
 		</Box>
 	)
 }
-export default function ImageSlider() {
+const ImageSlider = memo(() => {
+	console.log('image slider')
 	return (
 		<Box
 			component="div"
 			width="100%"
 			paddingTop="23.33%"
 			// 30 : 7 aspect ratio
-			position="relative"
 			sx={{
 				display: 'block',
 				'@media only screen and (min-width: 430px)': {
@@ -78,7 +77,6 @@ export default function ImageSlider() {
 				},
 				'@media only screen and (min-width: 968px)': {
 					// width: '55%',
-					margin: 0,
 					paddingTop: '9.833%',
 				},
 				'@media only screen and (min-width: 1168px)': {
@@ -94,4 +92,5 @@ export default function ImageSlider() {
 			<CarouselSlider />
 		</Box>
 	)
-}
+})
+export default ImageSlider

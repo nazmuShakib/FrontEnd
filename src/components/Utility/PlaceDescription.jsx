@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import {
 	Card,
 	CardContent,
@@ -7,7 +8,8 @@ import {
 } from '@mui/material'
 import { DescriptionOutlined } from '@mui/icons-material'
 
-export default function PlaceDescription() {
+const PlaceDescription = memo(() => {
+	console.log('description')
 	return (
 		<Box sx={{
 			margin: 'auto',
@@ -54,4 +56,5 @@ export default function PlaceDescription() {
 			</Card>
 		</Box>
 	)
-}
+})
+export default PlaceDescription

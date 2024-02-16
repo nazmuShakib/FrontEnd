@@ -5,7 +5,8 @@ import {
 } from '@mui/material'
 import PropertyHeader from './Utility/PropertyHeader'
 import BasicInfo from './Utility/BasicInfo'
-import ImagesAndDescription from './Utility/ImagesAndDescription'
+import ImageSlider from './Utility/ImageSlider'
+import PlaceDescription from './Utility/PlaceDescription'
 import PlaceInfo from './Utility/PlaceInfo'
 import RulesAndPreferences from './Utility/RuleAndPreferences'
 import Map from './Utility/Map'
@@ -43,7 +44,8 @@ export default function Property() {
 			<PropertyHeader />
 			<Divider variant="middle" />
 			<BasicInfo />
-			<ImagesAndDescription />
+			<ImageSlider />
+			<PlaceDescription />
 			<RulesAndPreferences />
 			<PlaceInfo />
 			{auth && <ContactAndAddress />}
