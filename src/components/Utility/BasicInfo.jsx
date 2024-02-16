@@ -9,11 +9,10 @@ const BasicInfo = memo(() => (
 	<Box
 		display="block"
 		marginTop="20px"
-		marginBottom="10px"
 		sx={{
 			'@media (min-width: 600px)': {
 				display: 'flex',
-				justifyContent: 'space-around',
+				justifyContent: 'space-evenly',
 			},
 		}}
 	>
