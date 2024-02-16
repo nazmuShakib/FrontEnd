@@ -3,6 +3,7 @@ import {
 	useMemo,
 	useState,
 	memo,
+	useContext,
 } from 'react'
 
 import {
@@ -12,10 +13,10 @@ import {
 
 import {
 	GoogleMap,
-	useJsApiLoader,
 	MarkerF,
 	InfoWindow,
 } from '@react-google-maps/api'
+import GooglePlacesContext from '../../Contexts/GooglePlacesLoader'
 
 const center = {
 	lat: 23.8041,
@@ -38,10 +39,9 @@ const initialMarkers = [
 ]
 // This is just a prototype, there will be one marker for the corresponding location
 const Map = memo(() => {
-	const { isLoaded } = useJsApiLoader({
-		googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-	})
 	// TODO Get marker from database and show on the map
+	const isLoaded = useContext(GooglePlacesContext)
+
 	const locations = initialMarkers
 	const [selectedMarker, setSelectedMarker] = useState(null)
 
