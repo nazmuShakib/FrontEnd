@@ -1,4 +1,8 @@
-import { useState, useCallback } from 'react'
+import {
+	useState,
+	useCallback,
+	useMemo,
+} from 'react'
 import {
 	Box,
 	Divider,
@@ -18,12 +22,25 @@ export default function Property() {
 	const auth = true
 	const initialRating = localStorage.getItem('rating') || 0
 	const [rating, setRating] = useState(parseInt(initialRating, 10))
+	const [url, setUrl] = useState([])
 
 	const getRating = useCallback((newRating) => {
 		const v = newRating == null ? 0 : newRating
 		setRating(v)
 		localStorage.setItem('rating', v.toString())
 	}, [setRating])
+	useMemo(() => {
+		const f = async () => {
+			try {
+				const res = await fetch('http://localhost:3000/get')
+				const link = await res.json()
+				setUrl(JSON.parse(link))
+			} catch (err) {
+				console.log(err)
+			}
+		}
+		f()
+	}, [])
 	console.log('property')
 	return (
 		<Box
@@ -44,7 +61,7 @@ export default function Property() {
 			<PropertyHeader />
 			<Divider variant="middle" />
 			<BasicInfo />
-			<ImageSlider />
+			<ImageSlider url={url} />
 			<PlaceDescription />
 			<RulesAndPreferences />
 			<PlaceInfo />

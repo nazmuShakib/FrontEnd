@@ -145,8 +145,19 @@ export default function AddProperty() {
 			thana: '',
 		},
 	})
-	const onSubmit = (event) => {
+	const onSubmit = async (event) => {
 		console.log(event)
+		try {
+			const formData = new FormData()
+			event.images.forEach((file) => formData.append('images', file))
+			const res = await fetch('http://localhost:3000/image', {
+				method: 'POST',
+				body: formData,
+			})
+			console.log(res)
+		} catch (err) {
+			console.log(err)
+		}
 	}
 	return (
 		<Box

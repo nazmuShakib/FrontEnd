@@ -1,0 +1,16 @@
+.carousel .control-arrow,
+.carousel.carousel-slider .control-arrow {
+	opacity: 1;
+}
+
+.carousel .control-arrow {
+	opacity: 1;
+}
+
+.carousel .control-arrow::before,
+.carousel.carousel-slider .control-arrow::before {
+	margin: 0 0px;
+	display: none;
+	border-top: 0px solid transparent;
+	border-bottom: 0px solid transparent;
+}
