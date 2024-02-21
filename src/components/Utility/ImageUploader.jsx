@@ -46,6 +46,7 @@ export default function ImageUploader({
 						allowMultiple
 						checkValidity
 						storeAsFile
+						allowReorder
 						onupdatefiles={(fileItems) => {
 							onChange(fileItems.map((fileItem) => fileItem.file))
 							onBlur(fileItems.map((fileItem) => fileItem.file))
