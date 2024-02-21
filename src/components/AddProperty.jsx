@@ -7,6 +7,8 @@ import {
 } from '@mui/material'
 
 import { useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import axios from 'axios'
 // import { DevTool } from '@hookform/devtools'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -75,7 +77,7 @@ const PropertySchema = z.object({
 		.string()
 		.max(500, 'max 500 characters')
 		.optional('Optional'),
-	documents: z
+	required_documents: z
 		.string()
 		.max(500, 'You can use at most 10 characters')
 		.optional(),
@@ -145,15 +147,22 @@ export default function AddProperty() {
 			thana: '',
 		},
 	})
+	const handleData = (formData) => axios({
+		method: 'POST',
+		url: 'http://localhost:3000/addProperty',
+		data: formData,
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	})
+	const { mutateAsync, isLoading } = useMutation(['post'], handleData)
 	const onSubmit = async (event) => {
-		console.log(event)
 		try {
 			const formData = new FormData()
-			event.images.forEach((file) => formData.append('images', file))
-			const res = await fetch('http://localhost:3000/image', {
-				method: 'POST',
-				body: formData,
-			})
+			const { images, ...data } = event
+			images.forEach((file) => formData.append('images', file))
+			formData.append('data', JSON.stringify(data))
+			const res = await mutateAsync(formData)
 			console.log(res)
 		} catch (err) {
 			console.log(err)

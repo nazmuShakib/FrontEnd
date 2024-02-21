@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { Box, CssBaseline } from '@mui/material'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import Home from './Pages/Home'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -11,41 +12,44 @@ import GooglePlacesContext from './Contexts/GooglePlacesLoader'
 
 function App() {
 	const { isLoaded } = useGooglePlaces()
+	const queryClient = new QueryClient()
 	return (
 		<Box component="div">
-			<GooglePlacesContext.Provider value={isLoaded}>
-				<CssBaseline />
-				<NavBar />
-				<Routes>
-					<Route
-						exact
-						path="/"
-						element={<Home />}
-					/>
-					<Route
-						exact
-						path="/my-favorites"
-						element={<h1>Favorites button clicked</h1>}
-					/>
-					<Route
-						exact
-						path="/my-properties"
-						element={<h1>Properties button clicked</h1>}
-					/>
-					<Route
-						exact
-						path="/register"
-						element={<Register />}
-					/>
-					<Route
-						exact
-						path="/login"
-						element={<Login />}
-					/>
-					<Route path="/property" element={<Property />} />
-					<Route path="/add" element={<AddProperty />} />
-				</Routes>
-			</GooglePlacesContext.Provider>
+			<QueryClientProvider client={queryClient}>
+				<GooglePlacesContext.Provider value={isLoaded}>
+					<CssBaseline />
+					<NavBar />
+					<Routes>
+						<Route
+							exact
+							path="/"
+							element={<Home />}
+						/>
+						<Route
+							exact
+							path="/my-favorites"
+							element={<h1>Favorites button clicked</h1>}
+						/>
+						<Route
+							exact
+							path="/my-properties"
+							element={<h1>Properties button clicked</h1>}
+						/>
+						<Route
+							exact
+							path="/register"
+							element={<Register />}
+						/>
+						<Route
+							exact
+							path="/login"
+							element={<Login />}
+						/>
+						<Route path="/property" element={<Property />} />
+						<Route path="/add" element={<AddProperty />} />
+					</Routes>
+				</GooglePlacesContext.Provider>
+			</QueryClientProvider>
 		</Box>
 	)
 }
