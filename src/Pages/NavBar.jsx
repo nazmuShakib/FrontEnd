@@ -4,13 +4,13 @@ import {
 	Toolbar,
 	CssBaseline,
 } from '@mui/material'
-import HomeButton from './Utility/HomeButton'
-import MyFavoritesButton from './Utility/MyFavorites'
-import MyPropertyButton from './Utility/MyPropertyButton'
-import AddPropertyButton from './Utility/AddPropertyButton'
-import LoginButton from './Utility/LoginButton'
-import SearchBar from './Utility/SearchBar'
-import MenuBar from './Utility/MenuBar'
+import HomeButton from '../components/Utility/HomeButton'
+import MyFavoritesButton from '../components/Utility/MyFavorites'
+import MyPropertyButton from '../components/Utility/MyPropertyButton'
+import AddPropertyButton from '../components/AddProperty/AddPropertyButton'
+import LoginButton from '../components/Utility/LoginButton'
+import SearchBar from '../components/Utility/SearchBar'
+import MenuBar from '../components/Utility/MenuBar'
 
 export default function NavBar() {
 	return (

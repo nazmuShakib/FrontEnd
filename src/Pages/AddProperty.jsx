@@ -13,9 +13,9 @@ import axios from 'axios'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import ImageUploader from './Utility/ImageUploader'
-import GetLocation from './Utility/GetLocation'
-import DateSelector from './Utility/DateSelector'
+import ImageUploader from '../components/AddProperty/ImageUploader'
+import GetLocation from '../components/AddProperty/GetLocation'
+import DateSelector from '../components/AddProperty/DateSelector'
 
 import {
 	Address,
@@ -29,7 +29,7 @@ import {
 	RulesAndPreference,
 	RequiredDocuments,
 	SubmitButton,
-} from './Utility/AddPropertyElements'
+} from '../components/AddProperty/AddPropertyElements'
 
 const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']

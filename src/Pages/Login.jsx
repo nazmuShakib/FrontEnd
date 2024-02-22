@@ -9,7 +9,7 @@ import {
 	InputField,
 	Password,
 	SubmitButton,
-} from './Utility/Authentication'
+} from '../components/Utility/Authentication'
 
 export default function Login() {
 	const handleSubmit = (event) => {

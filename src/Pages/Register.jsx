@@ -24,7 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import {
 	Header,
-} from './Utility/Authentication'
+} from '../components/Utility/Authentication'
 
 const SignUpSchema = z.object({
 	username: z
