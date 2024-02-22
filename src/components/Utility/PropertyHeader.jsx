@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { Box } from '@mui/material'
 
-const PropertyHeader = memo(() => (
+const PropertyHeader = memo(({ title }) => (
 	<Box
 		component="h3"
 		variant="h1"
@@ -22,7 +22,8 @@ const PropertyHeader = memo(() => (
 			},
 		}}
 	>
-		Property Header of a house with property information and other descriptions of the flat. 2 Bedroom, 2 Bathroom etc
+		{/* Property Header of a house with property information and other descriptions of the flat. 2 Bedroom, 2 Bathroom etc */}
+		{title}
 	</Box>
 ))
 

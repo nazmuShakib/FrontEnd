@@ -6,9 +6,9 @@ import {
 	Divider,
 	Typography,
 } from '@mui/material'
-import { RemoveCircleOutline } from '@mui/icons-material'
+import { DocumentScannerOutlined } from '@mui/icons-material'
 
-const RulesAndPreferences = memo(({ rulesAndPreference }) => (
+const RequiredDocuments = memo(({ requiredDocuments }) => (
 	<Box sx={{
 		marginTop: '10px',
 		width: '100%',
@@ -17,14 +17,14 @@ const RulesAndPreferences = memo(({ rulesAndPreference }) => (
 	>
 		<Card>
 			<CardContent>
-				<Typography component="h1" variant="h6" textAlign="center">Rules & Preferences</Typography>
-				<Divider><RemoveCircleOutline /></Divider>
+				<Typography component="h1" variant="h6" textAlign="center">Required Documents</Typography>
+				<Divider><DocumentScannerOutlined /></Divider>
 				<Typography component="section" variant="span" sx={{ whiteSpace: 'pre-wrap' }}>
-					{rulesAndPreference || 'N/A'}
+					{requiredDocuments || 'N/A'}
 				</Typography>
 			</CardContent>
 		</Card>
 	</Box>
 ))
 
-export default RulesAndPreferences
+export default RequiredDocuments

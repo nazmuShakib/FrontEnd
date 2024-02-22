@@ -12,8 +12,7 @@ import {
 } from '@mui/icons-material'
 import Taka from '../../assets/icons/Taka'
 
-const PriceAndAdvertiser = memo(() => {
-	const price = 1250
+const PriceAndAdvertiser = memo(({ price }) => {
 	const userRating = '4.5'
 	const userName = 'Shakib'
 

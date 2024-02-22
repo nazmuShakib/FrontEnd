@@ -86,7 +86,7 @@ function CarouselSlider({ url }) {
 				renderArrowPrev={renderArrowPrev}
 				renderArrowNext={renderArrowNext}
 			>
-				{url.map((img, index) => (
+				{url?.map((img) => (
 					<img
 						key={img}
 						src={img}

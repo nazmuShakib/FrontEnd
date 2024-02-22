@@ -10,7 +10,7 @@ import {
 import { PlaceOutlined } from '@mui/icons-material'
 import Place from './Place'
 
-const PlaceInfo = memo(() => (
+const PlaceInfo = memo(({ placeInfo }) => (
 	<Box sx={{
 		marginTop: '10px',
 		width: '100%',
@@ -22,12 +22,12 @@ const PlaceInfo = memo(() => (
 			<Typography component="h1" variant="h6" textAlign="center">Place Info</Typography>
 			<Divider variant="middle"><PlaceOutlined /></Divider>
 			<CardContent title="Place Info">
-				<Grid container spacing={2}>
-					<Place placeType="Division" placeName="Rangpur" />
-					<Place placeType="District" placeName="Rangpur" />
+				<Grid container spacing={2} justifyContent="center">
+					<Place placeType="Division" placeName={placeInfo?.division} />
+					<Place placeType="District" placeName={placeInfo?.district} />
 					<Divider />
-					<Place placeType="Upazilla" placeName="Rangpur" />
-					<Place placeType="Area" placeName="Rangpur" />
+					<Place placeType="Upazilla" placeName={placeInfo?.thana} />
+					{/* <Place placeType="Area" placeName="Rangpur" /> */}
 				</Grid>
 			</CardContent>
 		</Card>
