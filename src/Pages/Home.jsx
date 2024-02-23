@@ -1,5 +1,7 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from 'react-query'
+import axios from 'axios'
 import {
 	Box,
 	Card,
@@ -8,26 +10,33 @@ import {
 	CardMedia,
 	Grid,
 	Typography,
+	CircularProgress,
 } from '@mui/material'
 import '../styles/card.css'
-import A from '../assets/images/A.jpeg'
 import Taka from '../assets/icons/taka.svg'
 
 const Home = memo(() => {
 	console.log('home')
+	const fetchData = () => axios.get('http://localhost:3000/property')
+	const {
+		isLoading, data, isError, error,
+	} = useQuery('allproperties', fetchData, { staleTime: 30000 })
+	if (isError) return <h1>{error.message}</h1>
+	if (isLoading) return <CircularProgress />
+	const allProperties = data?.data.data
 	return (
 		<Box component="div" className="advertisement">
-			<Grid container spacing={2} direction="row" justifyContent="normal" alignItems="center">
-				{[...Array(12)].map((_, index) => ( // Rendering 12 cards for demonstration
+			<Grid container spacing={2} direction="row" justifyContent="normal" alignItems="center" className="grid">
+				{allProperties.map((property) => (
 					<Grid key={Number(Math.random())} item className="advertise-card">
-						<Card>
-							<CardActionArea component={Link} to="http://localhost:5173/add">
-								<CardMedia component="img" image={A} />
-								<CardContent>
-									<Box component="div" display="flex" alignItems="center" justifyContent="normal" gap="5px">
-										<Box component="img" src={Taka} id="advertise-taka" />
+						<Card className="card">
+							<CardActionArea component={Link} to="/property" state={{ from: property }}>
+								<CardMedia component="img" image={property.imageUrls[0]} loading="lazy" height="200px" />
+								<CardContent className="card-content">
+									<Box component="div" display="flex" alignItems="center" justifyContent="normal" gap="10px">
+										<Box component="img" src={Taka} loading="lazy" id="advertise-taka" />
 										<Typography variant="h6" component="h1">
-											1200
+											{property.price}
 										</Typography>
 									</Box>
 									<Typography
@@ -37,10 +46,10 @@ const Home = memo(() => {
 										1 March, 2024
 									</Typography>
 									<Typography variant="body2" component="div">
-										Address
+										{`${property.placeInfo.thana}, ${property.placeInfo.district}`}
 									</Typography>
-									<Typography variant="body1" component="article">
-										আমি গতিপ্রবাহে অংশগ্রহণ করে বাংলা ভাষায় সেন্টেন্স তৈরি করছি।
+									<Typography variant="body1" component="article" sx={{ overflowWrap: 'break-word', hyphens: 'auto' }}>
+										{property.title}
 									</Typography>
 								</CardContent>
 							</CardActionArea>

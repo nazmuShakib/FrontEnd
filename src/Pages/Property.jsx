@@ -2,13 +2,11 @@ import {
 	useState,
 	useCallback,
 } from 'react'
+import { useLocation } from 'react-router-dom'
 import {
 	Box,
 	Divider,
-	CircularProgress,
 } from '@mui/material'
-import { useQuery } from 'react-query'
-import axios from 'axios'
 import PropertyHeader from '../components/ShowProperty/PropertyHeader'
 import BasicInfo from '../components/ShowProperty/BasicInfo'
 import ImageSlider from '../components/ShowProperty/ImageSlider'
@@ -22,6 +20,8 @@ import ContactAndAddress from '../components/ShowProperty/ContactAndAddress'
 import Rating from '../components/ShowProperty/Rating'
 
 export default function Property() {
+	const location = useLocation()
+	const { from } = location.state
 	const auth = true
 	const initialRating = localStorage.getItem('rating') || 0
 	const [rating, setRating] = useState(parseInt(initialRating, 10))
@@ -31,14 +31,8 @@ export default function Property() {
 		setRating(v)
 		localStorage.setItem('rating', v.toString())
 	}, [setRating])
-	const fetchData = () => axios.get('http://localhost:3000/property')
-	const {
-		isLoading, data, isError, error,
-	} = useQuery('property', fetchData, { staleTime: 30000 })
-	if (isError) return <h1>{error.message}</h1>
-	if (isLoading) return <CircularProgress />
-	const res = data?.data.data[0]
 	console.log('property')
+	const res = from
 	return (
 		<Box
 			component="div"
