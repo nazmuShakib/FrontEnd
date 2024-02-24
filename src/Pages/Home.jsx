@@ -20,42 +20,50 @@ const Home = memo(() => {
 	const fetchData = () => axios.get('http://localhost:3000/property')
 	const {
 		isLoading, data, isError, error,
-	} = useQuery('allproperties', fetchData, { staleTime: 30000 })
+	} = useQuery('allproperties', fetchData, { staleTime: 1000 * 60 * 5 })
 	if (isError) return <h1>{error.message}</h1>
 	if (isLoading) return <CircularProgress />
 	const allProperties = data?.data.data
 	return (
 		<Box component="div" className="advertisement">
 			<Grid container spacing={2} direction="row" justifyContent="normal" alignItems="center" className="grid">
-				{allProperties.map((property) => (
-					<Grid key={Number(Math.random())} item className="advertise-card">
-						<Card className="card">
-							<CardActionArea component={Link} to="/property" state={{ from: property }}>
-								<CardMedia component="img" image={property.imageUrls[0]} loading="lazy" height="200px" />
-								<CardContent className="card-content">
-									<Box component="div" display="flex" alignItems="center" justifyContent="normal" gap="10px">
-										<Box component="img" src={Taka} loading="lazy" id="advertise-taka" />
-										<Typography variant="h6" component="h1">
-											{property.price}
+				{allProperties.map((property) => {
+					const date = new Date(property.availableDate)
+					const formattedDate = new Intl.DateTimeFormat('en-US', {
+						day: 'numeric',
+						month: 'long',
+						year: 'numeric',
+					}).format(date)
+					return (
+						<Grid key={Number(Math.random())} item className="advertise-card">
+							<Card className="card">
+								<CardActionArea component={Link} to="/property" state={{ from: property }}>
+									<CardMedia component="img" image={property.thumbnail} loading="lazy" height="200px" />
+									<CardContent className="card-content">
+										<Box component="div" display="flex" alignItems="center" justifyContent="normal" gap="10px">
+											<img alt="taka" src={Taka} loading="lazy" id="advertise-taka" />
+											<Typography variant="h6" component="h1">
+												{property.price}
+											</Typography>
+										</Box>
+										<Typography
+											variant="subtitle2"
+											component="span"
+										>
+											{formattedDate}
 										</Typography>
-									</Box>
-									<Typography
-										variant="subtitle2"
-										component="span"
-									>
-										1 March, 2024
-									</Typography>
-									<Typography variant="body2" component="div">
-										{`${property.placeInfo.thana}, ${property.placeInfo.district}`}
-									</Typography>
-									<Typography variant="body1" component="article" sx={{ overflowWrap: 'break-word', hyphens: 'auto' }}>
-										{property.title}
-									</Typography>
-								</CardContent>
-							</CardActionArea>
-						</Card>
-					</Grid>
-				))}
+										<Typography variant="body2" component="div">
+											{`${property.placeInfo.thana}, ${property.placeInfo.district}`}
+										</Typography>
+										<Typography variant="body1" component="article" sx={{ overflowWrap: 'break-word', hyphens: 'auto' }}>
+											{property.title}
+										</Typography>
+									</CardContent>
+								</CardActionArea>
+							</Card>
+						</Grid>
+					)
+				})}
 			</Grid>
 		</Box>
 	)

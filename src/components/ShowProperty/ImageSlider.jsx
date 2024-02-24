@@ -1,8 +1,9 @@
-import { memo } from 'react'
+import {
+	memo, useState, useEffect, useRef,
+} from 'react'
 import {
 	Box,
 	Button,
-	IconButton,
 } from '@mui/material'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
@@ -11,27 +12,23 @@ import {
 	ArrowBackRounded,
 	ArrowForwardRounded,
 } from '@mui/icons-material'
-import A from '../../assets/images/A.jpeg'
-import B from '../../assets/images/B.jpeg'
-import C from '../../assets/images/C.jpeg'
-import D from '../../assets/images/D.jpeg'
-import G from '../../assets/images/G.webp'
-import H from '../../assets/images/H.webp'
-import I from '../../assets/images/I.webp'
 
-const images = [
-	A,
-	B,
-	C,
-	D,
-	A,
-	B,
-	C,
-	D,
-	G,
-	H,
-	I,
-]
+const useImageLoaded = () => {
+	const [loaded, setLoaded] = useState(false)
+	const ref = useRef()
+
+	const onLoad = () => {
+		setLoaded(true)
+	}
+
+	useEffect(() => {
+		if (ref.current && ref.current.complete) {
+			onLoad()
+		}
+	})
+
+	return [ref, loaded, onLoad]
+}
 
 function CarouselSlider({ url }) {
 	const renderArrowPrev = (clickHandler, hasPrev, label) => hasPrev && (
@@ -72,7 +69,7 @@ function CarouselSlider({ url }) {
 			</Box>
 		</Button>
 	)
-
+	const [ref, loaded, onLoad] = useImageLoaded()
 	return (
 		<Box sx={{
 		}}
@@ -88,9 +85,17 @@ function CarouselSlider({ url }) {
 			>
 				{url?.map((img) => (
 					<img
+						ref={ref}
+						className="image-placeholder"
+						style={{
+							opacity: `${loaded ? 1 : 0}`,
+							transition: 'opacity 200ms ease-in-out',
+						}}
 						key={img}
-						src={img}
-						alt="abc"
+						src={loaded ? img.original : img.placeHolder}
+						alt={img}
+						loading="lazy"
+						onLoad={onLoad}
 					/>
 				))}
 			</Carousel>
@@ -137,4 +142,5 @@ const ImageSlider = memo(({ url }) => {
 		</Box>
 	)
 })
+
 export default ImageSlider
