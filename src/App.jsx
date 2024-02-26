@@ -7,6 +7,7 @@ import Register from './Pages/Register'
 import NavBar from './Pages/NavBar'
 import Property from './Pages/Property'
 import AddProperty from './Pages/AddProperty'
+import SearchResult from './Pages/SearchResult'
 import useGooglePlaces from './Hooks/useGooglePlaces'
 import GooglePlacesContext from './Contexts/GooglePlacesLoader'
 
@@ -34,6 +35,11 @@ function App() {
 							exact
 							path="/my-properties"
 							element={<h1>Properties button clicked</h1>}
+						/>
+						<Route
+							exact
+							path="/results"
+							element={<SearchResult />}
 						/>
 						<Route
 							exact

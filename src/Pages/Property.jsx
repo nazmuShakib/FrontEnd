@@ -33,6 +33,10 @@ export default function Property() {
 	}, [setRating])
 	console.log('property')
 	const res = from
+	const mapCoordinate = {
+		lat: res?.location.coordinates[1],
+		lng: res?.location.coordinates[0],
+	}
 	return (
 		<Box
 			component="div"
@@ -58,7 +62,7 @@ export default function Property() {
 			<RequiredDocuments requiredDocuments={res?.requiredDocuments} />
 			<PlaceInfo placeInfo={res?.placeInfo} />
 			{auth && <ContactAndAddress address={res?.address} />}
-			<Map mapCoordinate={res?.mapCoordinate} />
+			<Map mapCoordinate={mapCoordinate} />
 			<PriceAndAdvertiser price={res?.price} />
 			<Rating getRating={getRating} />
 			{/* TODO add similar property lists and rating section */}

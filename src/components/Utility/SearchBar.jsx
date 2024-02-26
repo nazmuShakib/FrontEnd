@@ -2,12 +2,11 @@ import {
 	useState,
 	useCallback,
 	memo,
-	useMemo,
-	useEffect,
 	useRef,
 	forwardRef,
 	useImperativeHandle,
 } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
 	Autocomplete,
 	Backdrop,
@@ -17,16 +16,18 @@ import {
 	Fade,
 	Grid,
 	IconButton,
-	InputAdornment,
 	Slider,
 	TextField,
 	ToggleButton,
 	ToggleButtonGroup,
 	Typography,
+	CircularProgress,
 } from '@mui/material'
 import {
-	Search, SearchOutlined, CloseOutlined, ClearAll,
+	SearchOutlined, CloseOutlined, ClearAll,
 } from '@mui/icons-material'
+import { useMutation } from 'react-query'
+import axios from 'axios'
 import usePlacesAutocomplete, {
 	getLatLng,
 	getGeocode,
@@ -37,7 +38,7 @@ import Taka from '../../assets/icons/Taka'
 import '../../styles/search.css'
 import '../../styles/map.css'
 
-const defaultPriceRange = [0, 20100]
+const defaultPriceRange = [0, 20202]
 const TransitionsModal = memo(() => {
 	const [searchLocation, setSearchLocation] = useState(null)
 	const [open, setOpen] = useState(false)
@@ -50,11 +51,25 @@ const TransitionsModal = memo(() => {
 		setPriceRange(newPriceRange)
 	}, [setPriceRange])
 
-	const handleSearch = () => {
-		// Handle search logic with the searchQuery
-		console.log(searchLocation)
-		console.log(priceRange)
-		console.log(formats)
+	const navigate = useNavigate()
+	const handleData = (data) => axios({
+		method: 'POST',
+		url: 'http://localhost:3000/search',
+		data,
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	})
+	const { mutateAsync, isLoading } = useMutation(['search'], handleData)
+	const handleSearch = async () => {
+		setOpen(false)
+		const data = { location: searchLocation, category: formats, priceRange }
+		try {
+			const res = await mutateAsync(data)
+			navigate('/results', { state: res.data.data })
+		} catch (err) {
+			console.log(err)
+		}
 	}
 
 	const handleClear = useCallback(() => {
@@ -75,7 +90,7 @@ const TransitionsModal = memo(() => {
 			setFormats(newFormats)
 		}
 	}, [formats, setFormats])
-
+	if (isLoading) return <CircularProgress />
 	return (
 		<Box component="div">
 			<Button
@@ -161,7 +176,7 @@ const PlaceSuggestion = memo(forwardRef(({ getLocation }, ref) => {
 			const { lat, lng } = getLatLng(results[0])
 			getLocation({ lat, lng })
 		} catch (error) {
-			console.error('Error: ', error)
+			console.warn('Error: ', error)
 		}
 	}
 	return (
@@ -178,7 +193,6 @@ const PlaceSuggestion = memo(forwardRef(({ getLocation }, ref) => {
 				<TextField
 					// eslint-disable-next-line react/jsx-props-no-spreading
 					{...params}
-					value="abc"
 					placeholder="Dhaka, Bangladesh"
 					label="Search"
 					variant="outlined"
