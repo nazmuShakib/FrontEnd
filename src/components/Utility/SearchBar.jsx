@@ -3,6 +3,7 @@ import {
 	useCallback,
 	memo,
 	useRef,
+	useEffect,
 	forwardRef,
 	useImperativeHandle,
 } from 'react'
@@ -40,7 +41,7 @@ import '../../styles/map.css'
 
 const defaultPriceRange = [0, 20202]
 const TransitionsModal = memo(() => {
-	const [searchLocation, setSearchLocation] = useState(null)
+	const [searchLocation, setSearchLocation] = useState('')
 	const [open, setOpen] = useState(false)
 	const [formats, setFormats] = useState(() => ['Any'])
 	const [priceRange, setPriceRange] = useState(defaultPriceRange)
@@ -62,9 +63,12 @@ const TransitionsModal = memo(() => {
 	})
 	const { mutateAsync, isLoading } = useMutation(['search'], handleData)
 	const handleSearch = async () => {
+		console.log(searchLocation)
 		setOpen(false)
-		const data = { location: searchLocation, category: formats, priceRange }
 		try {
+			const results = await getGeocode({ address: searchLocation })
+			const location = getLatLng(results[0])
+			const data = { location, category: formats, priceRange }
 			const res = await mutateAsync(data)
 			navigate('/results', { state: res.data.data })
 		} catch (err) {
@@ -73,7 +77,7 @@ const TransitionsModal = memo(() => {
 	}
 
 	const handleClear = useCallback(() => {
-		locationRef.current.setValue('')
+		locationRef.current.setValue('', false)
 		setFormats(['Any'])
 		setPriceRange(defaultPriceRange)
 	}, [setFormats])
@@ -90,7 +94,7 @@ const TransitionsModal = memo(() => {
 			setFormats(newFormats)
 		}
 	}, [formats, setFormats])
-	if (isLoading) return <CircularProgress />
+	if (isLoading) return <Box width="4em" height="1rem"><CircularProgress /></Box>
 	return (
 		<Box component="div">
 			<Button
@@ -169,23 +173,24 @@ const PlaceSuggestion = memo(forwardRef(({ getLocation }, ref) => {
 		suggestions: { data },
 	} = usePlacesAutocomplete()
 	useImperativeHandle(ref, () => ({ setValue }))
-	const handleSelect = async () => {
-		try {
-			const address = value || 'Dhaka, Bangladesh'
-			const results = await getGeocode({ address })
-			const { lat, lng } = getLatLng(results[0])
-			getLocation({ lat, lng })
-		} catch (error) {
-			console.warn('Error: ', error)
+	useEffect(() => {
+		const fetchLocation = async () => {
+			try {
+				const address = value || 'Dhaka, Bangladesh'
+				getLocation(address)
+			} catch (error) {
+				console.warn('Error: ', error)
+			}
 		}
-	}
+		fetchLocation()
+	}, [value, getLocation])
+
 	return (
 		<Autocomplete
 			disabled={!ready}
 			id="place-suggestion"
 			options={data}
 			value={value}
-			onSelect={handleSelect}
 			filterOptions={(option) => option}
 			getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
 			isOptionEqualToValue={(option) => option.description}
@@ -198,7 +203,9 @@ const PlaceSuggestion = memo(forwardRef(({ getLocation }, ref) => {
 					variant="outlined"
 				/>
 			)}
-			onInputChange={(event, newInputValue) => setValue(newInputValue)}
+			onInputChange={(event, newInputValue) => {
+				setValue(newInputValue)
+			}}
 		/>
 	)
 }))

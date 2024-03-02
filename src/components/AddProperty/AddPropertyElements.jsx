@@ -175,8 +175,8 @@ const GenderSelection = memo(({
 						id="gender"
 						fullWidth
 					>
-						<MenuItem value="male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
-						<MenuItem value="female" sx={{ borderBottom: '1px solid #a7a2a2' }}>Female</MenuItem>
+						<MenuItem value="Male" sx={{ borderBottom: '1px solid #a7a2a2' }}>Male</MenuItem>
+						<MenuItem value="Female" sx={{ borderBottom: '1px solid #a7a2a2' }}>Female</MenuItem>
 					</Select>
 				)}
 			/>
@@ -217,9 +217,9 @@ const CategorySelection = memo(({ control, error }) => {
 						id="category"
 						fullWidth
 					>
-						<MenuItem value="sublet" sx={{ borderBottom: '1px solid #a7a2a2' }}>Sublet</MenuItem>
-						<MenuItem value="hostel" sx={{ borderBottom: '1px solid #a7a2a2' }}>Hostel</MenuItem>
-						<MenuItem value="mess" sx={{ borderBottom: '1px solid #a7a2a2' }}>Mess</MenuItem>
+						<MenuItem value="Sublet" sx={{ borderBottom: '1px solid #a7a2a2' }}>Sublet</MenuItem>
+						<MenuItem value="Hostel" sx={{ borderBottom: '1px solid #a7a2a2' }}>Hostel</MenuItem>
+						<MenuItem value="Mess" sx={{ borderBottom: '1px solid #a7a2a2' }}>Mess</MenuItem>
 					</Select>
 				)}
 			/>
