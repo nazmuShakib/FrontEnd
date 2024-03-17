@@ -3,7 +3,10 @@ import {
 	useState,
 } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import {
+	Alert,
 	Container,
 	Box,
 	Button,
@@ -11,16 +14,19 @@ import {
 	InputAdornment,
 	IconButton,
 	TextField,
+	Snackbar,
 } from '@mui/material'
 
 import {
 	Visibility,
 	VisibilityOff,
 } from '@mui/icons-material'
-
+import axios from 'axios'
+import { useMutation } from 'react-query'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import useAuth from '../Hooks/useAuth'
 
 import {
 	Header,
@@ -40,20 +46,46 @@ const SignUpSchema = z.object({
 		.regex(/^[A-Za-z!@#$%&\d]+$/, 'Invalid characters')
 		.min(8, 'Password must be at least 8 characters'),
 })
-export default function Login() {
+export default function Register() {
+	const [error, setError] = useState(null)
+	const [open, setOpen] = useState(true)
+	const handleClose = () => {
+		setOpen(false)
+	}
+	const { login } = useAuth()
+	const navigate = useNavigate()
+	const to = '/'
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-		reset,
-		getValues,
 	} = useForm({ resolver: zodResolver(SignUpSchema) })
-	const onSubmit = (event) => {
-		// TODO Function to handle form submission.
-		// It is not completed yet
-		// will comeback to this when implementing backend logic
-		console.log(event)
-		localStorage.setItem('account', JSON.stringify(event))
+	const handleData = (data) => axios({
+		method: 'POST',
+		url: 'http://localhost:3000/user/register',
+		data,
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		withCredentials: true,
+	})
+	const { mutateAsync, isLoading } = useMutation(['signup'], handleData)
+
+	const onSubmit = async (data) => {
+		try {
+			const res = await mutateAsync(JSON.stringify(data))
+			if (res.status === 201) {
+				const { accessToken } = res.data
+				const auth = {
+					accessToken,
+				}
+				login(auth)
+				navigate(to, { replace: true })
+			}
+		} catch (err) {
+			setOpen(true)
+			setError(err)
+		}
 	}
 	return (
 		<Container maxWidth="xs">
@@ -70,8 +102,18 @@ export default function Login() {
 					<UserName register={register('username')} error={errors.username} />
 					<Email register={register('email')} error={errors.email} />
 					<Password register={register('password')} error={errors.password} />
-					<SubmitButton name="Sign Up" isSubmitting={isSubmitting} />
+					<SubmitButton name="Sign Up" isSubmitting={isSubmitting || isLoading} />
 				</FormControl>
+				{error && (
+					<Snackbar
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+						autoHideDuration={3000}
+						open={open}
+						onClose={handleClose}
+					>
+						<Alert severity="error" variant="filled">{error?.response?.data?.message || 'Authentication Failed'}</Alert>
+					</Snackbar>
+				)}
 			</Box>
 		</Container>
 	)

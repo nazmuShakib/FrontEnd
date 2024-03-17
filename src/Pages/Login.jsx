@@ -1,24 +1,85 @@
-import { Link as RouteLink } from 'react-router-dom'
+import { Link as RouteLink, useNavigate } from 'react-router-dom'
+import { memo, useState } from 'react'
 import {
+	Alert,
 	Container,
 	Box,
+	Button,
+	InputAdornment,
+	IconButton,
 	Link,
+	FormControl,
+	TextField,
+	Snackbar,
 } from '@mui/material'
 import {
+	Visibility,
+	VisibilityOff,
+} from '@mui/icons-material'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import axios from 'axios'
+import {
 	Header,
-	InputField,
-	Password,
-	SubmitButton,
 } from '../components/Utility/Authentication'
+import useAuth from '../Hooks/useAuth'
+
+const SignInSchema = z.object({
+	email: z
+		.string()
+		.email('Invalid email address'),
+	password: z
+		.string()
+		.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&])[A-Za-z!@#$%&\d]+$/, 'Password doesn\'t contain a lowercase, uppercase and special character')
+		.regex(/^[A-Za-z!@#$%&\d]+$/, 'Invalid characters')
+		.min(8, 'Password must be at least 8 characters'),
+})
+
+const handleData = (data) => axios({
+	method: 'POST',
+	url: 'http://localhost:3000/user/login',
+	data,
+	headers: {
+		'Content-Type': 'application/json',
+	},
+	withCredentials: true,
+})
 
 export default function Login() {
-	const handleSubmit = (event) => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isSubmitting },
+	} = useForm({ resolver: zodResolver(SignInSchema) })
+	const navigate = useNavigate()
+	const { login } = useAuth()
+	const [error, setError] = useState(null)
+	const [open, setOpen] = useState(true)
+	const handleClose = () => {
+		setOpen(false)
+	}
+	// console.log(auth)
+	const { mutateAsync, isLoading } = useMutation(['login'], handleData)
+	const onSubmit = async (data) => {
 		// TODO Function to handle form submission.
 		// It is not completed yet
 		// will comeback to this when implementing backend logic
-		event.preventDefault()
-		const data = new FormData(event.target)
-		console.log(data)
+		try {
+			const res = await mutateAsync(JSON.stringify(data))
+			if (res.status === 200) {
+				const { accessToken } = res.data
+				const auth = {
+					accessToken,
+				}
+				login(auth)
+				navigate('/', { replace: true })
+			}
+		} catch (err) {
+			setOpen(true)
+			setError(err)
+		}
 	}
 	return (
 		<Container maxWidth="xs">
@@ -32,19 +93,102 @@ export default function Login() {
 			>
 				{/* Sign In Icon and Title */}
 				<Header title="Sign In" />
-				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-					{/* Email Input */}
-					<InputField name="email" label="Email" />
-					{/* Password Input */}
-					<Password forRegistration={false} />
-					{/* Submit Buttion */}
-					<SubmitButton name="Sign In" />
-					{/* Register Page link */}
-					<Link component={RouteLink} to="/register" variant="body2">
-						Don&apos;t have an account? Sign Up
-					</Link>
-				</Box>
+				<FormControl component="form" onSubmit={handleSubmit(onSubmit)} error={Boolean(error)} sx={{ mt: 1 }}>
+					<Email register={register('email')} error={errors.email} />
+					<Password register={register('password')} error={errors.password} />
+					<SubmitButton name="Sign In" isSubmitting={isSubmitting || isLoading} />
+				</FormControl>
+
+				{/* Register Page link */}
+				<Link component={RouteLink} to="/register" variant="body2">
+					Don&apos;t have an account? Sign Up
+				</Link>
+				{error && (
+					<Snackbar
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+						autoHideDuration={3000}
+						open={open}
+						onClose={handleClose}
+					>
+						<Alert severity="error" variant="filled">{error?.response?.data?.message || 'Authentication Failed'}</Alert>
+					</Snackbar>
+				)}
 			</Box>
 		</Container>
 	)
 }
+
+const Email = memo(({ register, error }) => {
+	const {
+		onChange,
+		onBlur,
+		name,
+		ref,
+	} = register
+	return (
+		<TextField
+			margin="normal"
+			name={name}
+			fullWidth
+			placeholder="Email"
+			label="Email"
+			type="text"
+			id="email"
+			onChange={onChange}
+			onBlur={onBlur}
+			ref={ref}
+			error={Boolean(error)}
+			helperText={error ? error.message : ''}
+		/>
+	)
+})
+
+const Password = memo(({ register, error }) => {
+	const {
+		onChange,
+		onBlur,
+		name,
+		ref,
+	} = register
+	const [showPassword, setShowPassword] = useState(false)
+	const handleTogglePasswordVisibility = () => {
+		setShowPassword((prevShowPassword) => !prevShowPassword)
+	}
+	return (
+		<TextField
+			name={name}
+			margin="normal"
+			fullWidth
+			label="Password"
+			type={showPassword ? 'text' : 'password'}
+			id="password"
+			autoComplete="current-password"
+			onChange={onChange}
+			onBlur={onBlur}
+			ref={ref}
+			error={Boolean(error)}
+			helperText={error ? error.message : 'Password must contain at least one uppercase, one lowercase letter and a special symbol !@#$%&'}
+			InputProps={{
+				endAdornment: (
+					<InputAdornment position="end">
+						<IconButton onClick={handleTogglePasswordVisibility} edge="end">
+							{showPassword ? <Visibility /> : <VisibilityOff />}
+						</IconButton>
+					</InputAdornment>
+				),
+			}}
+		/>
+	)
+})
+
+const SubmitButton = memo(({ name, isSubmitting }) => (
+	<Button
+		type="submit"
+		fullWidth
+		disabled={isSubmitting}
+		variant="contained"
+		sx={{ mt: 3, mb: 2 }}
+	>
+		{name}
+	</Button>
+))

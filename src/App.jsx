@@ -9,7 +9,9 @@ import Property from './Pages/Property'
 import AddProperty from './Pages/AddProperty'
 import SearchResult from './Pages/SearchResult'
 import useGooglePlaces from './Hooks/useGooglePlaces'
+import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import GooglePlacesContext from './Contexts/GooglePlacesLoader'
+import { AuthProvider } from './Contexts/authProvider'
 
 function App() {
 	const { isLoaded } = useGooglePlaces()
@@ -18,42 +20,47 @@ function App() {
 		<Box component="div">
 			<QueryClientProvider client={queryClient}>
 				<GooglePlacesContext.Provider value={isLoaded}>
-					<CssBaseline />
-					<NavBar />
-					<Routes>
-						<Route
-							exact
-							path="/"
-							element={<Home />}
-						/>
-						<Route
-							exact
-							path="/my-favorites"
-							element={<h1>Favorites button clicked</h1>}
-						/>
-						<Route
-							exact
-							path="/my-properties"
-							element={<h1>Properties button clicked</h1>}
-						/>
-						<Route
-							exact
-							path="/results"
-							element={<SearchResult />}
-						/>
-						<Route
-							exact
-							path="/register"
-							element={<Register />}
-						/>
-						<Route
-							exact
-							path="/login"
-							element={<Login />}
-						/>
-						<Route path="/property" element={<Property />} />
-						<Route path="/add" element={<AddProperty />} />
-					</Routes>
+					<AuthProvider>
+						<CssBaseline />
+						<Routes>
+							<Route element={<NavBar />}>
+								<Route
+									exact
+									path="/"
+									element={<Home />}
+								/>
+								<Route element={<ProtectedRoute />}>
+									<Route
+										exact
+										path="/my-favorites"
+										element={<h1>Favorites button clicked</h1>}
+									/>
+									<Route
+										exact
+										path="/my-properties"
+										element={<h1>Properties button clicked</h1>}
+									/>
+									<Route path="/add" element={<AddProperty />} />
+								</Route>
+								<Route
+									exact
+									path="/results"
+									element={<SearchResult />}
+								/>
+								<Route
+									exact
+									path="/register"
+									element={<Register />}
+								/>
+								<Route
+									exact
+									path="/login"
+									element={<Login />}
+								/>
+								<Route path="/property" element={<Property />} />
+							</Route>
+						</Routes>
+					</AuthProvider>
 				</GooglePlacesContext.Provider>
 			</QueryClientProvider>
 		</Box>

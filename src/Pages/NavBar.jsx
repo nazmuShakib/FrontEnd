@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router-dom'
 import {
 	Box,
 	AppBar,
@@ -69,6 +70,7 @@ export default function NavBar() {
 					</Box>
 				</Box>
 			</AppBar>
+			<Outlet />
 		</Box>
 	)
 }
