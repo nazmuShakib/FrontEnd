@@ -1,4 +1,4 @@
-import { Link as RouteLink, useNavigate } from 'react-router-dom'
+import { Link as RouteLink, useNavigate, useLocation } from 'react-router-dom'
 import { memo, useState } from 'react'
 import {
 	Alert,
@@ -54,18 +54,16 @@ export default function Login() {
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: zodResolver(SignInSchema) })
 	const navigate = useNavigate()
-	const { login } = useAuth()
+	const { login, rememberMe } = useAuth()
 	const [error, setError] = useState(null)
 	const [open, setOpen] = useState(true)
+	const location = useLocation()
+	const from = location.state?.from?.pathname || '/'
 	const handleClose = () => {
 		setOpen(false)
 	}
-	// console.log(auth)
 	const { mutateAsync, isLoading } = useMutation(['login'], handleData)
 	const onSubmit = async (data) => {
-		// TODO Function to handle form submission.
-		// It is not completed yet
-		// will comeback to this when implementing backend logic
 		try {
 			const res = await mutateAsync(JSON.stringify(data))
 			if (res.status === 200) {
@@ -74,13 +72,15 @@ export default function Login() {
 					accessToken,
 				}
 				login(auth)
-				navigate('/', { replace: true })
+				rememberMe(true)
+				navigate(from, { replace: true })
 			}
 		} catch (err) {
 			setOpen(true)
 			setError(err)
 		}
 	}
+
 	return (
 		<Container maxWidth="xs">
 			<Box

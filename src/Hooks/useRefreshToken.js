@@ -1,22 +1,18 @@
-import { useState } from 'react'
 import { useQuery } from 'react-query'
 import axios from 'axios'
+import useAuth from './useAuth'
 
-const fetchData = () => axios({
+const fetchData = async () => axios({
 	method: 'GET',
 	url: 'http://localhost:3000/user/refreshToken',
 	withCredentials: true,
 })
 
 const useRefreshToken = () => {
-	const [fetch, setFetch] = useState(0)
-	const refreshQuery = useQuery([fetch], fetchData, { retry: false })
+	const { login } = useAuth()
+	const { data } = useQuery([], fetchData, { retry: false, cacheTime: 5 * 60 * 1000 })
 	const refresh = () => {
-		setFetch((prev) => prev + 1)
-		if (refreshQuery.data) {
-			return refreshQuery.data.data?.accessToken
-		}
-		return null
+		login({ accessToken: data?.data?.accessToken })
 	}
 	return refresh
 }
