@@ -12,7 +12,7 @@ const useRefreshToken = () => {
 	const { login } = useAuth()
 	const { data } = useQuery([], fetchData, { retry: false, cacheTime: 5 * 60 * 1000 })
 	const refresh = () => {
-		login({ accessToken: data?.data?.accessToken })
+		login({ accessToken: data?.data?.accessToken, userID: data?.data?.userID })
 	}
 	return refresh
 }

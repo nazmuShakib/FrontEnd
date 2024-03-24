@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
 	const rememberMe = useCallback((state) => {
 		const data = {
 			state,
-			expiry: Date.now() + 10 * 60 * 1000,
+			expiry: Date.now() + 100 * 60 * 1000,
 		}
 		localStorage.setItem('persist', JSON.stringify(data))
 		setPersist(data)
@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
 	const forget = useCallback(() => {
 		const data = {
 			state: false,
-			expiry: Date.now(),
+			expiry: Date.now() - 10,
 		}
 		setPersist(data)
 		localStorage.removeItem('persist')

@@ -12,8 +12,12 @@ import AddPropertyButton from '../components/AddProperty/AddPropertyButton'
 import LoginButton from '../components/Utility/LoginButton'
 import SearchBar from '../components/Utility/SearchBar'
 import MenuBar from '../components/Utility/MenuBar'
+import LoggedInButton from '../components/Utility/LoggedInButton'
+import useAuth from '../Hooks/useAuth'
 
 export default function NavBar() {
+	const { persist } = useAuth()
+	const isLoggedIn = (persist?.state && persist?.expiry >= Date.now())
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<CssBaseline />
@@ -66,7 +70,8 @@ export default function NavBar() {
 						{/* Add Property Button */}
 						<AddPropertyButton />
 						{/* Login Button */}
-						<LoginButton />
+						{isLoggedIn ? <LoggedInButton /> : <LoginButton />}
+						{/* <LoginButton /> */}
 					</Box>
 				</Box>
 			</AppBar>

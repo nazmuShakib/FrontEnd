@@ -17,7 +17,7 @@ const ProtectedRoute = memo(() => {
 			refreshCallback()
 			if (isMounted) setLoading(false)
 		}
-		if (!auth?.accessToken) {
+		if (!auth?.accessToken && persist?.state) {
 			verifyRefreshToken()
 		} else {
 			setLoading(false)
@@ -26,7 +26,8 @@ const ProtectedRoute = memo(() => {
 			isMounted = false
 			return isMounted
 		}
-	}, [auth?.accessToken, refreshCallback])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [auth?.accessToken, persist?.state])
 	if (!persist?.state || persist?.expiry < Date.now()) {
 		return <Navigate to="/login" state={{ from: { pathname: location.pathname } }} />
 	}

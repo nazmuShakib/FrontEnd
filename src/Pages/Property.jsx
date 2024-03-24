@@ -2,7 +2,7 @@ import {
 	useState,
 	useCallback,
 } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import {
 	Box,
 	Divider,
@@ -21,7 +21,7 @@ import Rating from '../components/ShowProperty/Rating'
 
 export default function Property() {
 	const location = useLocation()
-	const { from } = location.state
+	const from = location?.state?.from
 	const auth = true
 	const initialRating = localStorage.getItem('rating') || 0
 	const [rating, setRating] = useState(parseInt(initialRating, 10))
@@ -33,6 +33,9 @@ export default function Property() {
 	}, [setRating])
 	console.log('property')
 	const res = from
+	if (!from) {
+		return <Navigate to="/" replace />
+	}
 	const mapCoordinate = {
 		lat: res?.location.coordinates[1],
 		lng: res?.location.coordinates[0],

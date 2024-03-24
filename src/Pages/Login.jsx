@@ -67,9 +67,10 @@ export default function Login() {
 		try {
 			const res = await mutateAsync(JSON.stringify(data))
 			if (res.status === 200) {
-				const { accessToken } = res.data
+				const { accessToken, userID } = res.data
 				const auth = {
 					accessToken,
+					userID,
 				}
 				login(auth)
 				rememberMe(true)
