@@ -17,7 +17,7 @@ import useAuth from '../Hooks/useAuth'
 
 export default function NavBar() {
 	const { persist } = useAuth()
-	const isLoggedIn = (persist?.state && persist?.expiry >= Date.now())
+	const isLoggedIn = persist
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<CssBaseline />

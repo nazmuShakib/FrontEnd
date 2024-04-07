@@ -11,7 +11,7 @@ const useAxiosPrivate = () => {
 			(config) => {
 				const reqConfig = config
 				if (!reqConfig.headers.Authorization) {
-					reqConfig.headers.Authorization = `Bearer ${auth.accessToken}`
+					reqConfig.headers.Authorization = `Bearer ${auth?.accessToken}`
 				}
 				return reqConfig
 			},
@@ -19,20 +19,20 @@ const useAxiosPrivate = () => {
 		)
 		const responseIntercept = axiosPrivate.interceptors.response.use((response) => response, async (error) => {
 			const prevReq = error?.config
-			try {
-				refresh()
-				prevReq.headers.Authorization = `Bearer ${auth?.accessToken}`
+			const newAccessToken = await refresh()
+			if (!prevReq?.sent && newAccessToken) {
+				prevReq.sent = true
+				prevReq.headers.Authorization = `Bearer ${newAccessToken}`
 				return axiosPrivate(prevReq)
-			} catch (err) {
-				return Promise.reject(err)
 			}
+			return Promise.reject(error)
 		})
 		return () => {
 			axiosPrivate.interceptors.request.eject(requestIntercept)
 			axiosPrivate.interceptors.response.eject(responseIntercept)
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [auth?.accessToken])
+	}, [auth, refresh])
 	return axiosPrivate
 }
 export default useAxiosPrivate

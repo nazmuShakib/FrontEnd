@@ -8,6 +8,7 @@ import NavBar from './Pages/NavBar'
 import Property from './Pages/Property'
 import AddProperty from './Pages/AddProperty'
 import SearchResult from './Pages/SearchResult'
+import MyProperties from './Pages/MyProperties'
 import useGooglePlaces from './Hooks/useGooglePlaces'
 import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import GooglePlacesContext from './Contexts/GooglePlacesLoader'
@@ -38,7 +39,7 @@ function App() {
 									<Route
 										exact
 										path="/my-properties"
-										element={<h1>Properties button clicked</h1>}
+										element={<MyProperties />}
 									/>
 									<Route path="/add" element={<AddProperty />} />
 								</Route>

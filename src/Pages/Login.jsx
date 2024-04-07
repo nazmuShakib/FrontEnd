@@ -54,7 +54,7 @@ export default function Login() {
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: zodResolver(SignInSchema) })
 	const navigate = useNavigate()
-	const { login, rememberMe } = useAuth()
+	const { login } = useAuth()
 	const [error, setError] = useState(null)
 	const [open, setOpen] = useState(true)
 	const location = useLocation()
@@ -73,7 +73,6 @@ export default function Login() {
 					userID,
 				}
 				login(auth)
-				rememberMe(true)
 				navigate(from, { replace: true })
 			}
 		} catch (err) {

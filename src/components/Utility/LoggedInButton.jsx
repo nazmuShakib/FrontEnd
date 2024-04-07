@@ -2,7 +2,9 @@ import { memo, useState } from 'react'
 
 import {
 	Alert,
-	Button, Menu, MenuItem,
+	Button,
+	Menu,
+	MenuItem,
 	Snackbar,
 } from '@mui/material'
 import { AccountCircle, ArrowDropDown } from '@mui/icons-material'
@@ -14,20 +16,16 @@ import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 const LoggedInButton = memo(() => {
 	const axiosPrivate = useAxiosPrivate()
 
-	const logoutUser = async (authHeader) => axiosPrivate({
+	const logoutUser = async () => axiosPrivate({
 		method: 'POST',
 		url: 'user/logout',
-		withCredentials: true,
-		headers: {
-			Authorization: `Bearer ${authHeader}`,
-		},
 	})
 	console.log('Login Button')
-	const { auth, forget, logout } = useAuth()
+	const { logout } = useAuth()
 	const [anchorEl, setAnchorEl] = useState(null)
 	const [error, setError] = useState(null)
 	const [open, setOpen] = useState(true)
-	const { mutateAsync, isLoading } = useMutation(['post'], logoutUser, { retry: false })
+	const { mutateAsync, isLoading } = useMutation(['logout'], logoutUser, { retry: false })
 	const navigate = useNavigate()
 	const handleSnackBarClose = () => {
 		setOpen(false)
@@ -41,9 +39,8 @@ const LoggedInButton = memo(() => {
 	}
 	const handleLogout = async () => {
 		try {
-			const res = await mutateAsync(auth.accessToken)
+			await mutateAsync()
 			logout()
-			forget()
 			navigate('/')
 		} catch (err) {
 			setOpen(true)

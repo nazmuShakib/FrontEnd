@@ -9,10 +9,23 @@ const fetchData = async () => axios({
 })
 
 const useRefreshToken = () => {
-	const { login } = useAuth()
-	const { data } = useQuery([], fetchData, { retry: false, cacheTime: 5 * 60 * 1000 })
+	const { login, logout, persist } = useAuth()
+	const { data, error } = useQuery(['refreshToken'], fetchData, {
+		cacheTime: 60 * 1000,
+		retry: false,
+		enabled: persist,
+		refetchInterval: 60 * 1000,
+		refetchIntervalInBackground: true,
+	})
+	if (error?.response?.status === 401) {
+		return () => {
+			logout()
+			return null
+		}
+	}
 	const refresh = () => {
 		login({ accessToken: data?.data?.accessToken, userID: data?.data?.userID })
+		return data?.data?.accessToken
 	}
 	return refresh
 }
