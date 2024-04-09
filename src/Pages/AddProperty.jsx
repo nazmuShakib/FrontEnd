@@ -8,7 +8,7 @@ import {
 
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
-import axios from 'axios'
+// import axios from 'axios'
 // import { DevTool } from '@hookform/devtools'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import ImageUploader from '../components/AddProperty/ImageUploader'
 import GetLocation from '../components/AddProperty/GetLocation'
 import DateSelector from '../components/AddProperty/DateSelector'
+import useAxiosPrivate from '../Hooks/useAxiosPrivate'
 
 import {
 	Address,
@@ -126,6 +127,7 @@ const PropertySchema = z.object({
 })
 export default function AddProperty() {
 	const [location, setLocation] = useState(null)
+	const axiosPrivate = useAxiosPrivate()
 	const {
 		register,
 		handleSubmit,
@@ -147,7 +149,7 @@ export default function AddProperty() {
 			thana: '',
 		},
 	})
-	const handleData = (formData) => axios({
+	const handleData = (formData) => axiosPrivate({
 		method: 'POST',
 		url: 'http://localhost:3000/addProperty',
 		data: formData,

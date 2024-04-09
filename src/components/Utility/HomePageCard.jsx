@@ -8,11 +8,12 @@ import {
 	Typography,
 } from '@mui/material'
 import { useState } from 'react'
+import Controls from './Controls'
 import Taka from '../../assets/icons/taka.svg'
 
-function AdvertisementCard({ property }) {
+function AdvertisementCard({ property, refetch, showControls = false }) {
 	const {
-		availableDate, title, thumbnail, price, placeInfo,
+		availableDate, title, thumbnail, price, placeInfo, ID,
 	} = property
 	const date = new Date(availableDate)
 	const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -35,6 +36,7 @@ function AdvertisementCard({ property }) {
 					loading="lazy"
 				/>
 				<CardContent className="card-content">
+					{showControls && <Controls propertyID={ID} refetch={refetch} />}
 					<Box
 						component="div"
 						display="flex"

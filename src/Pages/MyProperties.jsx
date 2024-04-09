@@ -14,11 +14,11 @@ const MyProperties = memo(() => {
 	console.log('my-properties')
 	const axiosPrivate = useAxiosPrivate()
 	const fetchData = () => axiosPrivate({
-		url: 'property/my-properties',
+		url: 'myProperty/properties',
 		method: 'GET',
 	})
 	const {
-		isLoading, data, isError, error,
+		isLoading, data, isError, error, refetch,
 	} = useQuery(['my-properties'], fetchData, { retry: 1 })
 	if (isError) return <h1>{error.response.data.message}</h1>
 	if (isLoading) return <CircularProgress />
@@ -40,7 +40,12 @@ const MyProperties = memo(() => {
 							offsetVertical={200}
 							threshold={0.20}
 						>
-							<AdvertisementCard key={property.property.ID} property={property.property} />
+							<AdvertisementCard
+								key={property.property.ID}
+								property={property.property}
+								refetch={refetch}
+								showControls
+							/>
 						</LazyLoad>
 					</Grid>
 				))}

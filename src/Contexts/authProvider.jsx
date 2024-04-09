@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
 	const [persist, setPersist] = useState(sessionTime >= Date.now())
 	const rememberMe = useCallback(() => {
 		setPersist(true)
-		const sessionExpiry = Date.now() + 10 * 60 * 1000
+		const sessionExpiry = Date.now() + 24 * 60 * 60 * 1000
 		setSessionTime(sessionExpiry)
 		localStorage.setItem('sessionTime', JSON.stringify(sessionExpiry))
 	}, [])
