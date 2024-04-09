@@ -61,7 +61,7 @@ export default function Property() {
 			<BasicInfo availableDate={res?.availableDate} gender={res?.gender} category={res?.category} />
 			<ImageSlider url={res?.imageUrls} />
 			<PlaceDescription description={res?.description} />
-			<RulesAndPreferences rulesAndPreferences={res?.rulesAndPreference} />
+			<RulesAndPreferences rulesAndPreference={res?.rulesAndPreference} />
 			<RequiredDocuments requiredDocuments={res?.requiredDocuments} />
 			<PlaceInfo placeInfo={res?.placeInfo} />
 			{auth && <ContactAndAddress address={res?.address} />}

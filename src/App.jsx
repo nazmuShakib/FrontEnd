@@ -7,6 +7,7 @@ import Register from './Pages/Register'
 import NavBar from './Pages/NavBar'
 import Property from './Pages/Property'
 import AddProperty from './Pages/AddProperty'
+import EditProperty from './Pages/EditProperty'
 import SearchResult from './Pages/SearchResult'
 import MyProperties from './Pages/MyProperties'
 import useGooglePlaces from './Hooks/useGooglePlaces'
@@ -40,6 +41,11 @@ function App() {
 										exact
 										path="/my-properties"
 										element={<MyProperties />}
+									/>
+									<Route
+										exact
+										path="/my-properties/edit"
+										element={<EditProperty />}
 									/>
 									<Route path="/add" element={<AddProperty />} />
 								</Route>

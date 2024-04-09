@@ -1,4 +1,5 @@
 import { memo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
 	Button,
 	CircularProgress,
@@ -6,8 +7,6 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogContentText,
-	Popover,
-	Modal,
 } from '@mui/material'
 import {
 	Edit,
@@ -16,13 +15,10 @@ import {
 import { useMutation } from 'react-query'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 
-const Controls = memo(({ propertyID, refetch }) => {
-	console.log(propertyID)
+const Controls = memo(({ property, refetch }) => {
 	const [deleteDialog, setDeleteDialog] = useState(false)
-	const [deleteAnchorEl, setDeleteAnchorEl] = useState(null)
 	const closeDeleteDialog = (event) => {
 		event.preventDefault()
-		setDeleteAnchorEl(event.currentTarget)
 		setDeleteDialog(false)
 	}
 	const openDeleteDialog = (event) => {
@@ -30,9 +26,10 @@ const Controls = memo(({ propertyID, refetch }) => {
 		setDeleteDialog(true)
 	}
 	const axiosPrivate = useAxiosPrivate()
+	const navigate = useNavigate()
 	const deleteProperty = () => axiosPrivate({
 		method: 'DELETE',
-		url: `/myProperty/removeProperty/${propertyID}`,
+		url: `/myProperty/removeProperty/${property?.ID}`,
 	})
 	const { mutateAsync: removeProperty, isLoading } = useMutation(['delete-property'], deleteProperty)
 	if (isLoading) return <CircularProgress />
@@ -48,6 +45,7 @@ const Controls = memo(({ propertyID, refetch }) => {
 	}
 	const handleEdit = (event) => {
 		event.preventDefault()
+		navigate('/my-properties/edit', { state: { property } })
 	}
 	return (
 		<>
@@ -56,10 +54,7 @@ const Controls = memo(({ propertyID, refetch }) => {
 				type="button"
 				color="warning"
 				size="small"
-				onClick={(event) => {
-					event.preventDefault()
-					alert('edit button clicked')
-				}}
+				onClick={handleEdit}
 				sx={{
 					left: 0,
 					top: 0,

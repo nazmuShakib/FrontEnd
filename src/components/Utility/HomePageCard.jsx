@@ -36,7 +36,7 @@ function AdvertisementCard({ property, refetch, showControls = false }) {
 					loading="lazy"
 				/>
 				<CardContent className="card-content">
-					{showControls && <Controls propertyID={ID} refetch={refetch} />}
+					{showControls && <Controls property={property} refetch={refetch} />}
 					<Box
 						component="div"
 						display="flex"

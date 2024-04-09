@@ -33,14 +33,17 @@ const Header = memo(({ control, error }) => {
 					onBlur,
 					ref,
 					name,
+					value,
 				},
 			}) => (
 				<TextField
 					name={name}
+					value={value}
 					onChange={onChange}
 					onBlur={onBlur}
 					ref={ref}
 					label="Title"
+					type="text"
 					error={!!error}
 					helperText={error ? error.message : 'Required'}
 				/>
@@ -60,12 +63,14 @@ const Price = memo(({ control, error }) => {
 					onBlur,
 					ref,
 					name,
+					value,
 				},
 			}) => (
 				<TextField
 					margin="normal"
 					id="price"
 					name={name}
+					value={value}
 					onChange={onChange}
 					onBlur={onBlur}
 					ref={ref}
@@ -90,12 +95,14 @@ const Contact = memo(({ control, error }) => {
 					onBlur,
 					ref,
 					name,
+					value,
 				},
 			}) => (
 				<TextField
 					margin="normal"
 					id="contact"
 					name={name}
+					value={value}
 					onChange={onChange}
 					onBlur={onBlur}
 					ref={ref}
@@ -120,12 +127,14 @@ const Address = memo(({ control, error }) => {
 					onBlur,
 					ref,
 					name,
+					value,
 				},
 			}) => (
 				<TextField
 					margin="normal"
 					id="address"
 					name={name}
+					value={value}
 					placeholder="Address of the property..."
 					onChange={onChange}
 					onBlur={onBlur}
@@ -501,12 +510,13 @@ const PlaceDescription = memo(({ control, error }) => {
 				control={control}
 				render={({
 					field: {
-						onChange, onBlur, ref, name,
+						onChange, onBlur, ref, name, value,
 					},
 				}) => (
 					<TextareaAutosize
 						id="description"
 						name={name}
+						value={value}
 						label="Description"
 						aria-label="description"
 						minRows={5}
@@ -540,12 +550,13 @@ const RulesAndPreference = memo(({ control, error }) => {
 				control={control}
 				render={({
 					field: {
-						onChange, onBlur, ref, name,
+						onChange, onBlur, ref, name, value,
 					},
 				}) => (
 					<TextareaAutosize
 						id="rules_and_preference"
 						name={name}
+						value={value}
 						aria-label="rules_and_preference"
 						minRows={5}
 						maxRows={7}
@@ -578,12 +589,13 @@ const RequiredDocuments = memo(({ control, error }) => {
 				control={control}
 				render={({
 					field: {
-						onChange, onBlur, ref, name,
+						onChange, onBlur, ref, name, value,
 					},
 				}) => (
 					<TextareaAutosize
 						id="required_documents"
 						name={name}
+						value={value}
 						aria-label="required_documents"
 						minRows={5}
 						maxRows={7}

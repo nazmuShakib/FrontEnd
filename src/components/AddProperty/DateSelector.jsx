@@ -10,6 +10,7 @@ import { Controller } from 'react-hook-form'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import dayjs from 'dayjs'
 
 import '../../styles/forms.css'
 
@@ -29,11 +30,13 @@ const DateSelector = memo(({
 						field: {
 							onChange,
 							ref,
+							value,
 						},
 					}) => (
 						<DatePicker
 							label="Available Date"
 							inputRef={ref}
+							value={value ? dayjs(value) : null}
 							className={`${error ? 'date-picker-error' : ''}`}
 							onChange={(event) => {
 								onChange(event.toDate())
