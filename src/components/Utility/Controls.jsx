@@ -1,12 +1,15 @@
 import { memo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
+	Box,
 	Button,
 	CircularProgress,
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogContentText,
+	Typography,
+	Switch,
 } from '@mui/material'
 import {
 	Edit,
@@ -17,6 +20,7 @@ import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 
 const Controls = memo(({ property, refetch }) => {
 	const [deleteDialog, setDeleteDialog] = useState(false)
+	const [status, setStatus] = useState(property.active)
 	const closeDeleteDialog = (event) => {
 		event.preventDefault()
 		setDeleteDialog(false)
@@ -31,7 +35,13 @@ const Controls = memo(({ property, refetch }) => {
 		method: 'DELETE',
 		url: `/myProperty/removeProperty/${property?.ID}`,
 	})
+	const updateActiveStatus = (data) => axiosPrivate({
+		method: 'PATCH',
+		url: '/myProperty/update/status',
+		data,
+	})
 	const { mutateAsync: removeProperty, isLoading } = useMutation(['delete-property'], deleteProperty)
+	const { mutateAsync: updateStatus } = useMutation(['update-status'], updateActiveStatus)
 	if (isLoading) return <CircularProgress />
 	const handleDelete = async (event) => {
 		event.preventDefault()
@@ -39,6 +49,19 @@ const Controls = memo(({ property, refetch }) => {
 			await removeProperty()
 			setDeleteDialog(false)
 			refetch()
+		} catch (err) {
+			console.log(err)
+		}
+	}
+	const handleStatus = async (event) => {
+		event.preventDefault()
+		const data = {
+			ID: property.ID,
+			status: !status,
+		}
+		setStatus((prevStatus) => !prevStatus)
+		try {
+			await updateStatus(data)
 		} catch (err) {
 			console.log(err)
 		}
@@ -77,6 +100,38 @@ const Controls = memo(({ property, refetch }) => {
 			>
 				<Delete />
 			</Button>
+			<Box
+				component="div"
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					margin: 0,
+					padding: 0,
+					height: '24px',
+				}}
+			>
+				<Typography component="span" variant="body2">{status ? <ActiveText /> : <InactiveText />}</Typography>
+				<Switch
+					checked={status}
+					size="medium"
+					onClick={handleStatus}
+					sx={{
+						'.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked': {
+							color: '#18453B',
+						},
+						'.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+							backgroundColor: '#2E8B57',
+						},
+						'.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase': {
+							color: '#7a3838',
+						},
+						'.css-1yjjitx-MuiSwitch-track': {
+							backgroundColor: '#e58585',
+						},
+					}}
+				/>
+			</Box>
 			<Dialog open={deleteDialog} onClick={(event) => event.preventDefault()} onClose={closeDeleteDialog}>
 				<DialogContent>
 					<DialogContentText>
@@ -114,4 +169,10 @@ const Controls = memo(({ property, refetch }) => {
 	)
 })
 
+const ActiveText = memo(() => (
+	<Typography component="span" variant="body2" sx={{ fontWeight: 500, color: '#09872f' }}>Active</Typography>
+))
+const InactiveText = memo(() => (
+	<Typography component="span" variant="body2" sx={{ fontWeight: 500, color: '#ca5d5d' }}>Inactive</Typography>
+))
 export default Controls

@@ -116,7 +116,7 @@ export default function EditProperty() {
 		},
 	})
 	const handleData = (data) => axiosPrivate({
-		method: 'PUT',
+		method: 'PATCH',
 		url: '/myProperty/edit',
 		data,
 		headers: {

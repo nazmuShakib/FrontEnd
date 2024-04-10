@@ -38,11 +38,13 @@ const Header = memo(({ control, error }) => {
 			}) => (
 				<TextField
 					name={name}
+					id="title"
 					value={value}
 					onChange={onChange}
 					onBlur={onBlur}
 					ref={ref}
 					label="Title"
+					placeholder="Give a suitable title"
 					type="text"
 					error={!!error}
 					helperText={error ? error.message : 'Required'}
@@ -76,6 +78,7 @@ const Price = memo(({ control, error }) => {
 					ref={ref}
 					type="number"
 					label="Price"
+					placeholder="Price of the property..."
 					error={!!error}
 					helperText={error ? error.message : 'Required'}
 				/>
@@ -108,6 +111,7 @@ const Contact = memo(({ control, error }) => {
 					ref={ref}
 					type="tel"
 					label="Contact"
+					placeholder="Enter your contact number"
 					error={!!error}
 					helperText={error ? error.message : 'Required'}
 				/>

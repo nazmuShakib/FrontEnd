@@ -11,9 +11,8 @@ import {
 	ContactPhoneOutlined,
 } from '@mui/icons-material'
 
-const ContactAndAddress = memo(({ address }) => {
+const ContactAndAddress = memo(({ address, contact }) => {
 	const email = 'nazfasdfasdfasdffa@gmail.com'
-	const phone = '123213124'
 	return (
 		<Box
 			marginTop="10px"
@@ -129,7 +128,7 @@ const ContactAndAddress = memo(({ address }) => {
 								variant="span"
 								textAlign="center"
 							>
-								{phone}
+								{contact}
 
 							</Typography>
 						</Box>

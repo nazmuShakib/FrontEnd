@@ -64,7 +64,7 @@ export default function Property() {
 			<RulesAndPreferences rulesAndPreference={res?.rulesAndPreference} />
 			<RequiredDocuments requiredDocuments={res?.requiredDocuments} />
 			<PlaceInfo placeInfo={res?.placeInfo} />
-			{auth && <ContactAndAddress address={res?.address} />}
+			{auth && <ContactAndAddress address={res?.address} contact={res?.contact} />}
 			<Map mapCoordinate={mapCoordinate} />
 			<PriceAndAdvertiser price={res?.price} />
 			<Rating getRating={getRating} />

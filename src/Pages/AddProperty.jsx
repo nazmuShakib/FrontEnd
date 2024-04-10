@@ -1,15 +1,10 @@
 import {
-	useState,
-} from 'react'
-import {
 	Box,
 	FormControl,
 } from '@mui/material'
 
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
-// import axios from 'axios'
-// import { DevTool } from '@hookform/devtools'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -126,7 +121,6 @@ const PropertySchema = z.object({
 		),
 })
 export default function AddProperty() {
-	const [location, setLocation] = useState(null)
 	const axiosPrivate = useAxiosPrivate()
 	const {
 		register,
@@ -143,10 +137,14 @@ export default function AddProperty() {
 	} = useForm({
 		resolver: zodResolver(PropertySchema),
 		defaultValues: {
+			title: '',
+			address: '',
 			gender: '',
 			district: '',
 			division: '',
 			thana: '',
+			price: '',
+			contact: '',
 		},
 	})
 	const handleData = (formData) => axiosPrivate({
