@@ -47,6 +47,11 @@ function App() {
 										path="/my-properties/edit"
 										element={<EditProperty />}
 									/>
+									<Route
+										exact
+										path="/user/profile"
+										element={<h1>Profile</h1>}
+									/>
 									<Route path="/add" element={<AddProperty />} />
 								</Route>
 								<Route
