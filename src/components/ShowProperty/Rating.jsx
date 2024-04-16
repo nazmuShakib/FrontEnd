@@ -1,6 +1,6 @@
 import { memo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import {
 	Box,
 	Button,
@@ -16,6 +16,7 @@ import {
 	Typography,
 	TextareaAutosize,
 	useMediaQuery,
+	CircularProgress,
 } from '@mui/material'
 import { StarBorderPurple500, CloseOutlined } from '@mui/icons-material'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
@@ -102,7 +103,7 @@ const HoverRating = memo(({ propertyID }) => {
 									<CloseOutlined />
 								</IconButton>
 							</Box>
-							<Reviews />
+							<Reviews propertyID={propertyID} />
 						</Box>
 					</Fade>
 				</Modal>
@@ -110,12 +111,22 @@ const HoverRating = memo(({ propertyID }) => {
 		</Card>
 	)
 })
-const Reviews = memo(() => {
+const Reviews = memo(({ propertyID }) => {
+	const axiosPrivate = useAxiosPrivate()
+	const getReviews = () => axiosPrivate({
+		method: 'GET',
+		url: `/reviews/get/${propertyID}`,
+	})
+	const {
+		data, isLoading, isError, error,
+	} = useQuery(['get-reviews'], getReviews)
+	if (isError) return <h1>{error.response?.data?.message}</h1>
+	if (isLoading) return <CircularProgress />
+	const reviews = data?.data?.data || []
 	console.log('reviews')
-	const review = 'User asd sd sad fsdf sadf sd fsad fsdf asd s ds sd sdf sdf asdf asdf asdf asdf sad asd fasd fasd fasd asd asd fasd fsa fsdf'
 	return (
 		<Box component="div" sx={{ height: '500px', overflowY: 'auto' }}>
-			{[...Array(10)].map((_, index) => <ReviewCard key={Math.random()} userName="Abc" review={review} />)}
+			{reviews.map((review) => <ReviewCard key={review.review} userName={review.name} review={review.review} />)}
 		</Box>
 	)
 })
