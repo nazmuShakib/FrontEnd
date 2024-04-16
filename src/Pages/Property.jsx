@@ -23,14 +23,6 @@ export default function Property() {
 	const location = useLocation()
 	const from = location?.state?.from
 	const auth = true
-	const initialRating = localStorage.getItem('rating') || 0
-	const [rating, setRating] = useState(parseInt(initialRating, 10))
-
-	const getRating = useCallback((newRating) => {
-		const v = newRating == null ? 0 : newRating
-		setRating(v)
-		localStorage.setItem('rating', v.toString())
-	}, [setRating])
 	console.log('property')
 	const res = from
 	if (!from) {
@@ -67,7 +59,7 @@ export default function Property() {
 			{auth && <ContactAndAddress address={res?.address} contact={res?.contact} />}
 			<Map mapCoordinate={mapCoordinate} />
 			<PriceAndAdvertiser price={res?.price} />
-			<Rating getRating={getRating} />
+			{auth && <Rating propertyID={res?.ID} />}
 			{/* TODO add similar property lists and rating section */}
 		</Box>
 	)

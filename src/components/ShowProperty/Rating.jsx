@@ -1,5 +1,6 @@
-import { memo, useState, use } from 'react'
+import { memo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useMutation } from 'react-query'
 import {
 	Box,
 	Button,
@@ -17,6 +18,7 @@ import {
 	useMediaQuery,
 } from '@mui/material'
 import { StarBorderPurple500, CloseOutlined } from '@mui/icons-material'
+import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 import '../../styles/rating-review.css'
 
 const labels = {
@@ -34,9 +36,8 @@ const labels = {
 
 const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 
-const HoverRating = memo(({ getRating }) => {
+const HoverRating = memo(({ propertyID }) => {
 	console.log('rating')
-	const [review, setReview] = useState('')
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => {
 		setOpen(true)
@@ -60,8 +61,8 @@ const HoverRating = memo(({ getRating }) => {
 					component="div"
 					className="rating-review"
 				>
-					<RatingSelector getRating={getRating} />
-					<ReviewPlaceholder setReview={setReview} />
+					<RatingSelector />
+					<ReviewPlaceholder propertyID={propertyID} />
 				</Box>
 				<br />
 				<Button variant="outlined" className="show-reviews" onClick={handleOpen}>Show Reviews</Button>
@@ -158,7 +159,7 @@ const ReviewCard = memo(({ userName, review }) => {
 		</Box>
 	)
 })
-const RatingSelector = memo(({ getRating }) => {
+const RatingSelector = memo(() => {
 	console.log('rating selector')
 	const [value, setValue] = useState(5)
 	const [hover, setHover] = useState(-1)
@@ -175,7 +176,6 @@ const RatingSelector = memo(({ getRating }) => {
 						getLabelText={getLabelText}
 						onChange={(_event, newValue) => {
 							setValue(newValue)
-							getRating(newValue)
 						}}
 						onChangeActive={(_event, newHover) => {
 							setHover(newHover)
@@ -190,16 +190,31 @@ const RatingSelector = memo(({ getRating }) => {
 		</Box>
 	)
 })
-const ReviewPlaceholder = memo(({ setReview }) => {
+const ReviewPlaceholder = memo(({ propertyID }) => {
+	const axiosPrivate = useAxiosPrivate()
+	const handleSubmit = (data) => axiosPrivate({
+		method: 'POST',
+		url: '/reviews/post',
+		data,
+	})
+	const { mutateAsync } = useMutation(['post-review'], handleSubmit)
+
 	console.log('review placeholder')
 	const screen900 = useMediaQuery('@media (min-width: 900px)')
 	const [text, setText] = useState('')
 	const handleChange = (event) => {
 		setText(event.target.value)
 	}
-	const submitReview = () => {
-		console.log(text)
-		setReview(text)
+	const submitReview = async () => {
+		const data = {
+			propertyID,
+			review: text,
+		}
+		try {
+			await mutateAsync(data)
+		} catch (err) {
+			console.log(err)
+		}
 	}
 	const isEmpty = () => text.trimStart().trimEnd() === ''
 	return (
