@@ -1,7 +1,3 @@
-import {
-	useState,
-	useCallback,
-} from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import {
 	Box,
@@ -18,11 +14,12 @@ import Map from '../components/ShowProperty/Map'
 import PriceAndAdvertiser from '../components/ShowProperty/PriceAndAdvertiser'
 import ContactAndAddress from '../components/ShowProperty/ContactAndAddress'
 import Rating from '../components/ShowProperty/Rating'
+import useAuth from '../Hooks/useAuth'
 
 export default function Property() {
 	const location = useLocation()
 	const from = location?.state?.from
-	const auth = true
+	const { auth } = useAuth()
 	console.log('property')
 	const res = from
 	if (!from) {

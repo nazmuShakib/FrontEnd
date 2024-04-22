@@ -23,17 +23,13 @@ import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 import '../../styles/rating-review.css'
 
 const labels = {
-	0.5: 'F',
-	1: 'D',
-	1.5: 'C',
-	2: 'C+',
-	2.5: 'B-',
+	1: 'F',
+	2: 'C',
 	3: 'B',
-	3.5: 'B+',
-	4: 'A-',
-	4.5: 'A',
+	4: 'A',
 	5: 'A+',
 }
+const colors = new Map([['A+', '#128201'], ['A', '#77ab59'], ['B', '#f0e918'], ['C', '#FFBF00'], ['F', '#fa0202']])
 
 const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 
@@ -73,7 +69,7 @@ const HoverRating = memo(({ propertyID }) => {
 					open={open}
 					onClose={handleClose}
 					closeAfterTransition
-					className="modal"
+					className="review-modal"
 					slots={{ backdrop: Backdrop }}
 					slotProps={{
 						backdrop: {
@@ -82,7 +78,7 @@ const HoverRating = memo(({ propertyID }) => {
 					}}
 				>
 					<Fade in={open}>
-						<Box className="modal-window">
+						<Box className="review-modal-window">
 							<Box
 								component="div"
 								className="toolbar"
@@ -103,12 +99,55 @@ const HoverRating = memo(({ propertyID }) => {
 									<CloseOutlined />
 								</IconButton>
 							</Box>
+							<Ratings />
 							<Reviews propertyID={propertyID} />
 						</Box>
 					</Fade>
 				</Modal>
 			</CardContent>
 		</Card>
+	)
+})
+const Ratings = memo(() => {
+	console.log('Ratings')
+	return (
+		<Box component="div" sx={{ overflowY: 'auto', margin: '10px 8px' }}>
+			<RatingBar label="A+" count="70" />
+			<RatingBar label="A" count="50" />
+			<RatingBar label="B" count="60" />
+			<RatingBar label="C" count="40" />
+			<RatingBar label="F" count="30" />
+		</Box>
+	)
+})
+const RatingBar = memo(({ label, count }) => {
+	console.log('rating bar')
+	return (
+		<Box component="div" className="rating-info">
+			<Typography
+				component="text"
+				variant="h6"
+				sx={{
+					width: '30px',
+					display: 'flex',
+					justifyContent: 'flex-end',
+				}}
+			>
+				{label}
+			</Typography>
+			<Box component="div" className="rating-bar">
+				<Box
+					component="div"
+					sx={{
+						width: `${count}%`,
+						backgroundColor: colors.get(label),
+						height: '100%',
+						borderRadius: '5px',
+					}}
+				/>
+			</Box>
+			<Typography component="text" variant="body2" sx={{ marginLeft: '10px', fontSize: '20px' }}>{`${count}%`}</Typography>
+		</Box>
 	)
 })
 const Reviews = memo(({ propertyID }) => {
@@ -182,7 +221,6 @@ const RatingSelector = memo(() => {
 					<Rating
 						name="hover-feedback"
 						value={value}
-						precision={0.5}
 						size="large"
 						getLabelText={getLabelText}
 						onChange={(_event, newValue) => {
