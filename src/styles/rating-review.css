@@ -109,10 +109,20 @@
   display: flex;
   align-items: center;
 }
+.rating-component {
+  margin: 10px 8px;
+  overflow-y: auto;
+  padding: 5px;
+  background-color: rgba(210, 227, 244, 0.104);
+  /* border: 1px solid rgba(210, 224, 244, 0.496); */
+  box-shadow: 0 2px 5px 0 #5a626a7a, 0 3px 10px 0 #5a626a3b;
+  border-radius: 10px;
+}
 .rating-bar {
   background-color: #babcc3;
   height: 5px;
   border-radius: 10px;
   flex-grow: 1;
-  margin-left: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 }

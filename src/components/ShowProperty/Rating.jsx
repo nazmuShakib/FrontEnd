@@ -1,6 +1,6 @@
-import { memo, useState } from 'react'
+import { memo, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import {
 	Box,
 	Button,
@@ -20,6 +20,7 @@ import {
 } from '@mui/material'
 import { StarBorderPurple500, CloseOutlined } from '@mui/icons-material'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
+import useAuth from '../../Hooks/useAuth'
 import '../../styles/rating-review.css'
 
 const labels = {
@@ -35,7 +36,18 @@ const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${label
 
 const HoverRating = memo(({ propertyID }) => {
 	console.log('rating')
+	const axiosPrivate = useAxiosPrivate()
 	const [open, setOpen] = useState(false)
+	const getRating = () => axiosPrivate({
+		method: 'GET',
+		url: `/ratings/get/${propertyID}`,
+	})
+	const { auth } = useAuth()
+	const { data: result, isLoading } = useQuery(['get-rating', { pID: propertyID, userID: auth?.userID }], getRating, {
+		cacheTime: 24 * 60 * 60 * 1000,
+	})
+	if (isLoading) return <CircularProgress />
+	const initialRating = result?.data?.data || 0
 	const handleOpen = () => {
 		setOpen(true)
 	}
@@ -58,7 +70,7 @@ const HoverRating = memo(({ propertyID }) => {
 					component="div"
 					className="rating-review"
 				>
-					<RatingSelector />
+					<RatingSelector propertyID={propertyID} initialRating={initialRating} />
 					<ReviewPlaceholder propertyID={propertyID} />
 				</Box>
 				<br />
@@ -99,7 +111,7 @@ const HoverRating = memo(({ propertyID }) => {
 									<CloseOutlined />
 								</IconButton>
 							</Box>
-							<Ratings />
+							<Ratings propertyID={propertyID} />
 							<Reviews propertyID={propertyID} />
 						</Box>
 					</Fade>
@@ -108,15 +120,31 @@ const HoverRating = memo(({ propertyID }) => {
 		</Card>
 	)
 })
-const Ratings = memo(() => {
+const Ratings = memo(({ propertyID }) => {
 	console.log('Ratings')
+	const axiosPrivate = useAxiosPrivate()
+	const getRatings = () => axiosPrivate({
+		method: 'GET',
+		url: `/ratings/get/all/${propertyID}`,
+	})
+	const {
+		data, isLoading, isError, error,
+	} = useQuery(['get-ratings', { pID: propertyID }], getRatings)
+	if (isError) return <h1>{error.response?.data?.message}</h1>
+	if (isLoading) return <CircularProgress />
+	const ratings = data?.data?.data
+	let total = 0
+	ratings.forEach((rating) => { total += rating })
 	return (
-		<Box component="div" sx={{ overflowY: 'auto', margin: '10px 8px' }}>
-			<RatingBar label="A+" count="70" />
-			<RatingBar label="A" count="50" />
-			<RatingBar label="B" count="60" />
-			<RatingBar label="C" count="40" />
-			<RatingBar label="F" count="30" />
+		<Box component="div" className="rating-component">
+			<Typography component="span" variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+				{`Based on ${total} review${total > 1 ? 's' : ''}`}
+			</Typography>
+			<RatingBar label="A+" count={(ratings[5] * 100) / total} />
+			<RatingBar label="A" count={(ratings[4] * 100) / total} />
+			<RatingBar label="B" count={(ratings[3] * 100) / total} />
+			<RatingBar label="C" count={(ratings[2] * 100) / total} />
+			<RatingBar label="F" count={(ratings[1] * 100) / total} />
 		</Box>
 	)
 })
@@ -125,7 +153,7 @@ const RatingBar = memo(({ label, count }) => {
 	return (
 		<Box component="div" className="rating-info">
 			<Typography
-				component="text"
+				component="span"
 				variant="h6"
 				sx={{
 					width: '30px',
@@ -146,7 +174,7 @@ const RatingBar = memo(({ label, count }) => {
 					}}
 				/>
 			</Box>
-			<Typography component="text" variant="body2" sx={{ marginLeft: '10px', fontSize: '20px' }}>{`${count}%`}</Typography>
+			<Typography component="span" variant="body2" sx={{ fontSize: '16px', width: '40px' }}>{`${count}%`}</Typography>
 		</Box>
 	)
 })
@@ -158,7 +186,7 @@ const Reviews = memo(({ propertyID }) => {
 	})
 	const {
 		data, isLoading, isError, error,
-	} = useQuery(['get-reviews'], getReviews)
+	} = useQuery(['get-reviews', { pID: propertyID }], getReviews)
 	if (isError) return <h1>{error.response?.data?.message}</h1>
 	if (isLoading) return <CircularProgress />
 	const reviews = data?.data?.data || []
@@ -209,10 +237,42 @@ const ReviewCard = memo(({ userName, review }) => {
 		</Box>
 	)
 })
-const RatingSelector = memo(() => {
+const RatingSelector = memo(({ propertyID, initialRating }) => {
 	console.log('rating selector')
-	const [value, setValue] = useState(5)
+	const axiosPrivate = useAxiosPrivate()
+	const { auth } = useAuth()
+	const queryClient = useQueryClient()
+	const handleSubmit = (data) => axiosPrivate({
+		method: 'POST',
+		url: '/ratings/post',
+		data,
+	})
+
+	const ratingRef = useRef(initialRating)
 	const [hover, setHover] = useState(-1)
+	const { mutateAsync } = useMutation(['post-rating', { pID: propertyID, userID: auth?.userID }], handleSubmit, {
+		onSuccess: () => {
+			queryClient.setQueryData(['get-rating', { pID: propertyID, userID: auth?.userID }], (prevData) => {
+				const newData = prevData
+				if (newData?.data?.data) {
+					newData.data.data = ratingRef.current
+				}
+				return newData
+			})
+		},
+	})
+	const handleChange = async (_event, newValue) => {
+		ratingRef.current = newValue
+		const data = {
+			propertyID,
+			rating: newValue,
+		}
+		try {
+			await mutateAsync(data)
+		} catch (err) {
+			console.log(err)
+		}
+	}
 	return (
 		<Box component="div" className="rating-field">
 			<Box component="div">
@@ -220,19 +280,17 @@ const RatingSelector = memo(() => {
 				<Box component="div" sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
 					<Rating
 						name="hover-feedback"
-						value={value}
+						value={ratingRef.current}
 						size="large"
 						getLabelText={getLabelText}
-						onChange={(_event, newValue) => {
-							setValue(newValue)
-						}}
+						onChange={handleChange}
 						onChangeActive={(_event, newHover) => {
 							setHover(newHover)
 						}}
 						emptyIcon={<StarBorderPurple500 style={{ opacity: 0.55 }} fontSize="inherit" />}
 					/>
-					{value !== null && (
-						<Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+					{ratingRef.current !== null && (
+						<Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : ratingRef.current]}</Box>
 					)}
 				</Box>
 			</Box>
