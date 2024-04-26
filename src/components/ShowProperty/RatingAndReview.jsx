@@ -34,7 +34,7 @@ const colors = new Map([['A+', '#128201'], ['A', '#77ab59'], ['B', '#f0e918'], [
 
 const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 
-const HoverRating = memo(({ propertyID }) => {
+const RatingAndReview = memo(({ propertyID }) => {
 	console.log('rating')
 	const axiosPrivate = useAxiosPrivate()
 	const [open, setOpen] = useState(false)
@@ -44,7 +44,7 @@ const HoverRating = memo(({ propertyID }) => {
 	})
 	const { auth } = useAuth()
 	const { data: result, isLoading } = useQuery(['get-rating', { pID: propertyID, userID: auth?.userID }], getRating, {
-		cacheTime: 24 * 60 * 60 * 1000,
+		cacheTime: 15 * 60 * 1000,
 	})
 	if (isLoading) return <CircularProgress />
 	const initialRating = result?.data?.data || 0
@@ -74,7 +74,7 @@ const HoverRating = memo(({ propertyID }) => {
 					<ReviewPlaceholder propertyID={propertyID} />
 				</Box>
 				<br />
-				<Button variant="outlined" className="show-reviews" onClick={handleOpen}>Show Reviews</Button>
+				<Button variant="outlined" className="show-reviews" onClick={handleOpen}>Show Ratings & Reviews</Button>
 				<Modal
 					aria-labelledby="transition-modal-title"
 					aria-describedby="transition-modal-description"
@@ -100,7 +100,7 @@ const HoverRating = memo(({ propertyID }) => {
 									component="h1"
 									sx={{ flexGrow: 1, textAlign: 'center' }}
 								>
-									Reviews
+									Ratings & Reviews
 								</Typography>
 								<IconButton
 									size="small"
@@ -138,13 +138,13 @@ const Ratings = memo(({ propertyID }) => {
 	return (
 		<Box component="div" className="rating-component">
 			<Typography component="span" variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
-				{`Based on ${total} review${total > 1 ? 's' : ''}`}
+				{`Based on ${total} rating${total > 1 ? 's' : ''}`}
 			</Typography>
-			<RatingBar label="A+" count={(ratings[5] * 100) / total} />
-			<RatingBar label="A" count={(ratings[4] * 100) / total} />
-			<RatingBar label="B" count={(ratings[3] * 100) / total} />
-			<RatingBar label="C" count={(ratings[2] * 100) / total} />
-			<RatingBar label="F" count={(ratings[1] * 100) / total} />
+			<RatingBar label="A+" count={(ratings[5] * 100) / Math.max(1, total)} />
+			<RatingBar label="A" count={(ratings[4] * 100) / Math.max(1, total)} />
+			<RatingBar label="B" count={(ratings[3] * 100) / Math.max(1, total)} />
+			<RatingBar label="C" count={(ratings[2] * 100) / Math.max(1, total)} />
+			<RatingBar label="F" count={(ratings[1] * 100) / Math.max(1, total)} />
 		</Box>
 	)
 })
@@ -190,42 +190,45 @@ const Reviews = memo(({ propertyID }) => {
 	if (isError) return <h1>{error.response?.data?.message}</h1>
 	if (isLoading) return <CircularProgress />
 	const reviews = data?.data?.data || []
+	console.log(reviews)
+	if (!reviews.length) {
+		return (
+			<Box component="div" className="review-component" sx={{ display: 'flex', justifyContent: 'center' }}>
+				<Typography component="span" variant="subtitle1">No reviews</Typography>
+			</Box>
+		)
+	}
 	console.log('reviews')
 	return (
-		<Box component="div" sx={{ height: '500px', overflowY: 'auto' }}>
-			{reviews.map((review) => <ReviewCard key={review.review} userName={review.name} review={review.review} />)}
+		<Box component="div" className="review-component">
+			{reviews.map((review) => <ReviewCard key={review.review} userName={review.name} review={review.review} postTime={review.postTime} />)}
 		</Box>
 	)
 })
-const ReviewCard = memo(({ userName, review }) => {
+const ReviewCard = memo(({ userName, review, postTime }) => {
 	console.log('review card')
 	return (
 		<Box
 			component="div"
-			sx={{
-				margin: '8px 8px',
-				padding: '10px 8px',
-				boxShadow: '0 4px 8px 0 #5a626a7a, 0 6px 20px 0 #5a626a3b',
-			}}
+			className="review-card"
 		>
-			<Box component="div">
-				<Box
-					component={Link}
-					to="/user/profile"
-					sx={{
-						textDecoration: 'none',
-						display: 'inline-block',
-						color: '#3568dd',
-					}}
-				>
-					<Typography
-						component="p"
-						variant="body1"
-						fontSize={18}
+			<Box component="div" className="review-user-info">
+				<Box component="div" sx={{ height: '26px', marginBottom: '5px' }}>
+					<Box
+						component={Link}
+						to="/user/profile"
+						className="review-user-link"
 					>
-						{userName}
-					</Typography>
+						<Typography
+							component="span"
+							variant="subtitle1"
+							fontSize={18}
+						>
+							{userName}
+						</Typography>
+					</Box>
 				</Box>
+				<Typography component="span" variant="caption" sx={{ display: 'inline-block' }}>{new Date(postTime).toLocaleDateString()}</Typography>
 			</Box>
 			<Typography
 				component="section"
@@ -276,7 +279,13 @@ const RatingSelector = memo(({ propertyID, initialRating }) => {
 	return (
 		<Box component="div" className="rating-field">
 			<Box component="div">
-				<InputLabel>Rate the property</InputLabel>
+				<InputLabel sx={{
+					display: 'flex',
+					justifyContent: 'center',
+				}}
+				>
+					Rate the property
+				</InputLabel>
 				<Box component="div" sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
 					<Rating
 						name="hover-feedback"
@@ -316,6 +325,7 @@ const ReviewPlaceholder = memo(({ propertyID }) => {
 		const data = {
 			propertyID,
 			review: text,
+			postTime: new Date(),
 		}
 		try {
 			await mutateAsync(data)
@@ -358,4 +368,4 @@ const ReviewPlaceholder = memo(({ propertyID }) => {
 		</Box>
 	)
 })
-export default HoverRating
+export default RatingAndReview

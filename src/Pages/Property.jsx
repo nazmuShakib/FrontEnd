@@ -13,7 +13,7 @@ import RequiredDocuments from '../components/ShowProperty/RequiredDocuments'
 import Map from '../components/ShowProperty/Map'
 import PriceAndAdvertiser from '../components/ShowProperty/PriceAndAdvertiser'
 import ContactAndAddress from '../components/ShowProperty/ContactAndAddress'
-import Rating from '../components/ShowProperty/Rating'
+import RatingAndReview from '../components/ShowProperty/RatingAndReview'
 import useAuth from '../Hooks/useAuth'
 
 export default function Property() {
@@ -56,7 +56,7 @@ export default function Property() {
 			{auth && <ContactAndAddress address={res?.address} contact={res?.contact} />}
 			<Map mapCoordinate={mapCoordinate} />
 			<PriceAndAdvertiser price={res?.price} />
-			{auth && <Rating propertyID={res?.ID} />}
+			{auth && <RatingAndReview propertyID={res?.ID} />}
 			{/* TODO add similar property lists and rating section */}
 		</Box>
 	)
