@@ -91,7 +91,8 @@ const PropertySchema = z.object({
 	contact: z.string()
 		.refine((data) => data !== '', {
 			message: 'Required',
-		}),
+		})
+		.refine((data) => /^(?:(?:\+|00)88|01)?\d{11}$/.test(data), { message: 'Invalid contact number' }),
 	address: z
 		.string()
 		.max(100, 'max 100 characters')
