@@ -35,19 +35,9 @@ const colors = new Map([['A+', '#128201'], ['A', '#77ab59'], ['B', '#f0e918'], [
 const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 
 const RatingAndReview = memo(({ propertyID }) => {
-	console.log('rating')
-	const axiosPrivate = useAxiosPrivate()
+	console.log('rating and review')
 	const [open, setOpen] = useState(false)
-	const getRating = () => axiosPrivate({
-		method: 'GET',
-		url: `/ratings/get/${propertyID}`,
-	})
 	const { auth } = useAuth()
-	const { data: result, isLoading } = useQuery(['get-rating', { pID: propertyID, userID: auth?.userID }], getRating, {
-		cacheTime: 15 * 60 * 1000,
-	})
-	if (isLoading) return <CircularProgress />
-	const initialRating = result?.data?.data || 0
 	const handleOpen = () => {
 		setOpen(true)
 	}
@@ -66,13 +56,7 @@ const RatingAndReview = memo(({ propertyID }) => {
 			<CardContent
 				height="20px"
 			>
-				<Box
-					component="div"
-					className="rating-review"
-				>
-					<RatingSelector propertyID={propertyID} initialRating={initialRating} />
-					<ReviewPlaceholder propertyID={propertyID} />
-				</Box>
+				{auth && <RatingReviewInput propertyID={propertyID} />}
 				<br />
 				<Button variant="outlined" className="show-reviews" onClick={handleOpen}>Show Ratings & Reviews</Button>
 				<Modal
@@ -120,12 +104,24 @@ const RatingAndReview = memo(({ propertyID }) => {
 		</Card>
 	)
 })
+const RatingReviewInput = memo(({ propertyID, initialRating }) => {
+	console.log('rating review input')
+	return (
+		<Box
+			component="div"
+			className="rating-review"
+		>
+			<RatingSelector propertyID={propertyID} initialRating={initialRating} />
+			<ReviewPlaceholder propertyID={propertyID} />
+		</Box>
+	)
+})
 const Ratings = memo(({ propertyID }) => {
 	console.log('Ratings')
 	const axiosPrivate = useAxiosPrivate()
 	const getRatings = () => axiosPrivate({
 		method: 'GET',
-		url: `/ratings/get/all/${propertyID}`,
+		url: `/reviews-ratings/get/ratings/${propertyID}`,
 	})
 	const {
 		data, isLoading, isError, error,
@@ -182,7 +178,7 @@ const Reviews = memo(({ propertyID }) => {
 	const axiosPrivate = useAxiosPrivate()
 	const getReviews = () => axiosPrivate({
 		method: 'GET',
-		url: `/reviews/get/${propertyID}`,
+		url: `/reviews-ratings/get/reviews/${propertyID}`,
 	})
 	const {
 		data, isLoading, isError, error,
@@ -240,18 +236,25 @@ const ReviewCard = memo(({ userName, review, postTime }) => {
 		</Box>
 	)
 })
-const RatingSelector = memo(({ propertyID, initialRating }) => {
+const RatingSelector = memo(({ propertyID }) => {
 	console.log('rating selector')
 	const axiosPrivate = useAxiosPrivate()
 	const { auth } = useAuth()
 	const queryClient = useQueryClient()
+	const getRating = () => axiosPrivate({
+		method: 'GET',
+		url: `/ratings/get/${propertyID}`,
+	})
+	const { data: result, isLoading } = useQuery(['get-rating', { pID: propertyID, userID: auth?.userID }], getRating, {
+		cacheTime: 15 * 60 * 1000,
+	})
 	const handleSubmit = (data) => axiosPrivate({
 		method: 'POST',
 		url: '/ratings/post',
 		data,
 	})
 
-	const ratingRef = useRef(initialRating)
+	const ratingRef = useRef(result?.data?.data || 0)
 	const [hover, setHover] = useState(-1)
 	const { mutateAsync } = useMutation(['post-rating', { pID: propertyID, userID: auth?.userID }], handleSubmit, {
 		onSuccess: () => {
@@ -264,6 +267,7 @@ const RatingSelector = memo(({ propertyID, initialRating }) => {
 			})
 		},
 	})
+	if (isLoading) return <CircularProgress />
 	const handleChange = async (_event, newValue) => {
 		ratingRef.current = newValue
 		const data = {
