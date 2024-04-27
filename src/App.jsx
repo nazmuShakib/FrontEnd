@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Box, CssBaseline } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Home from './Pages/Home'
+import Profile from './Pages/Profile'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import NavBar from './Pages/NavBar'
@@ -49,8 +50,8 @@ function App() {
 									/>
 									<Route
 										exact
-										path="/user/profile"
-										element={<h1>Profile</h1>}
+										path="/profile/:userID"
+										element={<Profile />}
 									/>
 									<Route path="/add" element={<AddProperty />} />
 								</Route>
