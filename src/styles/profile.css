@@ -1,0 +1,53 @@
+.upload-button {
+  width: 2em;
+  height: 2em;
+  margin-top: 10px !important;
+  padding: 1.5em 3.5em !important;
+}
+.upload {
+  background-color: #5dca71 !important;
+}
+.remove {
+  background-color: #ca5d5d !important;
+}
+.user-name {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.edit-save-button {
+  width: 14%;
+  background-color: #305fc9;
+}
+.edit-save-button:hover {
+  background-color: #162c5d;
+}
+.notification-container {
+  margin-top: 5em;
+  margin-bottom: 2em;
+  width: 100%;
+}
+.notification-box {
+  min-height: 80px;
+  max-height: 500px;
+  overflow-y: auto;
+  background: rgb(202, 208, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(228, 238, 252, 0.912) 20%,
+    rgba(235, 235, 235, 0.91) 80%
+  );
+}
+.notification {
+  margin-bottom: 5px;
+  min-height: 1em;
+  max-height: 100%;
+  padding: 10px;
+  border-radius: 10px;
+}
+.notification:hover {
+  background-color: #cad0ff;
+  cursor: pointer;
+  transition: all 250ms ease-in;
+}
