@@ -104,14 +104,24 @@ const RatingAndReview = memo(({ propertyID }) => {
 		</Card>
 	)
 })
-const RatingReviewInput = memo(({ propertyID, initialRating }) => {
+const RatingReviewInput = memo(({ propertyID }) => {
 	console.log('rating review input')
+	const axiosPrivate = useAxiosPrivate()
+	const { auth } = useAuth()
+	const getRating = () => axiosPrivate({
+		method: 'GET',
+		url: `/ratings/get/${propertyID}`,
+	})
+	const { data, isLoading } = useQuery(['get-rating', { pID: propertyID, userID: auth?.userID }], getRating, {
+		cacheTime: 15 * 60 * 1000,
+	})
+	if (isLoading) return <CircularProgress />
 	return (
 		<Box
 			component="div"
 			className="rating-review"
 		>
-			<RatingSelector propertyID={propertyID} initialRating={initialRating} />
+			<RatingSelector propertyID={propertyID} initialRating={data?.data?.data} />
 			<ReviewPlaceholder propertyID={propertyID} />
 		</Box>
 	)
@@ -236,25 +246,19 @@ const ReviewCard = memo(({ userName, review, postTime }) => {
 		</Box>
 	)
 })
-const RatingSelector = memo(({ propertyID }) => {
+const RatingSelector = memo(({ propertyID, initialRating }) => {
 	console.log('rating selector')
 	const axiosPrivate = useAxiosPrivate()
 	const { auth } = useAuth()
 	const queryClient = useQueryClient()
-	const getRating = () => axiosPrivate({
-		method: 'GET',
-		url: `/ratings/get/${propertyID}`,
-	})
-	const { data: result, isLoading } = useQuery(['get-rating', { pID: propertyID, userID: auth?.userID }], getRating, {
-		cacheTime: 15 * 60 * 1000,
-	})
+
 	const handleSubmit = (data) => axiosPrivate({
 		method: 'POST',
 		url: '/ratings/post',
 		data,
 	})
 
-	const ratingRef = useRef(result?.data?.data || 0)
+	const ratingRef = useRef(initialRating)
 	const [hover, setHover] = useState(-1)
 	const { mutateAsync } = useMutation(['post-rating', { pID: propertyID, userID: auth?.userID }], handleSubmit, {
 		onSuccess: () => {
@@ -267,7 +271,7 @@ const RatingSelector = memo(({ propertyID }) => {
 			})
 		},
 	})
-	if (isLoading) return <CircularProgress />
+	// if (isLoading) return <CircularProgress />
 	const handleChange = async (_event, newValue) => {
 		ratingRef.current = newValue
 		const data = {
