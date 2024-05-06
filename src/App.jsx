@@ -7,6 +7,7 @@ import Login from './Pages/Login'
 import Register from './Pages/Register'
 import NavBar from './Pages/NavBar'
 import Property from './Pages/Property'
+import PropertyWithID from './Pages/PropertyWithID'
 import AddProperty from './Pages/AddProperty'
 import EditProperty from './Pages/EditProperty'
 import SearchResult from './Pages/SearchResult'
@@ -71,7 +72,7 @@ function App() {
 									element={<Login />}
 								/>
 								<Route path="/property" element={<Property />} />
-								<Route path="/property/:propertyID" element={<h1>hello</h1>} />
+								<Route path="/property/:propertyID" element={<PropertyWithID />} />
 							</Route>
 						</Routes>
 					</AuthProvider>
