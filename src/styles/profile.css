@@ -1,3 +1,11 @@
+.profile-container {
+  width: 95%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .upload-button {
   width: 2em;
   height: 2em;
@@ -14,14 +22,20 @@
   margin-top: 20px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+}
+.profile-info {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 10px;
 }
 .edit-save-button {
-  width: 14%;
-  background-color: #305fc9;
+  width: 3em !important;
+  height: 2em !important;
+  background-color: rgb(49, 94, 201) !important;
 }
 .edit-save-button:hover {
-  background-color: #162c5d;
+  background-color: #162c5d !important;
 }
 .notification-container {
   margin-top: 5em;
@@ -50,4 +64,14 @@
   background-color: #cad0ff;
   cursor: pointer;
   transition: all 250ms ease-in;
+}
+@media (min-width: 700px) {
+  .profile-container {
+    width: 80%;
+  }
+}
+@media (min-width: 1200px) {
+  .profile-container {
+    width: 50%;
+  }
 }

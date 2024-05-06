@@ -75,14 +75,7 @@ const Profile = memo(() => {
 		>
 			<Box
 				component="div"
-				sx={{
-					width: '50%',
-					height: '100%',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}
+				className="profile-container"
 			>
 				<Box component="div" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 					{/* eslint-disable-next-line react/jsx-props-no-spreading */}
@@ -99,8 +92,12 @@ const Profile = memo(() => {
 					</Button> */}
 				</Box>
 				<Box component="div" sx={{ width: '100%' }}>
-					<UserName name={userInfo?.username} />
-					<TextField disabled label="Email" value={userInfo?.email} sx={{ marginTop: '10px', width: '85%' }} />
+					<UserName userInfo={userInfo} />
+					{/* <TextField disabled label="Email" value={userInfo?.email} sx={{ marginTop: '10px', width: '85%' }} /> */}
+					<Box component="div" className="profile-info">
+						<Typography variant="body1" component="span" sx={{ fontWeight: '500', marginRight: '10px' }}>Email:</Typography>
+						<Typography variant="body1" component="span">{userInfo?.email}</Typography>
+					</Box>
 				</Box>
 				<Notifications userID={auth?.userID} />
 			</Box>
@@ -156,12 +153,12 @@ const Notification = memo(({ time, propertyID, notification }) => {
 		</Box>
 	)
 })
-const UserName = memo(({ name }) => {
+const UserName = memo(({ userInfo }) => {
 	console.log('username')
 	const [editOrSave, setEditOrSave] = useState(true)
 	const queryClient = useQueryClient()
 	const { auth } = useAuth()
-	const [userName, setUserName] = useState(name)
+	const [userName, setUserName] = useState(userInfo?.username)
 	const axiosPrivate = useAxiosPrivate()
 	const submitUserName = (data) => axiosPrivate({
 		url: '/profile/edit/name',
@@ -190,7 +187,14 @@ const UserName = memo(({ name }) => {
 	}
 	return (
 		<Box component="div" className="user-name">
-			<TextField disabled={editOrSave} label="User Name" value={userName} onChange={handleChange} sx={{ width: '85%' }} />
+			{
+				!editOrSave ? <TextField disabled={editOrSave} label="User Name" value={userName} onChange={handleChange} sx={{ width: '90%', marginRight: '10px' }} /> : (
+					<Box component="div" className="profile-info" sx={{ width: '90%', marginRight: '10px' }}>
+						<Typography variant="body1" component="span" sx={{ fontWeight: '500', marginRight: '10px' }}>UserName:</Typography>
+						<Typography variant="body1" component="span">{userName}</Typography>
+					</Box>
+				)
+			}
 			<Button variant="contained" onClick={handleClick} className="edit-save-button">{editOrSave ? 'Edit' : 'Save'}</Button>
 		</Box>
 	)
