@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import {
 	Box, Typography,
@@ -49,8 +49,8 @@ const Profile = memo(() => {
 	const getUserInfo = () => axiosPrivate({
 		url: '/profile/get-info',
 	})
-	const { userID } = useParams()
-	const { data, isLoading } = useQuery(['get-user-info', userID], getUserInfo)
+	const { auth } = useAuth()
+	const { data, isLoading } = useQuery(['get-user-info', auth?.userID], getUserInfo)
 	const [img, setImg] = useState('')
 	if (isLoading) return <CircularProgress />
 	const userInfo = data?.data?.data
@@ -102,28 +102,48 @@ const Profile = memo(() => {
 					<UserName name={userInfo?.username} />
 					<TextField disabled label="Email" value={userInfo?.email} sx={{ marginTop: '10px', width: '85%' }} />
 				</Box>
-				<Box
-					component="div"
-					className="notification-container"
-				>
-					<Typography variant="h6" component="span">Notifications</Typography>
-					<Box
-						component="div"
-						className="notification-box"
-					>
-						{Array(5).fill().map((_, index) => (
-							<Notification key={Math.random()} />
-						))}
-					</Box>
-				</Box>
+				<Notifications userID={auth?.userID} />
 			</Box>
 		</Box>
 	)
 })
-const Notification = memo(() => {
+const Notifications = memo(({ userID }) => {
+	console.log('all notifications')
+	const axiosPrivate = useAxiosPrivate()
+	const getNotifications = () => axiosPrivate({
+		url: '/profile/notifications',
+		method: 'GET',
+	})
+	const { data, isLoading } = useQuery(['get-notifications', userID], getNotifications)
+	if (isLoading) return <CircularProgress />
+	const notifications = data?.data?.data
+	return (
+		<Box
+			component="div"
+			className="notification-container"
+		>
+			<Typography variant="h6" component="span">Notifications</Typography>
+			<Box
+				component="div"
+				className="notification-box"
+			>
+				{notifications.map((notification) => (
+					<Notification
+						key={Math.random()}
+						time={notification.createdAt}
+						propertyID={notification.propertyID}
+						notification={notification.notification}
+					/>
+				))}
+			</Box>
+		</Box>
+	)
+})
+const Notification = memo(({ time, propertyID, notification }) => {
 	console.log('notification')
+	const navigate = useNavigate()
 	const handleClick = () => {
-		alert('notification clicked')
+		navigate(`/property/${propertyID}`)
 	}
 	return (
 		<Box
@@ -131,7 +151,8 @@ const Notification = memo(() => {
 			className="notification"
 			onClick={handleClick}
 		>
-			aliquam odio ex provident minima veniam, nemo possimus!
+			<Typography variant="caption" component="div">{new Date(time).toLocaleString()}</Typography>
+			{notification}
 		</Box>
 	)
 })

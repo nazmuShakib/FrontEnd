@@ -50,7 +50,7 @@ function App() {
 									/>
 									<Route
 										exact
-										path="/profile/:userID"
+										path="/profile"
 										element={<Profile />}
 									/>
 									<Route path="/add" element={<AddProperty />} />
@@ -71,6 +71,7 @@ function App() {
 									element={<Login />}
 								/>
 								<Route path="/property" element={<Property />} />
+								<Route path="/property/:propertyID" element={<h1>hello</h1>} />
 							</Route>
 						</Routes>
 					</AuthProvider>

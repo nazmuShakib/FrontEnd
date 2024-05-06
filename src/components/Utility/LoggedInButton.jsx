@@ -15,7 +15,6 @@ import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 
 const LoggedInButton = memo(() => {
 	const axiosPrivate = useAxiosPrivate()
-	const { auth } = useAuth()
 	const logoutUser = async () => axiosPrivate({
 		method: 'POST',
 		url: 'user/logout',
@@ -68,7 +67,7 @@ const LoggedInButton = memo(() => {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
-				<MenuItem component={Link} to={`/profile/${auth?.userID}`} onClick={handleClose}>Profile</MenuItem>
+				<MenuItem component={Link} to="/profile" onClick={handleClose}>Profile</MenuItem>
 				<MenuItem onClick={handleLogout}>Logout</MenuItem>
 			</Menu>
 			{error && (
