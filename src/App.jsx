@@ -3,6 +3,7 @@ import { Box, CssBaseline } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Home from './Pages/Home'
 import Profile from './Pages/Profile'
+import ProfileWithID from './Pages/ProfileWithID'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import NavBar from './Pages/NavBar'
@@ -73,6 +74,11 @@ function App() {
 								/>
 								<Route path="/property" element={<Property />} />
 								<Route path="/property/:propertyID" element={<PropertyWithID />} />
+								<Route
+									exact
+									path="/profile/:userID"
+									element={<ProfileWithID />}
+								/>
 							</Route>
 						</Routes>
 					</AuthProvider>

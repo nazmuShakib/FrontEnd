@@ -207,11 +207,13 @@ const Reviews = memo(({ propertyID }) => {
 	console.log('reviews')
 	return (
 		<Box component="div" className="review-component">
-			{reviews.map((review) => <ReviewCard key={review.review} userName={review.name} review={review.review} postTime={review.postTime} />)}
+			{reviews.map((review) => <ReviewCard key={review.review} userID={review.userID} userName={review.name} review={review.review} postTime={review.postTime} />)}
 		</Box>
 	)
 })
-const ReviewCard = memo(({ userName, review, postTime }) => {
+const ReviewCard = memo(({
+	userID, userName, review, postTime,
+}) => {
 	console.log('review card')
 	return (
 		<Box
@@ -222,7 +224,7 @@ const ReviewCard = memo(({ userName, review, postTime }) => {
 				<Box component="div" sx={{ height: '26px', marginBottom: '5px' }}>
 					<Box
 						component={Link}
-						to="/user/profile"
+						to={`/profile/${userID}`}
 						className="review-user-link"
 					>
 						<Typography
