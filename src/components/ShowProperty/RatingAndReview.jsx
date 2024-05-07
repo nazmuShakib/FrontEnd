@@ -321,7 +321,7 @@ const ReviewPlaceholder = memo(({ propertyID }) => {
 		url: '/reviews/post',
 		data,
 	})
-	const { mutateAsync } = useMutation(['post-review'], handleSubmit)
+	const { mutateAsync } = useMutation(handleSubmit)
 
 	console.log('review placeholder')
 	const screen900 = useMediaQuery('@media (min-width: 900px)')
