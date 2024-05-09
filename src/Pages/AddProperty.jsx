@@ -1,6 +1,9 @@
+import { useState, useMemo } from 'react'
 import {
+	Alert,
 	Box,
 	FormControl,
+	Snackbar,
 } from '@mui/material'
 
 import { useForm } from 'react-hook-form'
@@ -150,24 +153,50 @@ export default function AddProperty() {
 	})
 	const handleData = (formData) => axiosPrivate({
 		method: 'POST',
-		url: 'http://localhost:3000/addProperty',
+		url: '/addProperty',
 		data: formData,
 		headers: {
 			'Content-Type': 'multipart/form-data',
 		},
 	})
 	const { mutateAsync, isLoading } = useMutation(['post'], handleData)
+	const [notification, setNotification] = useState({
+		open: false,
+		message: '',
+		type: '',
+	})
 	const onSubmit = async (event) => {
 		try {
 			const formData = new FormData()
 			const { images, ...data } = event
 			images.forEach((file) => formData.append('images', file))
 			formData.append('data', JSON.stringify(data))
-			const res = await mutateAsync(formData)
-			console.log(res)
+			await mutateAsync(formData)
+			setNotification({
+				open: true,
+				message: 'Property added successfully',
+				type: 'success',
+			})
 		} catch (err) {
 			console.log(err)
+			setNotification({
+				open: true,
+				message: 'Failed to add property',
+				type: 'error',
+			})
 		}
+	}
+	useMemo(() => {
+		if (Object.keys(errors).length !== 0) {
+			setNotification({
+				open: true,
+				message: 'There is an error. Fill up the form correctly.',
+				type: 'error',
+			})
+		}
+	}, [errors])
+	const handleClose = () => {
+		setNotification({ ...notification, open: false })
 	}
 	return (
 		<Box
@@ -200,8 +229,13 @@ export default function AddProperty() {
 					<Contact control={control} error={errors.contact} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />
-					<SubmitButton isSubmitting={isSubmitting} />
+					<SubmitButton isSubmitting={isSubmitting || isLoading} />
 				</FormControl>
+				{notification.open && (
+					<Snackbar open={notification.open} autoHideDuration={5000} onClose={handleClose}>
+						<Alert severity={notification.type} variant="filled">{notification.message}</Alert>
+					</Snackbar>
+				)}
 			</Box>
 		</Box>
 	)
