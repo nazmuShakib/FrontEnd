@@ -3,6 +3,7 @@ import {
 	Box,
 	Divider,
 } from '@mui/material'
+import PropertyInfoAndFavorite from '../components/ShowProperty/PropertyInfoAndFavorite'
 import PropertyHeader from '../components/ShowProperty/PropertyHeader'
 import BasicInfo from '../components/ShowProperty/BasicInfo'
 import ImageSlider from '../components/ShowProperty/ImageSlider'
@@ -45,6 +46,7 @@ export default function Property() {
 				},
 			}}
 		>
+			{auth && <PropertyInfoAndFavorite propertyID={res?.ID} />}
 			<PropertyHeader title={res?.title} />
 			<Divider variant="middle" />
 			<BasicInfo availableDate={res?.availableDate} gender={res?.gender} category={res?.category} />

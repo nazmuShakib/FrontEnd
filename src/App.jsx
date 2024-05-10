@@ -13,6 +13,7 @@ import AddProperty from './Pages/AddProperty'
 import EditProperty from './Pages/EditProperty'
 import SearchResult from './Pages/SearchResult'
 import MyProperties from './Pages/MyProperties'
+import MyFavorites from './Pages/MyFavorites'
 import useGooglePlaces from './Hooks/useGooglePlaces'
 import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import GooglePlacesContext from './Contexts/GooglePlacesLoader'
@@ -38,7 +39,7 @@ function App() {
 									<Route
 										exact
 										path="/my-favorites"
-										element={<h1>Favorites button clicked</h1>}
+										element={<MyFavorites />}
 									/>
 									<Route
 										exact

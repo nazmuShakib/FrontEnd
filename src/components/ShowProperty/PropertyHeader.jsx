@@ -9,20 +9,19 @@ const PropertyHeader = memo(({ title }) => (
 		fontSize="25px"
 		sx={{
 			paddingTop: '1%',
-			margin: '5%',
+			margin: '3%',
 			'@media (min-width: 430px)': {
-				paddingTop: '4%',
+				paddingTop: '2%',
 			},
 			'@media (min-width: 768px)': {
 				fontSize: '30px',
-				paddingTop: '3%',
+				paddingTop: '2%',
 			},
 			'@media (min-width: 968px)': {
 				paddingTop: '2%',
 			},
 		}}
 	>
-		{/* Property Header of a house with property information and other descriptions of the flat. 2 Bedroom, 2 Bathroom etc */}
 		{title}
 	</Box>
 ))
