@@ -6,7 +6,7 @@ import {
 	CircularProgress,
 } from '@mui/material'
 import LazyLoad from 'react-lazy-load'
-import AdvertisementCard from '../components/Utility/HomePageCard'
+import FavoritePageCard from '../components/Utility/FavoritePageCard'
 import useAxiosPrivate from '../Hooks/useAxiosPrivate'
 import useAuth from '../Hooks/useAuth'
 import '../styles/card.css'
@@ -42,7 +42,7 @@ const MyFavorites = memo(() => {
 							offsetVertical={200}
 							threshold={0.20}
 						>
-							<AdvertisementCard
+							<FavoritePageCard
 								key={property.property.ID}
 								property={property.property}
 								refetch={refetch}
