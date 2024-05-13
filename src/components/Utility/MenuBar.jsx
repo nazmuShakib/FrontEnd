@@ -10,10 +10,12 @@ import {
 	Menu as MenuIcon,
 	Close as CloseIcon,
 } from '@mui/icons-material'
+import useAuth from '../../Hooks/useAuth'
 
 export default function MenuBar() {
 	const [anchorEl, setAnchorEl] = useState(null)
 	const open = Boolean(anchorEl)
+	const { auth } = useAuth()
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget)
 	}
@@ -34,7 +36,7 @@ export default function MenuBar() {
 					mt: 2,
 					color: 'black',
 					display: 'flex',
-					'@media (min-width: 768px)': {
+					'@media (min-width: 780px)': {
 						display: 'none',
 					},
 				}}
@@ -87,15 +89,17 @@ export default function MenuBar() {
 					My Properties
 
 				</MenuItem>
-				<MenuItem
-					component={NavLink}
-					to="/login"
-					name="Login Item"
-					onClick={handleClose}
-				>
-					Login
+				{!auth && (
+					<MenuItem
+						component={NavLink}
+						to="/login"
+						name="Login Item"
+						onClick={handleClose}
+					>
+						Login
 
-				</MenuItem>
+					</MenuItem>
+				)}
 			</Menu>
 		</Box>
 	)

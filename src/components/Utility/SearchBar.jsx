@@ -106,10 +106,7 @@ const TransitionsModal = memo(() => {
 					color: 'black',
 					mr: 2,
 					width: '8em',
-					display: 'none',
-					'@media (min-width: 768px)': {
-						display: 'flex',
-					},
+					display: 'flex',
 					':hover': {
 						backgroundColor: '#cfd5e5',
 						color: 'black',

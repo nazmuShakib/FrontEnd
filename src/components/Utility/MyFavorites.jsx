@@ -12,7 +12,7 @@ export default function MyFavorites() {
 			sx={{
 				width: '120px',
 				display: 'none',
-				'@media (min-width: 768px)': {
+				'@media (min-width: 780px)': {
 					display: 'flex',
 				},
 				':not(.nohover):hover': {

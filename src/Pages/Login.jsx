@@ -1,4 +1,6 @@
-import { Link as RouteLink, useNavigate, useLocation } from 'react-router-dom'
+import {
+	Link as RouteLink, useNavigate, useLocation, Navigate,
+} from 'react-router-dom'
 import { memo, useState } from 'react'
 import {
 	Alert,
@@ -54,7 +56,7 @@ export default function Login() {
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: zodResolver(SignInSchema) })
 	const navigate = useNavigate()
-	const { login } = useAuth()
+	const { login, auth } = useAuth()
 	const [error, setError] = useState(null)
 	const [open, setOpen] = useState(true)
 	const location = useLocation()
@@ -63,16 +65,17 @@ export default function Login() {
 		setOpen(false)
 	}
 	const { mutateAsync, isLoading } = useMutation(['login'], handleData)
+	if (auth) return <Navigate to="/" />
 	const onSubmit = async (data) => {
 		try {
 			const res = await mutateAsync(JSON.stringify(data))
 			if (res.status === 200) {
 				const { accessToken, userID } = res.data
-				const auth = {
+				const authObj = {
 					accessToken,
 					userID,
 				}
-				login(auth)
+				login(authObj)
 				navigate(from, { replace: true })
 			}
 		} catch (err) {

@@ -15,7 +15,7 @@ export default function AddPropertyButton() {
 				backgroundColor: '#f0f2f7',
 				color: 'black',
 				display: 'none',
-				'@media (min-width: 768px)': {
+				'@media (min-width: 780px)': {
 					display: 'flex',
 				},
 				':hover': {
