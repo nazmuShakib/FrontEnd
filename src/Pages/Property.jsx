@@ -15,11 +15,13 @@ import Map from '../components/ShowProperty/Map'
 import PriceAndAdvertiser from '../components/ShowProperty/PriceAndAdvertiser'
 import ContactAndAddress from '../components/ShowProperty/ContactAndAddress'
 import RatingAndReview from '../components/ShowProperty/RatingAndReview'
+import BookPropertyButton from '../components/ShowProperty/BookPropertyButton'
 import useAuth from '../Hooks/useAuth'
 
 export default function Property() {
 	const location = useLocation()
 	const from = location?.state?.from
+	const myProperty = location?.state?.myProperty
 	const { auth } = useAuth()
 	console.log('property')
 	const res = from
@@ -58,7 +60,8 @@ export default function Property() {
 			{auth && <ContactAndAddress address={res?.address} contact={res?.contact} />}
 			<Map mapCoordinate={mapCoordinate} />
 			<PriceAndAdvertiser price={res?.price} />
-			<RatingAndReview propertyID={res?.ID} />
+			{!myProperty && <BookPropertyButton propertyID={res?.ID} />}
+			<RatingAndReview propertyID={res?.ID} myProperty={myProperty} />
 			{/* TODO add similar property lists and rating section */}
 		</Box>
 	)

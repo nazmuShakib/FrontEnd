@@ -34,7 +34,7 @@ const colors = new Map([['A+', '#128201'], ['A', '#77ab59'], ['B', '#f0e918'], [
 
 const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 
-const RatingAndReview = memo(({ propertyID }) => {
+const RatingAndReview = memo(({ propertyID, myProperty }) => {
 	console.log('rating and review')
 	const [open, setOpen] = useState(false)
 	const { auth } = useAuth()
@@ -56,7 +56,7 @@ const RatingAndReview = memo(({ propertyID }) => {
 			<CardContent
 				height="20px"
 			>
-				{auth && <RatingReviewInput propertyID={propertyID} />}
+				{auth && (!myProperty) && <RatingReviewInput propertyID={propertyID} />}
 				<br />
 				<Button variant="outlined" className="show-reviews" onClick={handleOpen}>Show Ratings & Reviews</Button>
 				<Modal

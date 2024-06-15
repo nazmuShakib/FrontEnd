@@ -45,6 +45,7 @@ const MyProperties = memo(() => {
 								property={property.property}
 								refetch={refetch}
 								showControls
+								myProperty
 							/>
 						</LazyLoad>
 					</Grid>

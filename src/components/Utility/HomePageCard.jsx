@@ -11,7 +11,9 @@ import { useState } from 'react'
 import Controls from './Controls'
 import Taka from '../../assets/icons/taka.svg'
 
-function AdvertisementCard({ property, refetch, showControls = false }) {
+function AdvertisementCard({
+	property, refetch, showControls = false, myProperty = false,
+}) {
 	const {
 		availableDate, title, thumbnail, price, placeInfo, ID,
 	} = property
@@ -27,7 +29,7 @@ function AdvertisementCard({ property, refetch, showControls = false }) {
 			<CardActionArea
 				component={Link}
 				to="/property"
-				state={{ from: property }}
+				state={{ from: property, myProperty }}
 			>
 				<CardMedia
 					component="img"
