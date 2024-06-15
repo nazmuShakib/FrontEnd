@@ -14,6 +14,7 @@ import EditProperty from './Pages/EditProperty'
 import SearchResult from './Pages/SearchResult'
 import MyProperties from './Pages/MyProperties'
 import MyFavorites from './Pages/MyFavorites'
+import { SuccessPayment, FailPayment } from './Pages/PaymentInfo'
 import useGooglePlaces from './Hooks/useGooglePlaces'
 import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import GooglePlacesContext from './Contexts/GooglePlacesLoader'
@@ -79,6 +80,16 @@ function App() {
 									exact
 									path="/profile/:userID"
 									element={<ProfileWithID />}
+								/>
+								<Route
+									exact
+									path="/payment/success"
+									element={<SuccessPayment />}
+								/>
+								<Route
+									exact
+									path="/payment/failure"
+									element={<FailPayment />}
 								/>
 							</Route>
 						</Routes>
