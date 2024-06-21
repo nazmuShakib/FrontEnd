@@ -26,7 +26,6 @@ import { useMutation } from 'react-query'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import useAuth from '../Hooks/useAuth'
 
 import {
 	Header,
@@ -47,12 +46,14 @@ const SignUpSchema = z.object({
 		.min(8, 'Password must be at least 8 characters'),
 })
 export default function Register() {
-	const [error, setError] = useState(null)
-	const [open, setOpen] = useState(true)
+	const [notification, setNotification] = useState({
+		open: false,
+		message: '',
+		type: '',
+	})
 	const handleClose = () => {
-		setOpen(false)
+		setNotification({ ...notification, open: false })
 	}
-	const { login } = useAuth()
 	const navigate = useNavigate()
 	const to = '/'
 	const {
@@ -74,17 +75,20 @@ export default function Register() {
 	const onSubmit = async (data) => {
 		try {
 			const res = await mutateAsync(JSON.stringify(data))
-			if (res.status === 201) {
-				const { accessToken } = res.data
-				const auth = {
-					accessToken,
-				}
-				login(auth)
-				navigate(to, { replace: true })
-			}
+			setNotification({
+				open: true,
+				message: res.data?.message || 'An email has been sent. Please verify your email.',
+				type: 'success',
+			})
+			setTimeout(() => {
+				navigate(to)
+			}, 2000)
 		} catch (err) {
-			setOpen(true)
-			setError(err)
+			setNotification({
+				open: true,
+				message: 'There is an error. Please try again.',
+				type: 'error',
+			})
 		}
 	}
 	return (
@@ -104,14 +108,9 @@ export default function Register() {
 					<Password register={register('password')} error={errors.password} />
 					<SubmitButton name="Sign Up" isSubmitting={isSubmitting || isLoading} />
 				</FormControl>
-				{error && (
-					<Snackbar
-						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-						autoHideDuration={3000}
-						open={open}
-						onClose={handleClose}
-					>
-						<Alert severity="error" variant="filled">{error?.response?.data?.message || 'Authentication Failed'}</Alert>
+				{notification.open && (
+					<Snackbar open={notification.open} autoHideDuration={5000} onClose={handleClose}>
+						<Alert severity={notification.type} variant="filled">{notification.message}</Alert>
 					</Snackbar>
 				)}
 			</Box>

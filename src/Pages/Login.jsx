@@ -65,7 +65,7 @@ export default function Login() {
 		setOpen(false)
 	}
 	const { mutateAsync, isLoading } = useMutation(['login'], handleData)
-	if (auth) return <Navigate to="/" />
+	if (auth !== null && (Object.keys(auth).length !== 0 && auth.constructor === Object)) return <Navigate to="/" />
 	const onSubmit = async (data) => {
 		try {
 			const res = await mutateAsync(JSON.stringify(data))
@@ -103,20 +103,29 @@ export default function Login() {
 				</FormControl>
 
 				{/* Register Page link */}
-				<Link component={RouteLink} to="/register" variant="body2">
-					Don&apos;t have an account? Sign Up
-				</Link>
-				{error && (
-					<Snackbar
-						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-						autoHideDuration={3000}
-						open={open}
-						onClose={handleClose}
-					>
-						<Alert severity="error" variant="filled">{error?.response?.data?.message || 'Authentication Failed'}</Alert>
-					</Snackbar>
-				)}
 			</Box>
+			<Box component="div">
+				<Box>
+					<Link component={RouteLink} to="/register" variant="body2">
+						Don&apos;t have an account? Sign Up
+					</Link>
+				</Box>
+				<Box>
+					<Link component={RouteLink} to="/password/forget" variant="body2">
+						Forgot Password
+					</Link>
+				</Box>
+			</Box>
+			{error && (
+				<Snackbar
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					autoHideDuration={3000}
+					open={open}
+					onClose={handleClose}
+				>
+					<Alert severity="error" variant="filled">{error?.response?.data?.message || 'Authentication Failed'}</Alert>
+				</Snackbar>
+			)}
 		</Container>
 	)
 }
@@ -195,3 +204,5 @@ const SubmitButton = memo(({ name, isSubmitting }) => (
 		{name}
 	</Button>
 ))
+
+export { Email, Password, SubmitButton }

@@ -15,6 +15,9 @@ import SearchResult from './Pages/SearchResult'
 import MyProperties from './Pages/MyProperties'
 import MyFavorites from './Pages/MyFavorites'
 import { SuccessPayment, FailPayment } from './Pages/PaymentInfo'
+import {
+	ForgetPassword, ResetPassword, ResetPasswordSuccess, ResetPasswordFailure,
+} from './Pages/AuthHelpers'
 import useGooglePlaces from './Hooks/useGooglePlaces'
 import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import GooglePlacesContext from './Contexts/GooglePlacesLoader'
@@ -74,6 +77,16 @@ function App() {
 									path="/login"
 									element={<Login />}
 								/>
+								<Route
+									exact
+									path="/password/forget"
+									element={<ForgetPassword />}
+								/>
+								<Route
+									exact
+									path="/password/reset/:userID/:token"
+									element={<ResetPassword />}
+								/>
 								<Route path="/property" element={<Property />} />
 								<Route path="/property/:propertyID" element={<PropertyWithID />} />
 								<Route
@@ -90,6 +103,16 @@ function App() {
 									exact
 									path="/payment/failure"
 									element={<FailPayment />}
+								/>
+								<Route
+									exact
+									path="/password/reset/success"
+									element={<ResetPasswordSuccess />}
+								/>
+								<Route
+									exact
+									path="/password/reset/failure"
+									element={<ResetPasswordFailure />}
 								/>
 							</Route>
 						</Routes>
