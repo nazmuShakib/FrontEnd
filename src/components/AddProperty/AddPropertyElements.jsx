@@ -119,6 +119,39 @@ const Contact = memo(({ control, error }) => {
 		/>
 	)
 })
+const PaymentAccount = memo(({ control, error }) => {
+	console.log('payment account')
+	return (
+		<Controller
+			name="bkash"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+					value,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="bkash"
+					name={name}
+					value={value}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="tel"
+					label="Bkash Number"
+					placeholder="Enter your bkash account number"
+					error={!!error}
+					helperText={error ? error.message : 'Required'}
+				/>
+			)}
+		/>
+	)
+})
 const Address = memo(({ control, error }) => {
 	console.log('address')
 	return (
@@ -634,6 +667,7 @@ const SubmitButton = memo(({ isSubmitting }) => (
 
 export {
 	Address,
+	PaymentAccount,
 	Contact,
 	GenderSelection,
 	CategorySelection,

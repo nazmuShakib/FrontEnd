@@ -18,6 +18,7 @@ import useAxiosPrivate from '../Hooks/useAxiosPrivate'
 
 import {
 	Address,
+	PaymentAccount,
 	Contact,
 	GenderSelection,
 	CategorySelection,
@@ -92,6 +93,11 @@ const PropertySchema = z.object({
 			message: 'Price must be less than 1000000007',
 		}),
 	contact: z.string()
+		.refine((data) => data !== '', {
+			message: 'Required',
+		})
+		.refine((data) => /^(?:(?:\+|00)88|01)?\d{11}$/.test(data), { message: 'Invalid contact number' }),
+	bkash: z.string()
 		.refine((data) => data !== '', {
 			message: 'Required',
 		})
@@ -227,6 +233,7 @@ export default function AddProperty() {
 					<Address control={control} error={errors.address} />
 					<Price control={control} error={errors.price} />
 					<Contact control={control} error={errors.contact} />
+					<PaymentAccount control={control} error={errors.bkashNumber} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting || isLoading} />
