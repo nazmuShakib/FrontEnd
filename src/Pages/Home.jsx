@@ -3,11 +3,10 @@ import { useQuery } from 'react-query'
 import axios from 'axios'
 import {
 	Box,
-	Grid,
 	CircularProgress,
 } from '@mui/material'
-import LazyLoad from 'react-lazy-load'
-import AdvertisementCard from '../components/Utility/HomePageCard'
+import PropertyGrid from '../components/Utility/PropertyGrid'
+
 import '../styles/card.css'
 
 const Home = memo(() => {
@@ -21,26 +20,9 @@ const Home = memo(() => {
 	const allProperties = data?.data.data
 	return (
 		<Box component="div" className="advertisement">
-			<Grid
-				container
-				spacing={2}
-				direction="row"
-				justifyContent="normal"
-				alignItems="center"
-				className="grid"
-			>
-				{allProperties.map((property) => (
-					<Grid key={property.ID} item className="advertise-card">
-						<LazyLoad
-							height={400}
-							offsetVertical={200}
-							threshold={0.20}
-						>
-							<AdvertisementCard key={property.ID} property={property} />
-						</LazyLoad>
-					</Grid>
-				))}
-			</Grid>
+			<PropertyGrid title="Mess" properties={allProperties.mess} />
+			<PropertyGrid title="Hostel" properties={allProperties.hostel} />
+			<PropertyGrid title="Sublet" properties={allProperties.sublet} />
 		</Box>
 	)
 })

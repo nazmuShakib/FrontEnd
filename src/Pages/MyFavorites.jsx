@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 import {
 	Box,
 	Grid,
+	Typography,
 	CircularProgress,
 } from '@mui/material'
 import LazyLoad from 'react-lazy-load'
@@ -27,6 +28,18 @@ const MyFavorites = memo(() => {
 	const allProperties = data?.data?.data || []
 	return (
 		<Box component="div" className="advertisement">
+			<FavoriteGrid title="Mess" properties={allProperties?.mess} refetch={refetch} />
+			<FavoriteGrid title="Hostel" properties={allProperties?.hostel} refetch={refetch} />
+			<FavoriteGrid title="Sublet" properties={allProperties?.sublet} refetch={refetch} />
+		</Box>
+	)
+})
+
+const FavoriteGrid = memo(({ title, properties, refetch }) => {
+	console.log('title')
+	return (
+		<Box component="div" className="advertisement">
+			<Typography component="div" variant="body1" sx={{ fontSize: '24px', marginBottom: '10px' }}>{title}</Typography>
 			<Grid
 				container
 				spacing={2}
@@ -35,16 +48,16 @@ const MyFavorites = memo(() => {
 				alignItems="center"
 				className="grid"
 			>
-				{allProperties.map((property) => (
-					<Grid key={property.property.ID} item className="advertise-card">
+				{properties.map((property) => (
+					<Grid key={property.ID} item className="advertise-card">
 						<LazyLoad
 							height={400}
 							offsetVertical={200}
 							threshold={0.20}
 						>
 							<FavoritePageCard
-								key={property.property.ID}
-								property={property.property}
+								key={property.ID}
+								property={property}
 								refetch={refetch}
 							/>
 						</LazyLoad>
