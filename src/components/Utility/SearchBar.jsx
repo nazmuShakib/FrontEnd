@@ -44,6 +44,7 @@ const TransitionsModal = memo(() => {
 	const [searchLocation, setSearchLocation] = useState('')
 	const [open, setOpen] = useState(false)
 	const [formats, setFormats] = useState(() => ['Any'])
+	const [genders, setGenders] = useState(() => ['Any'])
 	const [priceRange, setPriceRange] = useState(defaultPriceRange)
 	const handleOpen = () => setOpen(true)
 	const handleClose = () => setOpen(false)
@@ -68,7 +69,9 @@ const TransitionsModal = memo(() => {
 		try {
 			const results = await getGeocode({ address: searchLocation })
 			const location = getLatLng(results[0])
-			const data = { location, category: formats, priceRange }
+			const data = {
+				location, category: formats, genders, priceRange,
+			}
 			const res = await mutateAsync(data)
 			navigate('/results', { state: res.data.data })
 		} catch (err) {
@@ -94,6 +97,19 @@ const TransitionsModal = memo(() => {
 			setFormats(newFormats)
 		}
 	}, [formats, setFormats])
+	const handleGender = useCallback((event, newGenders) => {
+		if (newGenders.includes('Any')) {
+			if (!genders.includes('Any')) {
+				setGenders(['Any'])
+			} else {
+				const choosenFormats = (newGenders.filter((format) => format !== 'Any'))
+				setGenders(choosenFormats)
+			}
+		} else {
+			setGenders(newGenders)
+		}
+	}, [genders, setGenders])
+
 	if (isLoading) return <Box width="4em" height="1rem"><CircularProgress /></Box>
 	return (
 		<Box component="div">
@@ -154,6 +170,7 @@ const TransitionsModal = memo(() => {
 						</Box>
 						<PlaceSuggestion getLocation={setSearchLocation} ref={locationRef} />
 						<CategorySelection formats={formats} handleFormat={handleFormat} />
+						<GenderSelection genders={genders} handleGender={handleGender} />
 						<PriceSlider priceRange={priceRange} handlPriceRange={handlePriceRange} />
 						<BottomNavigation handleSearch={handleSearch} handleClear={handleClear} />
 					</Box>
@@ -247,6 +264,44 @@ const CategorySelection = memo(({ formats, handleFormat }) => (
 			>
 				Sublet
 			</ToggleButton>
+		</ToggleButtonGroup>
+	</Grid>
+))
+const GenderSelection = memo(({ genders, handleGender }) => (
+	<Grid
+		container
+		direction="row"
+		className="toggle-grid"
+		sx={{
+			overflowX: 'auto !important',
+		}}
+	>
+		<ToggleButtonGroup
+			value={genders}
+			onChange={handleGender}
+		>
+			<ToggleButton
+				value="Any"
+				aria-label="Any"
+				className={`toggle-button ${genders.includes('Any') ? 'active-button' : ''}`}
+			>
+				Any
+			</ToggleButton>
+			<ToggleButton
+				value="Male"
+				aria-label="Male"
+				className={`toggle-button ${genders.includes('Male') ? 'active-button' : ''}`}
+			>
+				Male
+			</ToggleButton>
+			<ToggleButton
+				value="Female"
+				aria-label="Female"
+				className={`toggle-button ${genders.includes('Female') ? 'active-button' : ''}`}
+			>
+				Female
+			</ToggleButton>
+
 		</ToggleButtonGroup>
 	</Grid>
 ))
