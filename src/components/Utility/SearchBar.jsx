@@ -82,6 +82,7 @@ const TransitionsModal = memo(() => {
 	const handleClear = useCallback(() => {
 		locationRef.current.setValue('', false)
 		setFormats(['Any'])
+		setGenders(['Any'])
 		setPriceRange(defaultPriceRange)
 	}, [setFormats])
 
