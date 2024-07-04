@@ -233,7 +233,7 @@ export default function AddProperty() {
 					<Address control={control} error={errors.address} />
 					<Price control={control} error={errors.price} />
 					<Contact control={control} error={errors.contact} />
-					<PaymentAccount control={control} error={errors.bkashNumber} />
+					<PaymentAccount control={control} error={errors.bkash} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting || isLoading} />
