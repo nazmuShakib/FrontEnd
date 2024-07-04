@@ -36,6 +36,7 @@ const MyFavorites = memo(() => {
 })
 
 const FavoriteGrid = memo(({ title, properties, refetch }) => {
+	const newProperties = properties || []
 	console.log('title')
 	return (
 		<Box component="div" className="advertisement">
@@ -48,7 +49,7 @@ const FavoriteGrid = memo(({ title, properties, refetch }) => {
 				alignItems="center"
 				className="grid"
 			>
-				{properties.map((property) => (
+				{newProperties.map((property) => (
 					<Grid key={property.ID} item className="advertise-card">
 						<LazyLoad
 							height={400}

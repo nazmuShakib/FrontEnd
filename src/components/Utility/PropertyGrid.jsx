@@ -5,9 +5,10 @@ import AdvertisementCard from './HomePageCard'
 import '../../styles/card.css'
 
 const PropertyGrid = memo(({
-	title, properties, refetch = null, showControls = false, myProperty = false,
+	title, allProperties, refetch = null, showControls = false, myProperty = false,
 }) => {
 	console.log('property grid')
+	const properties = allProperties || []
 	return (
 		<Box component="div" className="advertisement">
 			<Typography component="div" variant="body1" sx={{ fontSize: '24px', marginBottom: '10px' }}>{title}</Typography>
