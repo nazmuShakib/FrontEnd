@@ -5,10 +5,10 @@ import AdvertisementCard from './HomePageCard'
 import '../../styles/card.css'
 
 const PropertyGrid = memo(({
-	title, allProperties, refetch = null, showControls = false, myProperty = false,
+	title, properties, refetch = null, showControls = false, myProperty = false,
 }) => {
 	console.log('property grid')
-	const properties = allProperties || []
+	const allProperties = properties || []
 	return (
 		<Box component="div" className="advertisement">
 			<Typography component="div" variant="body1" sx={{ fontSize: '24px', marginBottom: '10px' }}>{title}</Typography>
@@ -20,7 +20,7 @@ const PropertyGrid = memo(({
 				alignItems="center"
 				className="grid"
 			>
-				{properties.map((property) => (
+				{allProperties.map((property) => (
 					<Grid key={property.ID} item className="advertise-card">
 						<LazyLoad
 							height={400}
