@@ -4,11 +4,8 @@ import { useQuery } from 'react-query'
 import {
 	Box, Typography,
 	Avatar, CircularProgress,
-	Grid,
 } from '@mui/material'
 import { AttachFileOutlined, SendOutlined } from '@mui/icons-material'
-import LazyLoad from 'react-lazy-load'
-import AdvertisementCard from '../components/Utility/HomePageCard'
 import PropertyGrid from '../components/Utility/PropertyGrid'
 import '../styles/profile.css'
 import '../styles/card.css'
