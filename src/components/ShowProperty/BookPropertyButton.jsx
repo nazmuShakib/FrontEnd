@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material'
 import { useMutation } from 'react-query'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 
-const BookPropertyButton = memo(({ propertyID }) => {
+const BookPropertyButton = memo(({ propertyID, propertyOwner }) => {
 	console.log('book button')
 	const axiosPrivate = useAxiosPrivate()
 	const handleSubmit = (data) => axiosPrivate({
@@ -16,6 +16,7 @@ const BookPropertyButton = memo(({ propertyID }) => {
 		e.preventDefault()
 		const data = {
 			propertyID,
+			propertyOwner,
 		}
 		try {
 			const res = await mutateAsync(data)
