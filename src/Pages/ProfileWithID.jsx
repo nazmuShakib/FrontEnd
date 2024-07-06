@@ -9,6 +9,7 @@ import {
 import { AttachFileOutlined, SendOutlined } from '@mui/icons-material'
 import LazyLoad from 'react-lazy-load'
 import AdvertisementCard from '../components/Utility/HomePageCard'
+import PropertyGrid from '../components/Utility/PropertyGrid'
 import '../styles/profile.css'
 import '../styles/card.css'
 import axios from '../api/axios'
@@ -137,30 +138,9 @@ const ShowUserProperties = memo(({ userID }) => {
 	console.log(allProperties)
 	return (
 		<Box component="div" className="advertisement">
-			<Grid
-				container
-				spacing={2}
-				direction="row"
-				justifyContent="normal"
-				alignItems="center"
-				className="grid"
-			>
-				{allProperties.map((property) => (
-					<Grid key={property.property.ID} item className="advertise-card">
-						<LazyLoad
-							height={400}
-							offsetVertical={200}
-							threshold={0.20}
-						>
-							<AdvertisementCard
-								key={property.property.ID}
-								property={property.property}
-								refetch={refetch}
-							/>
-						</LazyLoad>
-					</Grid>
-				))}
-			</Grid>
+			<PropertyGrid title="Mess" properties={allProperties?.mess} />
+			<PropertyGrid title="Hostel" properties={allProperties?.hostel} />
+			<PropertyGrid title="Sublet" properties={allProperties?.sublet} />
 		</Box>
 	)
 })
