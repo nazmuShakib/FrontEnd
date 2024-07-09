@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import { AttachFileOutlined, SendOutlined } from '@mui/icons-material'
 import useAxiosPrivate from '../Hooks/useAxiosPrivate'
+import useNotification from '../Hooks/useNotification'
 import '../styles/profile.css'
 import useAuth from '../Hooks/useAuth'
 
@@ -160,6 +161,7 @@ const UserName = memo(({ userInfo }) => {
 	const { auth } = useAuth()
 	const [userName, setUserName] = useState(userInfo?.username)
 	const axiosPrivate = useAxiosPrivate()
+	const { openNotification } = useNotification()
 	const submitUserName = (data) => axiosPrivate({
 		url: '/profile/edit/name',
 		method: 'PATCH',
@@ -167,20 +169,25 @@ const UserName = memo(({ userInfo }) => {
 	})
 	const { mutateAsync } = useMutation(['edit-user-name', auth?.userID], submitUserName)
 	const handleClick = async () => {
-		if (!editOrSave) {
-			const data = {
-				name: userName,
-			}
-			await mutateAsync(data)
-			queryClient.setQueryData(['get-user-info', auth?.userID], (prevData) => {
-				const newData = prevData
-				if (newData?.data?.data) {
-					newData.data.data.username = userName
+		try {
+			if (!editOrSave) {
+				const data = {
+					name: userName,
 				}
-				return newData
-			})
+				await mutateAsync(data)
+				openNotification('Successfully updated username', 'success')
+				queryClient.setQueryData(['get-user-info', auth?.userID], (prevData) => {
+					const newData = prevData
+					if (newData?.data?.data) {
+						newData.data.data.username = userName
+					}
+					return newData
+				})
+			}
+			setEditOrSave((prevState) => !prevState)
+		} catch (err) {
+			openNotification('Failed to update username', 'error')
 		}
-		setEditOrSave((prevState) => !prevState)
 	}
 	const handleChange = (event) => {
 		setUserName(event.target.value)

@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import DateSelector from '../components/AddProperty/DateSelector'
 import useAxiosPrivate from '../Hooks/useAxiosPrivate'
+import useNotification from '../Hooks/useNotification'
 
 import {
 	Address,
@@ -94,6 +95,7 @@ const PropertySchema = z.object({
 })
 export default function EditProperty() {
 	const axiosPrivate = useAxiosPrivate()
+	const { openNotification } = useNotification()
 	const location = useLocation()
 	const { property } = location.state
 	const {
@@ -131,9 +133,11 @@ export default function EditProperty() {
 				ID: property?.ID,
 			}
 			const res = await mutateAsync(data)
+			openNotification('Successfully edited property', 'success')
 			console.log(res)
 		} catch (err) {
 			console.log(err)
+			openNotification('Failed to edit property', 'error')
 		}
 	}
 	return (

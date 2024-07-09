@@ -1,9 +1,7 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import {
-	Alert,
 	Box,
 	FormControl,
-	Snackbar,
 } from '@mui/material'
 
 import { useForm } from 'react-hook-form'
@@ -15,6 +13,7 @@ import ImageUploader from '../components/AddProperty/ImageUploader'
 import GetLocation from '../components/AddProperty/GetLocation'
 import DateSelector from '../components/AddProperty/DateSelector'
 import useAxiosPrivate from '../Hooks/useAxiosPrivate'
+import useNotification from '../Hooks/useNotification'
 
 import {
 	Address,
@@ -132,6 +131,7 @@ const PropertySchema = z.object({
 })
 export default function AddProperty() {
 	const axiosPrivate = useAxiosPrivate()
+	const { openNotification } = useNotification()
 	const {
 		register,
 		handleSubmit,
@@ -166,11 +166,7 @@ export default function AddProperty() {
 		},
 	})
 	const { mutateAsync, isLoading } = useMutation(['post'], handleData)
-	const [notification, setNotification] = useState({
-		open: false,
-		message: '',
-		type: '',
-	})
+
 	const onSubmit = async (event) => {
 		try {
 			const formData = new FormData()
@@ -178,32 +174,17 @@ export default function AddProperty() {
 			images.forEach((file) => formData.append('images', file))
 			formData.append('data', JSON.stringify(data))
 			await mutateAsync(formData)
-			setNotification({
-				open: true,
-				message: 'Property added successfully',
-				type: 'success',
-			})
+			openNotification('Successfully added property', 'success')
 		} catch (err) {
 			console.log(err)
-			setNotification({
-				open: true,
-				message: 'Failed to add property',
-				type: 'error',
-			})
+			openNotification('Failed to add property', 'error')
 		}
 	}
 	useMemo(() => {
 		if (Object.keys(errors).length !== 0) {
-			setNotification({
-				open: true,
-				message: 'There is an error. Fill up the form correctly.',
-				type: 'error',
-			})
+			openNotification('There is an error. Fill up the form correctly.', 'error')
 		}
-	}, [errors])
-	const handleClose = () => {
-		setNotification({ ...notification, open: false })
-	}
+	}, [errors, openNotification])
 	return (
 		<Box
 			component="div"
@@ -238,11 +219,6 @@ export default function AddProperty() {
 					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting || isLoading} />
 				</FormControl>
-				{notification.open && (
-					<Snackbar open={notification.open} autoHideDuration={5000} onClose={handleClose}>
-						<Alert severity={notification.type} variant="filled">{notification.message}</Alert>
-					</Snackbar>
-				)}
 			</Box>
 		</Box>
 	)

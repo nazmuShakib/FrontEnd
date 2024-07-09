@@ -6,7 +6,6 @@ import {
 import { useNavigate } from 'react-router-dom'
 
 import {
-	Alert,
 	Container,
 	Box,
 	Button,
@@ -14,7 +13,6 @@ import {
 	InputAdornment,
 	IconButton,
 	TextField,
-	Snackbar,
 } from '@mui/material'
 
 import {
@@ -30,6 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Header,
 } from '../components/Utility/Authentication'
+import useNotification from '../Hooks/useNotification'
 
 const SignUpSchema = z.object({
 	username: z
@@ -46,15 +45,8 @@ const SignUpSchema = z.object({
 		.min(8, 'Password must be at least 8 characters'),
 })
 export default function Register() {
-	const [notification, setNotification] = useState({
-		open: false,
-		message: '',
-		type: '',
-	})
-	const handleClose = () => {
-		setNotification({ ...notification, open: false })
-	}
 	const navigate = useNavigate()
+	const { openNotification } = useNotification()
 	const to = '/'
 	const {
 		register,
@@ -75,20 +67,12 @@ export default function Register() {
 	const onSubmit = async (data) => {
 		try {
 			const res = await mutateAsync(JSON.stringify(data))
-			setNotification({
-				open: true,
-				message: res.data?.message || 'An email has been sent. Please verify your email.',
-				type: 'success',
-			})
+			openNotification(res.data?.message || 'An email has been sent. Please verify your email.', 'success')
 			setTimeout(() => {
 				navigate(to)
 			}, 2000)
 		} catch (err) {
-			setNotification({
-				open: true,
-				message: 'There is an error. Please try again.',
-				type: 'error',
-			})
+			openNotification('There is an error. Please try again.', 'error')
 		}
 	}
 	return (
@@ -108,11 +92,6 @@ export default function Register() {
 					<Password register={register('password')} error={errors.password} />
 					<SubmitButton name="Sign Up" isSubmitting={isSubmitting || isLoading} />
 				</FormControl>
-				{notification.open && (
-					<Snackbar open={notification.open} autoHideDuration={5000} onClose={handleClose}>
-						<Alert severity={notification.type} variant="filled">{notification.message}</Alert>
-					</Snackbar>
-				)}
 			</Box>
 		</Container>
 	)

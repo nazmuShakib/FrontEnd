@@ -22,6 +22,7 @@ import useGooglePlaces from './Hooks/useGooglePlaces'
 import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import GooglePlacesContext from './Contexts/GooglePlacesLoader'
 import { AuthProvider } from './Contexts/authProvider'
+import { NotificationProvider } from './Contexts/notificationProvider'
 
 function App() {
 	const { isLoaded } = useGooglePlaces()
@@ -31,91 +32,94 @@ function App() {
 			<QueryClientProvider client={queryClient}>
 				<GooglePlacesContext.Provider value={isLoaded}>
 					<AuthProvider>
-						<CssBaseline />
-						<Routes>
-							<Route element={<NavBar />}>
-								<Route
-									exact
-									path="/"
-									element={<Home />}
-								/>
-								<Route element={<ProtectedRoute />}>
+						<NotificationProvider>
+
+							<CssBaseline />
+							<Routes>
+								<Route element={<NavBar />}>
 									<Route
 										exact
-										path="/my-favorites"
-										element={<MyFavorites />}
+										path="/"
+										element={<Home />}
+									/>
+									<Route element={<ProtectedRoute />}>
+										<Route
+											exact
+											path="/my-favorites"
+											element={<MyFavorites />}
+										/>
+										<Route
+											exact
+											path="/my-properties"
+											element={<MyProperties />}
+										/>
+										<Route
+											exact
+											path="/my-properties/edit"
+											element={<EditProperty />}
+										/>
+										<Route
+											exact
+											path="/profile"
+											element={<Profile />}
+										/>
+										<Route path="/add" element={<AddProperty />} />
+									</Route>
+									<Route
+										exact
+										path="/results"
+										element={<SearchResult />}
 									/>
 									<Route
 										exact
-										path="/my-properties"
-										element={<MyProperties />}
+										path="/register"
+										element={<Register />}
 									/>
 									<Route
 										exact
-										path="/my-properties/edit"
-										element={<EditProperty />}
+										path="/login"
+										element={<Login />}
 									/>
 									<Route
 										exact
-										path="/profile"
-										element={<Profile />}
+										path="/password/forget"
+										element={<ForgetPassword />}
 									/>
-									<Route path="/add" element={<AddProperty />} />
+									<Route
+										exact
+										path="/password/reset/:userID/:token"
+										element={<ResetPassword />}
+									/>
+									<Route path="/property" element={<Property />} />
+									<Route path="/property/:propertyID" element={<PropertyWithID />} />
+									<Route
+										exact
+										path="/profile/:userID"
+										element={<ProfileWithID />}
+									/>
+									<Route
+										exact
+										path="/payment/success"
+										element={<SuccessPayment />}
+									/>
+									<Route
+										exact
+										path="/payment/failure"
+										element={<FailPayment />}
+									/>
+									<Route
+										exact
+										path="/password/reset/success"
+										element={<ResetPasswordSuccess />}
+									/>
+									<Route
+										exact
+										path="/password/reset/failure"
+										element={<ResetPasswordFailure />}
+									/>
 								</Route>
-								<Route
-									exact
-									path="/results"
-									element={<SearchResult />}
-								/>
-								<Route
-									exact
-									path="/register"
-									element={<Register />}
-								/>
-								<Route
-									exact
-									path="/login"
-									element={<Login />}
-								/>
-								<Route
-									exact
-									path="/password/forget"
-									element={<ForgetPassword />}
-								/>
-								<Route
-									exact
-									path="/password/reset/:userID/:token"
-									element={<ResetPassword />}
-								/>
-								<Route path="/property" element={<Property />} />
-								<Route path="/property/:propertyID" element={<PropertyWithID />} />
-								<Route
-									exact
-									path="/profile/:userID"
-									element={<ProfileWithID />}
-								/>
-								<Route
-									exact
-									path="/payment/success"
-									element={<SuccessPayment />}
-								/>
-								<Route
-									exact
-									path="/payment/failure"
-									element={<FailPayment />}
-								/>
-								<Route
-									exact
-									path="/password/reset/success"
-									element={<ResetPasswordSuccess />}
-								/>
-								<Route
-									exact
-									path="/password/reset/failure"
-									element={<ResetPasswordFailure />}
-								/>
-							</Route>
-						</Routes>
+							</Routes>
+						</NotificationProvider>
 					</AuthProvider>
 				</GooglePlacesContext.Provider>
 			</QueryClientProvider>

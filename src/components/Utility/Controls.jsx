@@ -17,6 +17,7 @@ import {
 } from '@mui/icons-material'
 import { useMutation } from 'react-query'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
+import useNotification from '../../Hooks/useNotification'
 
 const Controls = memo(({ property, refetch }) => {
 	const [deleteDialog, setDeleteDialog] = useState(false)
@@ -30,6 +31,7 @@ const Controls = memo(({ property, refetch }) => {
 		setDeleteDialog(true)
 	}
 	const axiosPrivate = useAxiosPrivate()
+	const { openNotification } = useNotification()
 	const navigate = useNavigate()
 	const deleteProperty = () => axiosPrivate({
 		method: 'DELETE',
@@ -48,9 +50,11 @@ const Controls = memo(({ property, refetch }) => {
 		try {
 			await removeProperty()
 			setDeleteDialog(false)
+			openNotification('Successfully deleted from my properties', 'success')
 			refetch()
 		} catch (err) {
 			console.log(err)
+			openNotification('Failed to delete from my properties', 'error')
 		}
 	}
 	const handleStatus = async (event) => {
@@ -62,8 +66,10 @@ const Controls = memo(({ property, refetch }) => {
 		setStatus((prevStatus) => !prevStatus)
 		try {
 			await updateStatus(data)
+			openNotification('Successfully updated property status', 'success')
 		} catch (err) {
 			console.log(err)
+			openNotification('Failed to update property status', 'error')
 		}
 	}
 	const handleEdit = (event) => {

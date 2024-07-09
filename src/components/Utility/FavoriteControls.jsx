@@ -12,6 +12,7 @@ import {
 } from '@mui/icons-material'
 import { useMutation } from 'react-query'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
+import useNotification from '../../Hooks/useNotification'
 
 const FavoriteControls = memo(({ property, refetch }) => {
 	const [deleteDialog, setDeleteDialog] = useState(false)
@@ -24,6 +25,7 @@ const FavoriteControls = memo(({ property, refetch }) => {
 		setDeleteDialog(true)
 	}
 	const axiosPrivate = useAxiosPrivate()
+	const { openNotification } = useNotification()
 	const deleteFavorite = () => axiosPrivate({
 		method: 'DELETE',
 		url: `/favorites/remove/${property?.ID}`,
@@ -35,9 +37,11 @@ const FavoriteControls = memo(({ property, refetch }) => {
 		try {
 			await removeFavorite()
 			setDeleteDialog(false)
+			openNotification('Successfully deleted from favorites', 'success')
 			refetch()
 		} catch (err) {
 			console.log(err)
+			openNotification('Failed to delete from favorites', 'error')
 		}
 	}
 	return (

@@ -3,7 +3,6 @@ import {
 } from 'react-router-dom'
 import { memo, useState } from 'react'
 import {
-	Alert,
 	Container,
 	Box,
 	Button,
@@ -12,7 +11,6 @@ import {
 	Link,
 	FormControl,
 	TextField,
-	Snackbar,
 } from '@mui/material'
 import {
 	Visibility,
@@ -27,6 +25,7 @@ import {
 	Header,
 } from '../components/Utility/Authentication'
 import useAuth from '../Hooks/useAuth'
+import useNotification from '../Hooks/useNotification'
 
 const SignInSchema = z.object({
 	email: z
@@ -57,13 +56,10 @@ export default function Login() {
 	} = useForm({ resolver: zodResolver(SignInSchema) })
 	const navigate = useNavigate()
 	const { login, auth } = useAuth()
-	const [error, setError] = useState(null)
-	const [open, setOpen] = useState(true)
+	const { openNotification } = useNotification()
 	const location = useLocation()
 	const from = location.state?.from?.pathname || '/'
-	const handleClose = () => {
-		setOpen(false)
-	}
+
 	const { mutateAsync, isLoading } = useMutation(['login'], handleData)
 	if (auth !== null && (Object.keys(auth).length !== 0 && auth.constructor === Object)) return <Navigate to="/" />
 	const onSubmit = async (data) => {
@@ -76,11 +72,13 @@ export default function Login() {
 					userID,
 				}
 				login(authObj)
-				navigate(from, { replace: true })
+				openNotification('Login successful', 'success')
+				setTimeout(() => {
+					navigate(from, { replace: true })
+				}, 2000)
 			}
 		} catch (err) {
-			setOpen(true)
-			setError(err)
+			openNotification('Login failed', 'error')
 		}
 	}
 
@@ -96,7 +94,7 @@ export default function Login() {
 			>
 				{/* Sign In Icon and Title */}
 				<Header title="Sign In" />
-				<FormControl component="form" onSubmit={handleSubmit(onSubmit)} error={Boolean(error)} sx={{ mt: 1 }}>
+				<FormControl component="form" onSubmit={handleSubmit(onSubmit)} error={Boolean(errors)} sx={{ mt: 1 }}>
 					<Email register={register('email')} error={errors.email} />
 					<Password register={register('password')} error={errors.password} />
 					<SubmitButton name="Sign In" isSubmitting={isSubmitting || isLoading} />
@@ -116,16 +114,6 @@ export default function Login() {
 					</Link>
 				</Box>
 			</Box>
-			{error && (
-				<Snackbar
-					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-					autoHideDuration={3000}
-					open={open}
-					onClose={handleClose}
-				>
-					<Alert severity="error" variant="filled">{error?.response?.data?.message || 'Authentication Failed'}</Alert>
-				</Snackbar>
-			)}
 		</Container>
 	)
 }

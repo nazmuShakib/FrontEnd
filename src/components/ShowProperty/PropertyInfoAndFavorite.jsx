@@ -3,6 +3,7 @@ import { Box, IconButton } from '@mui/material'
 import { useMutation } from 'react-query'
 import { Favorite } from '@mui/icons-material'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
+import useNotification from '../../Hooks/useNotification'
 
 import '../../styles/show-property.css'
 
@@ -23,6 +24,7 @@ const PropertyInfoAndFavorite = memo(({ propertyID }) => {
 const FavoriteButton = memo(({ propertyID }) => {
 	console.log('favorite')
 	const axiosPrivate = useAxiosPrivate()
+	const { openNotification } = useNotification()
 	const data = {
 		propertyID,
 	}
@@ -33,7 +35,12 @@ const FavoriteButton = memo(({ propertyID }) => {
 	})
 	const { mutateAsync } = useMutation(submitFavorites)
 	const handleClick = async () => {
-		await mutateAsync()
+		try {
+			await mutateAsync()
+			openNotification('Successfully added to favorites', 'success')
+		} catch (err) {
+			openNotification('Failed to add to favorites', 'error')
+		}
 		console.log('favo clicked')
 	}
 	return (

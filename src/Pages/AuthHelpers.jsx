@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { Email, Password, SubmitButton } from './Login'
 import useAuth from '../Hooks/useAuth'
+import useNotification from '../Hooks/useNotification'
 import axios from '../api/axios'
 
 const ForgetPasswordSchema = z.object({
@@ -44,6 +45,7 @@ const ForgetPassword = memo(() => {
 		type: '',
 	})
 	const { auth } = useAuth()
+	const { openNotification } = useNotification()
 	if (auth) return navigate('/', { replace: true })
 	const handleClose = () => {
 		setNotification({ ...notification, open: false })
@@ -51,10 +53,10 @@ const ForgetPassword = memo(() => {
 	const onSubmit = async (data) => {
 		try {
 			const res = await mutateAsync(data)
-			setNotification({ open: true, message: res.data?.message || 'An email has been sent.', type: 'success' })
+			openNotification('An email has been sent. Please click on the link to login.', 'success')
 		} catch (err) {
 			console.log(err)
-			setNotification({ open: true, message: 'There was an error.', type: 'error' })
+			openNotification('There was an error.', 'error')
 		}
 	}
 	return (

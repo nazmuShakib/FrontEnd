@@ -21,6 +21,7 @@ import {
 import { StarBorderPurple500, CloseOutlined } from '@mui/icons-material'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
 import useAuth from '../../Hooks/useAuth'
+import useNotification from '../../Hooks/useNotification'
 import '../../styles/rating-review.css'
 
 const labels = {
@@ -318,6 +319,7 @@ const RatingSelector = memo(({ propertyID, initialRating }) => {
 })
 const ReviewPlaceholder = memo(({ propertyID }) => {
 	const axiosPrivate = useAxiosPrivate()
+	const { openNotification } = useNotification()
 	const handleSubmit = (data) => axiosPrivate({
 		method: 'POST',
 		url: '/reviews/post',
@@ -339,8 +341,11 @@ const ReviewPlaceholder = memo(({ propertyID }) => {
 		}
 		try {
 			await mutateAsync(data)
+			openNotification('Sucessfully posted review', 'success')
+			setText('')
 		} catch (err) {
 			console.log(err)
+			openNotification('Failed to post review', 'error')
 		}
 	}
 	const isEmpty = () => text.trimStart().trimEnd() === ''
