@@ -59,7 +59,7 @@ export default function Property() {
 			<PlaceInfo placeInfo={res?.placeInfo} />
 			{auth && <ContactAndAddress address={res?.address} contact={res?.contact} />}
 			<Map mapCoordinate={mapCoordinate} />
-			<PriceAndAdvertiser price={res?.price} />
+			<PriceAndAdvertiser price={res?.price} userID={res?.userID} />
 			{!myProperty && <BookPropertyButton propertyID={res?.ID} propertyOwner={res?.userID} />}
 			<RatingAndReview propertyID={res?.ID} myProperty={myProperty} />
 			{/* TODO add similar property lists and rating section */}

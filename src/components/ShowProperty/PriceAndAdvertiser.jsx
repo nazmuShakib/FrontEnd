@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Link } from 'react-router-dom'
 import {
 	Box,
 	Card,
@@ -12,7 +13,7 @@ import {
 } from '@mui/icons-material'
 import Taka from '../../assets/icons/Taka'
 
-const PriceAndAdvertiser = memo(({ price }) => {
+const PriceAndAdvertiser = memo(({ price, userID }) => {
 	const userRating = '4.5'
 	const userName = 'Shakib'
 
@@ -90,19 +91,21 @@ const PriceAndAdvertiser = memo(({ price }) => {
 						>
 							<ContactPhoneOutlined />
 						</Divider>
-						<Typography component="section" variant="span" textAlign="center" alignItems="center" fontSize="24px">{userName}</Typography>
+						{/* <Typography component="section" variant="span" textAlign="center" alignItems="center" fontSize="24px">{userName}</Typography> */}
 						<Box display="flex" justifyContent="center" alignItems="center">
-							<StarBorderOutlined style={{
-								fontSize: '50px',
-							}}
-							/>
-							<Typography
-								sx={{
-									fontSize: '35px',
-								}}
+							<Box
+								component={Link}
+								to={`/profile/${userID}`}
+								className="review-user-link"
 							>
-								{userRating}
-							</Typography>
+								<Typography
+									component="span"
+									variant="subtitle1"
+									fontSize={24}
+								>
+									{userName}
+								</Typography>
+							</Box>
 						</Box>
 					</Box>
 				</CardContent>
