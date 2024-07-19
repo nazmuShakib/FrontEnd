@@ -1,6 +1,10 @@
 import { memo, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useForm, Controller } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import {
 	Box,
 	Button,
@@ -17,6 +21,9 @@ import {
 	TextareaAutosize,
 	useMediaQuery,
 	CircularProgress,
+	FormControl,
+	FormLabel,
+	FormHelperText,
 } from '@mui/material'
 import { StarBorderPurple500, CloseOutlined } from '@mui/icons-material'
 import useAxiosPrivate from '../../Hooks/useAxiosPrivate'
@@ -24,6 +31,18 @@ import useAuth from '../../Hooks/useAuth'
 import useNotification from '../../Hooks/useNotification'
 import '../../styles/rating-review.css'
 
+const reviewSchema = z.object({
+	review: z
+		.string()
+		.max(500, 'max 500 characters')
+		.refine(
+			(data) => {
+				const actualData = data.trimEnd().trimStart()
+				return actualData !== ''
+			},
+			{ message: 'required' },
+		),
+})
 const labels = {
 	1: 'F',
 	2: 'C',
@@ -197,7 +216,6 @@ const Reviews = memo(({ propertyID }) => {
 	if (isError) return <h1>{error.response?.data?.message}</h1>
 	if (isLoading) return <CircularProgress />
 	const reviews = data?.data?.data || []
-	console.log(reviews)
 	if (!reviews.length) {
 		return (
 			<Box component="div" className="review-component" sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -208,7 +226,7 @@ const Reviews = memo(({ propertyID }) => {
 	console.log('reviews')
 	return (
 		<Box component="div" className="review-component">
-			{reviews.map((review) => <ReviewCard key={review.review} userID={review.userID} userName={review.name} review={review.review} postTime={review.postTime} />)}
+			{reviews.map((review) => <ReviewCard key={review.review + review.postTime} userID={review.userID} userName={review.name} review={review.review} postTime={review.postTime} />)}
 		</Box>
 	)
 })
@@ -243,6 +261,7 @@ const ReviewCard = memo(({
 				component="section"
 				variant="body2"
 				fontSize={14}
+				sx={{ whiteSpace: 'pre-wrap' }}
 			>
 				{review}
 			</Typography>
@@ -318,69 +337,101 @@ const RatingSelector = memo(({ propertyID, initialRating }) => {
 	)
 })
 const ReviewPlaceholder = memo(({ propertyID }) => {
+	const {
+		handleSubmit,
+		resetField,
+		formState: {
+			errors, isSubmitting,
+		},
+		control,
+	} = useForm({
+		resolver: zodResolver(reviewSchema),
+		defaultValues: {
+			review: '',
+		},
+	})
 	const axiosPrivate = useAxiosPrivate()
 	const { openNotification } = useNotification()
-	const handleSubmit = (data) => axiosPrivate({
+	const handleData = (data) => axiosPrivate({
 		method: 'POST',
 		url: '/reviews/post',
 		data,
 	})
-	const { mutateAsync } = useMutation(handleSubmit)
+	const { mutateAsync } = useMutation(handleData)
 
 	console.log('review placeholder')
-	const screen900 = useMediaQuery('@media (min-width: 900px)')
-	const [text, setText] = useState('')
-	const handleChange = (event) => {
-		setText(event.target.value)
-	}
-	const submitReview = async () => {
+	const onSubmit = async (event) => {
+		const { review } = event
 		const data = {
 			propertyID,
-			review: text,
+			review,
 			postTime: new Date(),
 		}
 		try {
 			await mutateAsync(data)
 			openNotification('Sucessfully posted review', 'success')
-			setText('')
+			resetField('review')
 		} catch (err) {
 			console.log(err)
 			openNotification('Failed to post review', 'error')
 		}
 	}
-	const isEmpty = () => text.trimStart().trimEnd() === ''
 	return (
 		<Box component="div">
-			<InputLabel>Review the property</InputLabel>
-			<Box component="div" sx={{ width: '100%' }}>
-				<TextareaAutosize
-					maxRows={10}
-					minRows={6}
-					cols={screen900 ? 50 : 40}
-					value={text}
-					onChange={handleChange}
-					maxLength={300}
-					placeholder="Write a review about this property"
-					className="review-placeholder"
-					style={{
-						border: '1px solid black',
-						fontSize: '16px',
-						width: '100%',
-					}}
-				/>
-			</Box>
-			<Box component="div" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-				<Button
-					type="button"
-					variant="contained"
-					disabled={isEmpty()}
-					onClick={submitReview}
-					className="review-placeholder-button"
-				>
-					Post
-				</Button>
-			</Box>
+			<FormControl component="form" onSubmit={handleSubmit(onSubmit)}>
+				<ReviewBox control={control} error={errors.review} />
+				<Box component="div" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+					<Button
+						type="submit"
+						variant="contained"
+						disabled={isSubmitting}
+						className="review-placeholder-button"
+					>
+						Post
+					</Button>
+				</Box>
+			</FormControl>
 		</Box>
+	)
+})
+const ReviewBox = memo(({ control, error }) => {
+	console.log('review box')
+	const screen900 = useMediaQuery('@media (min-width: 900px)')
+	return (
+		<FormControl error={Boolean(error)}>
+			<FormLabel>Review the property</FormLabel>
+			<Controller
+				name="review"
+				control={control}
+				render={({
+					field: {
+						onChange, onBlur, ref, name, value,
+					},
+				}) => (
+					<Box component="div" sx={{ width: '100%' }}>
+						<TextareaAutosize
+							name={name}
+							value={value}
+							maxRows={10}
+							minRows={6}
+							cols={screen900 ? 50 : 40}
+							onChange={onChange}
+							onBlur={onBlur}
+							ref={ref}
+							maxLength={300}
+							placeholder="Write a review about this property"
+							className="review-placeholder"
+							style={{
+								border: '1px solid black',
+								fontSize: '16px',
+								width: '100%',
+							}}
+						/>
+					</Box>
+				)}
+			/>
+			<FormHelperText>{error ? error.message : 'max 500 characters'}</FormHelperText>
+		</FormControl>
 	)
 })
 export default RatingAndReview
