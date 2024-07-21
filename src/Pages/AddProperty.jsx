@@ -19,6 +19,7 @@ import {
 	Address,
 	PaymentAccount,
 	Contact,
+	OptionalContact,
 	GenderSelection,
 	CategorySelection,
 	PlaceSelection,
@@ -96,6 +97,13 @@ const PropertySchema = z.object({
 			message: 'Required',
 		})
 		.refine((data) => /^(?:(?:\+|00)88|01)?\d{11}$/.test(data), { message: 'Invalid contact number' }),
+	optional_contact: z
+		.string()
+		.refine((data) => {
+			if (data !== '' && !(/^(?:(?:\+|00)88|01)?\d{11}$/.test(data))) return false
+			return true
+		}, { message: 'Invalid contact number' })
+		.optional(),
 	bkash: z.string()
 		.refine((data) => data !== '', {
 			message: 'Required',
@@ -155,6 +163,7 @@ export default function AddProperty() {
 			thana: '',
 			price: '',
 			contact: '',
+			optional_contact: '',
 		},
 	})
 	const handleData = (formData) => axiosPrivate({
@@ -171,6 +180,7 @@ export default function AddProperty() {
 		try {
 			const formData = new FormData()
 			const { images, ...data } = event
+			console.log(data)
 			images.forEach((file) => formData.append('images', file))
 			formData.append('data', JSON.stringify(data))
 			await mutateAsync(formData)
@@ -214,6 +224,7 @@ export default function AddProperty() {
 					<Address control={control} error={errors.address} />
 					<Price control={control} error={errors.price} />
 					<Contact control={control} error={errors.contact} />
+					<OptionalContact control={control} error={errors.optional_contact} />
 					<PaymentAccount control={control} error={errors.bkash} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />

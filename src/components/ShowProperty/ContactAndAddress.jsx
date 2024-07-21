@@ -11,8 +11,8 @@ import {
 	ContactPhoneOutlined,
 } from '@mui/icons-material'
 
-const ContactAndAddress = memo(({ address, contact }) => {
-	const email = 'nazfasdfasdfasdffa@gmail.com'
+const ContactAndAddress = memo(({ address, contact, optionalContact = '' }) => {
+	console.log('contact and address')
 	return (
 		<Box
 			marginTop="10px"
@@ -93,44 +93,11 @@ const ContactAndAddress = memo(({ address, contact }) => {
 							margin="10px"
 							display="flex"
 							flexDirection="column"
+							gap="10px"
 						>
 
-							<Typography
-								component="section"
-								variant="span"
-								textAlign="center"
-								color="gray"
-							>
-								Email
-
-							</Typography>
-							<Typography
-								component="section"
-								variant="span"
-								textAlign="center"
-								overflow="auto"
-								marginBottom="3%"
-							>
-								{email}
-
-							</Typography>
-							<Typography
-								component="section"
-								variant="span"
-								textAlign="center"
-								color="gray"
-							>
-								Phone
-
-							</Typography>
-							<Typography
-								component="section"
-								variant="span"
-								textAlign="center"
-							>
-								{contact}
-
-							</Typography>
+							<ShowContact label="Phone Number" contact={contact} />
+							{optionalContact && <ShowContact label="Optional Phone Number" contact={optionalContact} />}
 						</Box>
 					</Box>
 				</CardContent>
@@ -139,4 +106,25 @@ const ContactAndAddress = memo(({ address, contact }) => {
 	)
 })
 
+const ShowContact = memo(({ label, contact }) => (
+	<Box component="div">
+		<Typography
+			component="section"
+			variant="span"
+			textAlign="center"
+			color="gray"
+		>
+			{label}
+
+		</Typography>
+		<Typography
+			component="section"
+			variant="span"
+			textAlign="center"
+		>
+			{contact}
+
+		</Typography>
+	</Box>
+))
 export default ContactAndAddress

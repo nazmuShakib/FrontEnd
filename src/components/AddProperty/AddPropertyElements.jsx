@@ -119,6 +119,39 @@ const Contact = memo(({ control, error }) => {
 		/>
 	)
 })
+const OptionalContact = memo(({ control, error }) => {
+	console.log('optional contact')
+	return (
+		<Controller
+			name="optional_contact"
+			control={control}
+			render={({
+				field: {
+					onChange,
+					onBlur,
+					ref,
+					name,
+					value,
+				},
+			}) => (
+				<TextField
+					margin="normal"
+					id="optional_contact"
+					name={name}
+					value={value}
+					onChange={onChange}
+					onBlur={onBlur}
+					ref={ref}
+					type="tel"
+					label="Optional Contact"
+					placeholder="Enter your second contact number"
+					error={!!error}
+					helperText={error ? error.message : 'Optional'}
+				/>
+			)}
+		/>
+	)
+})
 const PaymentAccount = memo(({ control, error }) => {
 	console.log('payment account')
 	return (
@@ -669,6 +702,7 @@ export {
 	Address,
 	PaymentAccount,
 	Contact,
+	OptionalContact,
 	GenderSelection,
 	CategorySelection,
 	Header,
