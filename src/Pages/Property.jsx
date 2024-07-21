@@ -57,7 +57,7 @@ export default function Property() {
 			<RulesAndPreferences rulesAndPreference={res?.rulesAndPreference} />
 			<RequiredDocuments requiredDocuments={res?.requiredDocuments} />
 			<PlaceInfo placeInfo={res?.placeInfo} />
-			{auth && <ContactAndAddress address={res?.address} contact={res?.contact} optionalContact={res?.optional_contact} />}
+			{auth && <ContactAndAddress address={res?.address} contact={res?.contact} optionalContact={res?.optionalContact} />}
 			<Map mapCoordinate={mapCoordinate} />
 			<PriceAndAdvertiser price={res?.price} userID={res?.userID} />
 			{!myProperty && <BookPropertyButton propertyID={res?.ID} propertyOwner={res?.userID} />}
