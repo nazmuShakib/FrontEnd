@@ -199,16 +199,39 @@ export default function AddProperty() {
 		<Box
 			component="div"
 			sx={{
-				width: ['90%', '70%', '60%', '50%'],
+				width: ['90%', '75%', '70%', '55%'],
 				margin: 'auto',
 			}}
 		>
 			<Box component="div">
 				<FormControl fullWidth component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
 					<Header control={control} error={errors.title} />
-					<DateSelector name="date" control={control} error={errors.date} />
-					<GenderSelection control={control} error={errors.gender} />
-					<CategorySelection control={control} error={errors.category} />
+					<Box
+						component="div"
+						sx={{
+							'@media (min-width: 780px)': {
+								display: 'flex',
+								gap: '10px',
+							},
+							display: 'block',
+						}}
+					>
+						<DateSelector name="date" control={control} error={errors.date} />
+						<GenderSelection control={control} error={errors.gender} />
+					</Box>
+					<Box
+						component="div"
+						sx={{
+							'@media (min-width: 780px)': {
+								display: 'flex',
+								gap: '10px',
+							},
+							display: 'block',
+						}}
+					>
+						<CategorySelection control={control} error={errors.category} />
+						<Price control={control} error={errors.price} />
+					</Box>
 					<PlaceDescription control={control} error={errors.description} />
 					<RulesAndPreference control={control} error={errors.rules_and_preference} />
 					<RequiredDocuments control={control} error={errors.documents} />
@@ -222,9 +245,19 @@ export default function AddProperty() {
 						errorThana={errors.thana}
 					/>
 					<Address control={control} error={errors.address} />
-					<Price control={control} error={errors.price} />
-					<Contact control={control} error={errors.contact} />
-					<OptionalContact control={control} error={errors.optional_contact} />
+					<Box
+						component="div"
+						sx={{
+							'@media (min-width: 780px)': {
+								display: 'flex',
+								gap: '10px',
+							},
+							display: 'block',
+						}}
+					>
+						<Contact control={control} error={errors.contact} />
+						<OptionalContact control={control} error={errors.optional_contact} />
+					</Box>
 					<PaymentAccount control={control} error={errors.bkash} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />

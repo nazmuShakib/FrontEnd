@@ -21,7 +21,16 @@ const DateSelector = memo(({
 }) => {
 	const hasError = Boolean(error)
 	return (
-		<FormControl error={hasError} margin="normal">
+		<FormControl
+			error={hasError}
+			margin="normal"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '50%',
+				},
+				width: '100%',
+			}}
+		>
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<Controller
 					name={name}

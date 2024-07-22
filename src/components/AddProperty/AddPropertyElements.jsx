@@ -6,6 +6,7 @@ import {
 	useEffect,
 } from 'react'
 import {
+	Box,
 	Button,
 	InputLabel,
 	FormControl,
@@ -37,6 +38,7 @@ const Header = memo(({ control, error }) => {
 				},
 			}) => (
 				<TextField
+					margin="normal"
 					name={name}
 					id="title"
 					value={value}
@@ -56,100 +58,133 @@ const Header = memo(({ control, error }) => {
 const Price = memo(({ control, error }) => {
 	console.log('price')
 	return (
-		<Controller
-			name="price"
-			control={control}
-			render={({
-				field: {
-					onChange,
-					onBlur,
-					ref,
-					name,
-					value,
+		<Box
+			component="div"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '50%',
 				},
-			}) => (
-				<TextField
-					margin="normal"
-					id="price"
-					name={name}
-					value={value}
-					onChange={onChange}
-					onBlur={onBlur}
-					ref={ref}
-					type="number"
-					label="Price"
-					placeholder="Price of the property..."
-					error={!!error}
-					helperText={error ? error.message : 'Required'}
-				/>
-			)}
-		/>
+				width: '100%',
+			}}
+		>
+			<Controller
+				name="price"
+				control={control}
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<TextField
+						margin="normal"
+						id="price"
+						name={name}
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+						type="number"
+						label="Price"
+						placeholder="Price of the property..."
+						error={!!error}
+						helperText={error ? error.message : 'Required'}
+						sx={{ width: '100%' }}
+					/>
+				)}
+			/>
+		</Box>
 	)
 })
 const Contact = memo(({ control, error }) => {
 	console.log('contact')
 	return (
-		<Controller
-			name="contact"
-			control={control}
-			render={({
-				field: {
-					onChange,
-					onBlur,
-					ref,
-					name,
-					value,
+		<Box
+			component="div"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '50%',
 				},
-			}) => (
-				<TextField
-					margin="normal"
-					id="contact"
-					name={name}
-					value={value}
-					onChange={onChange}
-					onBlur={onBlur}
-					ref={ref}
-					type="tel"
-					label="Contact"
-					placeholder="Enter your contact number"
-					error={!!error}
-					helperText={error ? error.message : 'Required'}
-				/>
-			)}
-		/>
+				width: '100%',
+			}}
+		>
+			<Controller
+				name="contact"
+				control={control}
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<TextField
+						margin="normal"
+						id="contact"
+						name={name}
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+						type="tel"
+						label="Contact"
+						placeholder="Enter your contact number"
+						error={!!error}
+						helperText={error ? error.message : 'Required'}
+						sx={{ width: '100%' }}
+					/>
+				)}
+			/>
+		</Box>
 	)
 })
 const OptionalContact = memo(({ control, error }) => {
 	console.log('optional contact')
 	return (
-		<Controller
-			name="optional_contact"
-			control={control}
-			render={({
-				field: {
-					onChange,
-					onBlur,
-					ref,
-					name,
-					value,
+		<Box
+			component="div"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '50%',
 				},
-			}) => (
-				<TextField
-					margin="normal"
-					id="optional_contact"
-					name={name}
-					value={value}
-					onChange={onChange}
-					onBlur={onBlur}
-					ref={ref}
-					type="tel"
-					label="Optional Contact"
-					placeholder="Enter your second contact number"
-					error={!!error}
-					helperText={error ? error.message : 'Optional'}
-				/>
-			)}
-		/>
+				width: '100%',
+			}}
+		>
+			<Controller
+				name="optional_contact"
+				control={control}
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<TextField
+						margin="normal"
+						id="optional_contact"
+						name={name}
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+						type="tel"
+						label="Optional Contact"
+						placeholder="Enter your second contact number"
+						error={!!error}
+						helperText={error ? error.message : 'Optional'}
+						sx={{ width: '100%' }}
+					/>
+				)}
+			/>
+		</Box>
 	)
 })
 const PaymentAccount = memo(({ control, error }) => {
@@ -227,6 +262,12 @@ const GenderSelection = memo(({
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '50%',
+				},
+				width: '100%',
+			}}
 		>
 			<InputLabel id="gender-select">Gender</InputLabel>
 			<Controller
@@ -259,7 +300,7 @@ const GenderSelection = memo(({
 					</Select>
 				)}
 			/>
-			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+			<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
 		</FormControl>
 	)
 })
@@ -269,6 +310,12 @@ const CategorySelection = memo(({ control, error }) => {
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '50%',
+				},
+				width: '100%',
+			}}
 		>
 			<InputLabel id="category-select">Category</InputLabel>
 			<Controller
@@ -302,7 +349,7 @@ const CategorySelection = memo(({ control, error }) => {
 					</Select>
 				)}
 			/>
-			<FormHelperText>{error ? error.message : ''}</FormHelperText>
+			<FormHelperText>{error ? error.message : 'Required'}</FormHelperText>
 		</FormControl>
 	)
 })
@@ -358,7 +405,16 @@ const PlaceSelection = memo(({
 	}, [division, district])
 
 	return (
-		<>
+		<Box
+			component="div"
+			sx={{
+				'@media (min-width: 780px)': {
+					display: 'flex',
+					gap: '2px',
+				},
+				display: 'block',
+			}}
+		>
 			<Division
 				control={control}
 				error={errorDivision}
@@ -383,7 +439,7 @@ const PlaceSelection = memo(({
 				handleThana={handleThana}
 				district={district}
 			/>
-		</>
+		</Box>
 	)
 })
 
@@ -395,6 +451,12 @@ const Division = memo(({
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '33%',
+				},
+				width: '100%',
+			}}
 		>
 			<InputLabel id="division">Division</InputLabel>
 			<Controller
@@ -455,6 +517,12 @@ const District = memo(({
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '33%',
+				},
+				width: '100%',
+			}}
 		>
 			<InputLabel id="district">{districtLabel}</InputLabel>
 			<Controller
@@ -517,6 +585,12 @@ const Thana = memo(({
 		<FormControl
 			error={Boolean(error)}
 			margin="normal"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '33%',
+				},
+				width: '100%',
+			}}
 		>
 			<InputLabel id="thana">{thanaLabel}</InputLabel>
 			<Controller
