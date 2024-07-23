@@ -1,9 +1,7 @@
 import {
 	memo,
 	useState,
-	useCallback,
 	useMemo,
-	useEffect,
 } from 'react'
 import {
 	Box,
@@ -106,7 +104,7 @@ const Contact = memo(({ control, error }) => {
 			component="div"
 			sx={{
 				'@media (min-width: 780px)': {
-					width: '50%',
+					width: '33%',
 				},
 				width: '100%',
 			}}
@@ -133,7 +131,7 @@ const Contact = memo(({ control, error }) => {
 						ref={ref}
 						type="tel"
 						label="Contact"
-						placeholder="Enter your contact number"
+						placeholder="Enter contact number"
 						error={!!error}
 						helperText={error ? error.message : 'Required'}
 						sx={{ width: '100%' }}
@@ -150,7 +148,7 @@ const OptionalContact = memo(({ control, error }) => {
 			component="div"
 			sx={{
 				'@media (min-width: 780px)': {
-					width: '50%',
+					width: '33%',
 				},
 				width: '100%',
 			}}
@@ -177,7 +175,7 @@ const OptionalContact = memo(({ control, error }) => {
 						ref={ref}
 						type="tel"
 						label="Optional Contact"
-						placeholder="Enter your second contact number"
+						placeholder="Enter second contact"
 						error={!!error}
 						helperText={error ? error.message : 'Optional'}
 						sx={{ width: '100%' }}
@@ -190,34 +188,44 @@ const OptionalContact = memo(({ control, error }) => {
 const PaymentAccount = memo(({ control, error }) => {
 	console.log('payment account')
 	return (
-		<Controller
-			name="bkash"
-			control={control}
-			render={({
-				field: {
-					onChange,
-					onBlur,
-					ref,
-					name,
-					value,
+		<Box
+			component="div"
+			sx={{
+				'@media (min-width: 780px)': {
+					width: '34%',
 				},
-			}) => (
-				<TextField
-					margin="normal"
-					id="bkash"
-					name={name}
-					value={value}
-					onChange={onChange}
-					onBlur={onBlur}
-					ref={ref}
-					type="tel"
-					label="Bkash Number"
-					placeholder="Enter your bkash account number"
-					error={!!error}
-					helperText={error ? error.message : 'Required'}
-				/>
-			)}
-		/>
+				width: '100%',
+			}}
+		>
+			<Controller
+				name="bkash"
+				control={control}
+				render={({
+					field: {
+						onChange,
+						onBlur,
+						ref,
+						name,
+						value,
+					},
+				}) => (
+					<TextField
+						margin="normal"
+						id="bkash"
+						name={name}
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						ref={ref}
+						type="tel"
+						label="Bkash Number"
+						placeholder="Enter bKash number"
+						error={!!error}
+						helperText={error ? error.message : 'Required'}
+					/>
+				)}
+			/>
+		</Box>
 	)
 })
 const Address = memo(({ control, error }) => {

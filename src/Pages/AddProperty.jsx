@@ -250,15 +250,15 @@ export default function AddProperty() {
 						sx={{
 							'@media (min-width: 780px)': {
 								display: 'flex',
-								gap: '10px',
+								gap: '2px',
 							},
 							display: 'block',
 						}}
 					>
 						<Contact control={control} error={errors.contact} />
 						<OptionalContact control={control} error={errors.optional_contact} />
+						<PaymentAccount control={control} error={errors.bkash} />
 					</Box>
-					<PaymentAccount control={control} error={errors.bkash} />
 					<ImageUploader name="images" control={control} register={register} error={errors.images} />
 					<GetLocation control={control} name="location" error={errors.location} />
 					<SubmitButton isSubmitting={isSubmitting || isLoading} />
