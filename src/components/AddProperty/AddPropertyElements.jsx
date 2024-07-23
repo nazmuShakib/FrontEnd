@@ -222,6 +222,7 @@ const PaymentAccount = memo(({ control, error }) => {
 						placeholder="Enter bKash number"
 						error={!!error}
 						helperText={error ? error.message : 'Required'}
+						sx={{ width: '100%' }}
 					/>
 				)}
 			/>
