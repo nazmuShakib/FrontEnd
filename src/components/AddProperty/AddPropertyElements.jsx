@@ -587,7 +587,7 @@ const Thana = memo(({
 			margin="normal"
 			sx={{
 				'@media (min-width: 780px)': {
-					width: '33%',
+					width: '34%',
 				},
 				width: '100%',
 			}}
