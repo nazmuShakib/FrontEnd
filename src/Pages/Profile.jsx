@@ -7,12 +7,15 @@ import {
 	TextField,
 	Button,
 	FormControl,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
 } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { AttachFileOutlined, SendOutlined } from '@mui/icons-material'
+import { AttachFileOutlined, ExpandMore, SendOutlined } from '@mui/icons-material'
 import useAxiosPrivate from '../Hooks/useAxiosPrivate'
 import useNotification from '../Hooks/useNotification'
 import '../styles/profile.css'
@@ -112,6 +115,7 @@ const Profile = memo(() => {
 						<Typography variant="body1" component="span">{userInfo?.email}</Typography>
 					</Box>
 				</Box>
+				<Transactions userID={auth?.userID} />
 				<Notifications userID={auth?.userID} />
 			</Box>
 		</Box>
@@ -132,20 +136,28 @@ const Notifications = memo(({ userID }) => {
 			component="div"
 			className="notification-container"
 		>
-			<Typography variant="h6" component="span">Notifications</Typography>
-			<Box
-				component="div"
-				className="notification-box"
-			>
-				{notifications.map((notification) => (
-					<Notification
-						key={Math.random()}
-						time={notification.createdAt}
-						propertyID={notification.propertyID}
-						notification={notification.notification}
-					/>
-				))}
-			</Box>
+			<Accordion>
+				<AccordionSummary
+					expandIcon={<ExpandMore />}
+				>
+					<Typography variant="h6" component="span">Notifications</Typography>
+				</AccordionSummary>
+				<AccordionDetails>
+					<Box
+						component="div"
+						className="notification-box"
+					>
+						{notifications.map((notification) => (
+							<Notification
+								key={Math.random()}
+								time={notification.createdAt}
+								propertyID={notification.propertyID}
+								notification={notification.notification}
+							/>
+						))}
+					</Box>
+				</AccordionDetails>
+			</Accordion>
 		</Box>
 	)
 })
@@ -162,7 +174,7 @@ const Notification = memo(({ time, propertyID, notification }) => {
 			onClick={handleClick}
 		>
 			<Typography variant="caption" component="div">{new Date(time).toLocaleString()}</Typography>
-			{notification}
+			<Typography variant="body1" component="div">{notification}</Typography>
 		</Box>
 	)
 })
@@ -279,6 +291,83 @@ const UserNameField = memo(({ control, error }) => {
 				/>
 			)}
 		/>
+	)
+})
+
+const Transactions = memo(({ userID }) => {
+	console.log('all notifications')
+	const axiosPrivate = useAxiosPrivate()
+	const getTransactions = () => axiosPrivate({
+		url: '/payment/transactions',
+		method: 'GET',
+	})
+	const { data, isLoading } = useQuery(['get-transactions', userID], getTransactions)
+	if (isLoading) return <CircularProgress />
+	const transactions = data?.data?.data
+	return (
+		<Box
+			component="div"
+			className="notification-container"
+		>
+			<Accordion>
+				<AccordionSummary
+					expandIcon={<ExpandMore />}
+				>
+					<Typography variant="h6" component="span">Rent History</Typography>
+				</AccordionSummary>
+				<AccordionDetails>
+
+					<Box
+						component="div"
+						className="notification-box"
+					>
+						{transactions.map((transaction) => (
+							<Transaction
+								key={`${Math.random()}${transaction.transactionTime}`}
+								time={transaction.transactionTime}
+								propertyID={transaction.propertyID}
+								propertyOwner={transaction.propertyOwner}
+							/>
+						))}
+					</Box>
+				</AccordionDetails>
+			</Accordion>
+		</Box>
+	)
+})
+const Transaction = memo(({ time, propertyID, propertyOwner }) => {
+	console.log('transaction')
+	const navigate = useNavigate()
+	const handleClick = () => {
+		navigate(`/profile/${propertyOwner}`)
+	}
+	return (
+		<Box
+			component="div"
+			className="transaction"
+		>
+			<Typography variant="caption" component="div">{new Date(time).toLocaleString()}</Typography>
+			<Typography variant="h6" component="div" fontSize="16px">Property ID</Typography>
+			<Typography variant="body1" component="div">{propertyID}</Typography>
+			<Box component="div" sx={{ display: 'inline-block' }}>
+				<Typography
+					variant="h6"
+					component="div"
+					onClick={handleClick}
+					sx={{
+						fontSize: '16px',
+						color: '#162c5d',
+						'&:hover': {
+							cursor: 'pointer',
+							color: '#162cfe',
+							transition: 'all 0.3s linear',
+						},
+					}}
+				>
+					See owner profile
+				</Typography>
+			</Box>
+		</Box>
 	)
 })
 export default Profile

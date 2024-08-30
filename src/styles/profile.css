@@ -38,7 +38,7 @@
   background-color: #162c5d !important;
 }
 .notification-container {
-  margin-top: 5em;
+  margin-top: 3em;
   margin-bottom: 2em;
   width: 100%;
 }
@@ -63,6 +63,17 @@
 .notification:hover {
   background-color: #cad0ff;
   cursor: pointer;
+  transition: all 250ms ease-in;
+}
+.transaction {
+  margin-bottom: 5px;
+  min-height: 1em;
+  max-height: 100%;
+  padding: 10px;
+  border-radius: 10px;
+}
+.transaction:hover {
+  background-color: #cad0ff;
   transition: all 250ms ease-in;
 }
 @media (min-width: 700px) {
