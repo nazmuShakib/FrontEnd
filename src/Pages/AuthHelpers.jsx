@@ -99,7 +99,8 @@ const ResetPassword = memo(() => {
 	const navigate = useNavigate()
 	const { userID, token } = useParams()
 	const { auth } = useAuth()
-	if (auth) return navigate('/', { replace: true })
+	console.log(Object.keys(auth).length)
+	if (Object.keys(auth).length) return navigate('/', { replace: true })
 	console.log(userID)
 	const onSubmit = async (data) => {
 		try {
