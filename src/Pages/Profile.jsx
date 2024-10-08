@@ -321,7 +321,7 @@ const Transactions = memo(({ userID }) => {
 						component="div"
 						className="notification-box"
 					>
-						{transactions.map((transaction) => (
+						{transactions?.map((transaction) => (
 							<Transaction
 								key={`${Math.random()}${transaction.transactionTime}`}
 								time={transaction.transactionTime}
